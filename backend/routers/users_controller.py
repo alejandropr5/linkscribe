@@ -5,8 +5,8 @@ from fastapi import Cookie, Response, Depends, HTTPException
 from sqlalchemy.orm import Session
 import logging
 
-from sqlapp import crud, schemas
-from sqlapp.database import SessionLocal
+from src.sqlapp import crud, schemas
+from src.sqlapp.database import SessionLocal
 
 
 logging.basicConfig(level=logging.DEBUG,
