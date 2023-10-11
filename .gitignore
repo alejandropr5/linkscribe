@@ -1,0 +1,18 @@
+# |=========<< BACKEND >>=========|
+# Linter
+**/.eslintrc.json
+
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+# Environments
+**/.env
+**/.venv
+**/poetry.lock
+
+
+# |=========<< PROJECT >>=========|
+# VSCode
+**/*.code-workspace
