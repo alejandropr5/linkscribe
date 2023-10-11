@@ -10,8 +10,12 @@ def get_text(url: str):
         texts_list = []
         for element in soup.find_all(text=True):
             texts_list.append(element.get_text())
+        
+        text = " ".join(texts_list)
 
-        return " ".join(texts_list)
+        prediction = model.predict(text)
+
+        return prediction
     else:
         return ("Failed to retrieve the web page. "
                 f"Status code: {response.status_code}")
