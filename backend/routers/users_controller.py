@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
-from fastapi import Cookie, Response, Depends, HTTPException
+from fastapi import Cookie, Depends, HTTPException
 from sqlalchemy.orm import Session
 import logging
 
@@ -29,15 +29,6 @@ router = InferringRouter()
 
 @cbv(router)
 class UsersController:
-    @router.get("/session")
-    async def session(self, access_token: CookieParam = None):
-        session = access_token is not None
-        return {"session": session}
-
-    @router.get("/logout")
-    async def logout(self, response: Response):
-        response.delete_cookie("access_token")
-
     @router.post("/", response_model=schemas.User)
     def create_user(self,
                     user: schemas.UserCreate,
