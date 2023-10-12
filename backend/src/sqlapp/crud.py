@@ -17,9 +17,10 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    fake_hashed_password = user.password + "notreallyhashed"
+    # fake_hashed_password = user.password
     db_user = models.User(username=user.username,
-                          password=fake_hashed_password)
+                          password=user.password,
+                          name=user.name)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -31,9 +32,9 @@ def get_bookmarks(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user_bookmark(
-        db: Session, bookmark: schemas.BookmarkCreate, user_id: int
+        db: Session, bookmark: schemas.BookmarkCreate, username: str
 ):
-    db_bookmark = models.Bookmark(**bookmark.dict(), user_id=user_id)
+    db_bookmark = models.Bookmark(**bookmark.dict(), username=username)
     db.add(db_bookmark)
     db.commit()
     db.refresh(db_bookmark)

@@ -40,18 +40,20 @@ class BookmarksController:
 
     @router.post("/predict")
     def predict(self, web: PredictBody):
-        clean_text = self.scrap.get_clean_text(web.url)
-        prediction = self.model.predict([clean_text])
-        return {"prediction": prediction}
+        web_content = self.scrap.get_web_content(web.url)
+        prediction = self.model.predict([web_content["text"]])
+        web_content["category"] = prediction
+        del web_content["text"]
+        return web_content
 
-    @router.post("/{user_id}", response_model=schemas.Bookmark)
+    @router.post("/{username}", response_model=schemas.Bookmark)
     def create_bookmark_for_user(self,
-                                 user_id: int,
+                                 username: str,
                                  bookmark: schemas.BookmarkCreate,
                                  db: Session = Depends(get_db)):
         return crud.create_user_bookmark(db=db,
                                          bookmark=bookmark,
-                                         user_id=user_id)
+                                         username=username)
 
     @router.get("/", response_model=list[schemas.Bookmark])
     def read_bookmarks(self,

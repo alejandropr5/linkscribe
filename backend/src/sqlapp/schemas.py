@@ -5,6 +5,8 @@ class BookmarkBase(BaseModel):
     web_title: str
     url: str
     category: str
+    words: str
+    image: str
 
 
 class BookmarkCreate(BookmarkBase):
@@ -13,7 +15,7 @@ class BookmarkCreate(BookmarkBase):
 
 class Bookmark(BookmarkBase):
     id: int
-    user_id: int
+    username: str
 
     class Config:
         orm_mode = True
@@ -21,6 +23,7 @@ class Bookmark(BookmarkBase):
 
 class UserBase(BaseModel):
     username: str
+    name: str
 
 
 class UserCreate(UserBase):
@@ -30,6 +33,13 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     bookmarks: list[Bookmark] = []
+
+    class Config:
+        orm_mode = True
+
+
+class UserPassword(UserCreate):
+    id: int
 
     class Config:
         orm_mode = True

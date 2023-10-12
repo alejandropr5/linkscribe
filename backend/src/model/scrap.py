@@ -1,8 +1,11 @@
 from bs4 import BeautifulSoup
 import bs4 as bs4
-from urllib.parse import urlparse
 import requests
 import spacy
+import logging
+
+logging.basicConfig(level=logging.DEBUG,
+                    format="%(levelname)s:\t%(message)s")
 
 
 class ScrapTool:
@@ -10,35 +13,47 @@ class ScrapTool:
         self.nlp = spacy.load("en_core_web_sm")
 
     def visit_url(self, website_url):
-        """
-        Visit URL. Download the Content. Initialize the beautifulsoup object.
-        Call parsing methods. Return Series object.
-        """
         content = requests.get(website_url, timeout=60).content
         soup = BeautifulSoup(content, "lxml")
         result = {
-            "website_url": website_url,
-            "website_name": self.get_website_name(website_url),
-            "website_text": self.get_html_title_tag(soup)
+            "url": website_url,
+            "name": self.get_title(soup),
+            "image": self.get_image(soup),
+            "text": self.get_html_title_tag(soup)
             + self.get_html_meta_tags(soup)
             + self.get_html_heading_tags(soup)
             + self.get_text_content(soup)
         }
         return result
 
-    def get_website_name(self, website_url):
-        """
-        Example: returns "google" from "www.google.com"
-        """
-        return "".join(urlparse(website_url).netloc.split(".")[-2])
+    def get_title(self, html):
+        title = None
+        if html.title.string:
+            title = html.title.string
+        elif html.find("meta", property="og:title"):
+            title = html.find("meta", property="og:title").get('content')
+        elif html.find("meta", property="twitter:title"):
+            title = html.find("meta", property="twitter:title").get('content')
+        elif html.find("h1"):
+            title = html.find("h1").string
+        return title
+
+    def get_image(self, html):
+        image = None
+        if html.find("meta", property="image"):
+            image = html.find("meta", property="image").get('content')
+        elif html.find("meta", property="og:image"):
+            image = html.find("meta", property="og:image").get('content')
+        elif html.find("meta", property="twitter:image"):
+            image = html.find("meta", property="twitter:image").get('content')
+        elif html.find("img", src=True):
+            image = html.find_all("img").get('src')
+        return image
 
     def get_html_title_tag(self, soup):
-        """Return the text content of <title> tag from a webpage"""
         return ". ".join(soup.title.contents)
 
     def get_html_meta_tags(self, soup):
-        """Returns the text content of <meta> tags related to keywords and
-        description from a webpage"""
         tags = soup.find_all(
             lambda tag: (tag.name == "meta")
             & (tag.has_attr("name") & (tag.has_attr("content")))
@@ -51,15 +66,11 @@ class ScrapTool:
         return " ".join(content)
 
     def get_html_heading_tags(self, soup):
-        """returns the text content of heading tags. The assumption is that
-        headings might contain relatively important text."""
         tags = soup.find_all(["h1", "h2", "h3", "h4", "h5", "h6"])
         content = [" ".join(tag.stripped_strings) for tag in tags]
         return " ".join(content)
 
     def get_text_content(self, soup):
-        """returns the text content of the whole page with some exception to
-        tags. See tags_to_ignore."""
         tags_to_ignore = [
             "style",
             "script",
@@ -89,10 +100,6 @@ class ScrapTool:
         return " ".join(result)
 
     def clean_text(self, text: str):
-        """
-        Clean the document. Remove pronouns, stopwords, lemmatize the words and
-        lowercase them
-        """
         doc = self.nlp(text)
         tokens = []
         exclusion_list = ["nan"]
@@ -109,6 +116,16 @@ class ScrapTool:
             tokens.append(token)
         return " ".join(tokens)
 
-    def get_clean_text(self, website_url: str):
+    def remove_duplicate_words(self, text):
+        words = text.split()
+        unique_words = set(words)
+        text_without_duplicates = ' '.join(unique_words)
+
+        return text_without_duplicates
+
+    def get_web_content(self, website_url: str):
         web = self.visit_url(website_url)
-        return self.clean_text(web["website_text"])
+        logging.info(f"bs4 response: {web}")
+        web["text"] = self.clean_text(web["text"])
+        web["words"] = self.remove_duplicate_words(web["text"])
+        return web
