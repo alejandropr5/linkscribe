@@ -1,0 +1,44 @@
+version: "3.9"
+networks:
+  project-net:
+    driver: bridge
+services:
+  postgres_db:
+    container_name: linkscribe-postgres
+    image: alejandropr5/linkscribe-postgres:v3
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - 5434:5432
+    volumes:
+      - ./postgres:/app
+    networks:
+      - project-net
+  backend:
+    container_name: linkscribe-api
+    ports:
+      - 8080:8000
+    image: alejandropr5/linkscribe-api:v2
+    depends_on:
+      - postgres_db
+    environment:
+      - DATABASE_URL=postgresql://postgres:123456@postgres_db/linkscribe
+      # - HOMEPAGE_URL=http://frontend:8501
+    volumes:
+      - ./backend:/app
+    networks:
+      - project-net
+  frontend:
+    container_name: linkscribe-ui
+    image: alejandropr5/linkscribe-ui:v1
+    ports:
+      - 8501:8501
+    depends_on:
+      - backend
+    environment:
+      - API_ENDPOINT=http://backend:8000
+    volumes:
+      - ./frontend:/app
+    networks:
+      - project-net
