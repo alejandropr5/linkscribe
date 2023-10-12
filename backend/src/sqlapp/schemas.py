@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class BookmarkBase(BaseModel):
@@ -16,6 +17,7 @@ class BookmarkCreate(BookmarkBase):
 class Bookmark(BookmarkBase):
     id: int
     username: str
+    created_at: datetime
 
     class Config:
         orm_mode = True

@@ -5,7 +5,6 @@ from src.sqlapp import models
 from src.sqlapp.database import engine
 
 from routers.bookmarks_controller import router as bookmarks_router
-from routers.github_controller import router as github_router
 from routers.users_controller import router as users_router
 from src.model.model_loader import ModelLoader
 from src.model.scrap import ScrapTool
@@ -46,7 +45,6 @@ def shutdown_event():
     print("Shutting down the application...")
 
 
-app.include_router(github_router, tags=["github"], prefix="/github")
 app.include_router(users_router, tags=["users"], prefix="/users")
 app.include_router(bookmarks_router, tags=["bookmarks"], prefix="/bookmarks")
 

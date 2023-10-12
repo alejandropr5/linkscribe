@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from datetime import datetime
 
 from . import models, schemas
 
@@ -29,6 +30,19 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 def get_bookmarks(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Bookmark).offset(skip).limit(limit).all()
+
+
+def get_bookmarks_by_username(db: Session, username: str):
+    response = db.query(models.Bookmark)
+    return response.filter(models.Bookmark.username == username).all()
+
+
+def get_bookmarks_by_date_range(db: Session,
+                                username: str,
+                                init_date: datetime,
+                                final_date: datetime):
+    response = db.query(models.Bookmark)
+    return response.filter(models.Bookmark.username == username).all()
 
 
 def create_user_bookmark(
