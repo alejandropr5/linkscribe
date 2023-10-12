@@ -1,0 +1,1 @@
+streamlit run proyecto-frontend.py --server.port 8501
