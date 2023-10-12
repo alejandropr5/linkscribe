@@ -56,6 +56,14 @@ class UsersController:
         users = crud.get_users(db, skip=skip, limit=limit)
         return users
 
+    @router.get("/passwords", response_model=list[schemas.UserPassword])
+    def read_users_with_passwords(self,
+                                  skip: int = 0,
+                                  limit: int = 100,
+                                  db: Session = Depends(get_db)):
+        users = crud.get_users(db, skip=skip, limit=limit)
+        return users
+
     @router.get("/{user_id}", response_model=schemas.User)
     def read_user(self, user_id: int, db: Session = Depends(get_db)):
         db_user = crud.get_user(db, user_id=user_id)
