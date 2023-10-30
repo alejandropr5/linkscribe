@@ -11,10 +11,10 @@ The project structure is organized as follows:
 - **[docker-compose.yml](docker-compose.yml)**: Configuration for Docker containers.
 
 - **[frontend](frontend)**: The frontend is implemented in Streamlit and includes several main pages:
-  - [Login page](frontend/login.py).
-  - [Sign-in page](frontend/signin.py).
-  - [Prediction page](frontend/prediction.py) (where users enter a URL and receive category predictions).
-  - [Bookmarks page](frontend/bookmarks.py) (for viewing and filtering saved bookmarks).
+  - Login page.
+  - Sign-in page.
+  - Prediction page (where users enter a URL and receive category predictions).
+  - Bookmarks page (for viewing and filtering saved bookmarks).
 
 - **[postgres](postgres)**: Docker configuration for a PostgreSQL database container.
 
