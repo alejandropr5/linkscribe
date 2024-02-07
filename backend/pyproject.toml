@@ -3,7 +3,12 @@ name = "backend"
 version = "0.1.0"
 description = ""
 authors = ["alejandropr05 <alejandropr05@hotmail.com>"]
-readme = "README.md"
+packages = [
+    {include = "app", from = "src"},
+    {include = "model", from = "src"},
+    {include = "sqlapp", from = "src"},
+    {include = "models", from = "data"}
+]
 
 [tool.poetry.dependencies]
 python = ">3.9,<3.12"
@@ -18,9 +23,11 @@ spacy = "^3.7.1"
 lxml = "^4.9.3"
 psycopg2-binary = "^2.9.9"
 
-
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
+
+[tool.poetry.extras]
+src = ["app", "model", "sqlapp"]
 
 [build-system]
 requires = ["poetry-core"]
