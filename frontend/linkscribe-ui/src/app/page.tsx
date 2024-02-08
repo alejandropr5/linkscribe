@@ -1,9 +1,11 @@
-import Image from "next/image";
+import { CustomHeader } from "./components/custom-header";
+import { CustomBody } from "./components/custom-body";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
-      Hello World 👋
+    <main className="flex min-h-screen h-screen flex-col items-center justify-between bg-white font-jakarta">
+      <CustomHeader/>
+      <CustomBody/>
     </main>
   )
 }
