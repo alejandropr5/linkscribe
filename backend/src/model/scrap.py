@@ -4,8 +4,7 @@ import requests
 import spacy
 import logging
 
-logging.basicConfig(level=logging.DEBUG,
-                    format="%(levelname)s:\t%(message)s")
+logging.basicConfig(level=logging.DEBUG, format="%(levelname)s:\t%(message)s")
 
 
 class ScrapTool:
@@ -22,7 +21,7 @@ class ScrapTool:
             "text": self.get_html_title_tag(soup)
             + self.get_html_meta_tags(soup)
             + self.get_html_heading_tags(soup)
-            + self.get_text_content(soup)
+            + self.get_text_content(soup),
         }
         return result
 
@@ -31,9 +30,9 @@ class ScrapTool:
         if html.title.string:
             title = html.title.string
         elif html.find("meta", property="og:title"):
-            title = html.find("meta", property="og:title").get('content')
+            title = html.find("meta", property="og:title").get("content")
         elif html.find("meta", property="twitter:title"):
-            title = html.find("meta", property="twitter:title").get('content')
+            title = html.find("meta", property="twitter:title").get("content")
         elif html.find("h1"):
             title = html.find("h1").string
         return title
@@ -41,13 +40,13 @@ class ScrapTool:
     def get_image(self, html):
         image = None
         if html.find("meta", property="image"):
-            image = html.find("meta", property="image").get('content')
+            image = html.find("meta", property="image").get("content")
         elif html.find("meta", property="og:image"):
-            image = html.find("meta", property="og:image").get('content')
+            image = html.find("meta", property="og:image").get("content")
         elif html.find("meta", property="twitter:image"):
-            image = html.find("meta", property="twitter:image").get('content')
+            image = html.find("meta", property="twitter:image").get("content")
         elif html.find("img", src=True):
-            image = html.find_all("img").get('src')
+            image = html.find_all("img").get("src")
         return image
 
     def get_html_title_tag(self, soup):
@@ -119,7 +118,7 @@ class ScrapTool:
     def remove_duplicate_words(self, text):
         words = text.split()
         unique_words = set(words)
-        text_without_duplicates = ' '.join(unique_words)
+        text_without_duplicates = " ".join(unique_words)
 
         return text_without_duplicates
 
