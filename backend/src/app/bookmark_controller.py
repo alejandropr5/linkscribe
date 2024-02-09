@@ -1,40 +1,10 @@
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
-from fastapi import Depends, Request
-from sqlalchemy.orm import Session
-from pydantic import BaseModel
-from datetime import datetime
+from fastapi import Depends
 
-from sqlapp import crud, schemas
-from sqlapp.database import SessionLocal
-from model.model_loader import ModelLoader
-from model.scrap import ScrapTool
-
-
-class PredictBody(BaseModel):
-    url: str
-
-
-class DateRange(BaseModel):
-    username: str
-    init_date: datetime
-    final_date: datetime
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-async def get_model(request: Request):
-    return request.app.state.model
-
-
-async def get_scrap(request: Request):
-    return request.app.state.scrap
+from model.page_categorizer import PageCategorizer
+from model.scrap_tool import ScrapTool
+from utils import bookmarks_models as models
 
 
 router = InferringRouter()
@@ -42,16 +12,25 @@ router = InferringRouter()
 
 @cbv(router)
 class BookmarkController:
-    model: ModelLoader = Depends(get_model)
-    scrap: ScrapTool = Depends(get_scrap)
+    categorizer: PageCategorizer = Depends(models.get_categorizer)
+    scrap: ScrapTool = Depends(models.get_scrap_tool)
 
     @router.post("/predict")
-    def predict(self, web: PredictBody):
+    def predict(self, web: models.PredictRequestBody):
         web_content = self.scrap.get_web_content(web.url)
-        prediction = self.model.predict([web_content["text"]])
-        web_content["category"] = prediction
+        prediction = self.categorizer.predict([web_content["text"]])
+
+        words_list = web_content["words"].split()
         del web_content["text"]
-        return web_content
+        del web_content["words"]
+
+        print(f"{len(words_list)=}")
+
+        return models.PredictResponseBody(
+            **web_content,
+            category=prediction,
+            words=words_list
+        )
 
     # @router.post("/{username}", response_model=schemas.Bookmark)
     # def create_bookmark_for_user(
@@ -76,4 +55,4 @@ class BookmarkController:
     #     self, username: str, db: Session = Depends(get_db)
     # ):
     #     items = crud.get_bookmarks_by_username(db, username=username)
-        return items
+    #     return items
