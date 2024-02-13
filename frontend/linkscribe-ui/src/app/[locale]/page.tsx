@@ -1,5 +1,5 @@
-import { CustomHeader } from "./components/custom-header";
-import { CustomBody } from "./components/custom-body";
+import { CustomHeader } from '@server-component/custom-header'
+import { CustomBody } from '@server-component/custom-body'
 
 export default function Home() {
   return (

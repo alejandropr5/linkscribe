@@ -3,23 +3,26 @@
 import React, { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { ClientImage } from './client-image'
-import linkSVG from '../../../public/link.svg'
-import searchSVG from '../../../public/search.svg'
-import { BookmarkCard } from './bookmark-card'
-import { IndetProgressBar } from './indeterminate-progress-bar'
+import { ClientImage } from '@client-component/utils/client-image'
+import linkSVG from '@public/link.svg'
+import searchSVG from '@public/search.svg'
+import { BookmarkCard } from '@client-component/link-form/bookmark-card'
+import { IndetProgressBar } from '@client-component/link-form/indeterminate-progress-bar'
+import { APIConstants, DEFAULT_IMG } from '@client-component/utils/constants'
 
 
 export function URLForm ({ backendUrl }: { backendUrl: string | undefined }) {
-  const API_PREDICT_PATH = '/bookmark/predict'
+  var imageURL = useRef<string>(DEFAULT_IMG.src)
+  const bookmarkWords = useRef<string[]>()
+
   const { register, watch, handleSubmit, setValue, reset } = useForm({
     mode: 'all'
   })
   const [bookmark, setBookmark] = useState({
     url: '',
     title: '',
-    image: '',
     category: '',
+    image: '',
     showResult: false,
     showProgress: false
   })
@@ -28,39 +31,43 @@ export function URLForm ({ backendUrl }: { backendUrl: string | undefined }) {
     setBookmark(prevState => ({
       ...prevState,
       [key]: value,
-    }));
-  };
-
-  const bookmarkWords = useRef()
+    }))
+  }
 
   const onSubmit = async (data: any) => {
+    imageURL.current = DEFAULT_IMG.src
     updateVariable('showProgress', true)
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    
-    var raw = JSON.stringify({
-      "url": data.urlInput
-    });
-    
-    await fetch(backendUrl + API_PREDICT_PATH, {
+
+    const myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")    
+    await fetch(backendUrl + APIConstants.API_PREDICT_PATH, {
         method: 'POST',
         headers: myHeaders,
-        body: raw
+        body: JSON.stringify({
+          "url": data.urlInput
+        })
       })
       .then(response => response.json())
       .then(result => {
         console.log(result) // <----- Print fetch json results
+        if (result.image !== '') {
+          imageURL.current = result.image
+        } 
+
         setBookmark({
           url: result.url,
           title: result.name,
-          image: result.image,
+          image: imageURL.current,
           category: result.category,
           showResult: true,
           showProgress: false
         })
         bookmarkWords.current = result.words
       })
-      .catch(error => console.log('error', error))
+      .catch(error => {
+        updateVariable('showProgress', false)
+        console.log('error', error)
+      })
   }
 
   return (
@@ -90,7 +97,7 @@ export function URLForm ({ backendUrl }: { backendUrl: string | undefined }) {
         }
       </form>
       {bookmark.showResult &&
-        <div className="mt-20">
+        <div className="py-20">
           <BookmarkCard
             url={bookmark.url}        
             category={bookmark.category}

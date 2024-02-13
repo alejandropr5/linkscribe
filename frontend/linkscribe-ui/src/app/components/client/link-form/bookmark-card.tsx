@@ -22,13 +22,10 @@ export function BookmarkCard (data: BookmarkCardProps) {
         src={data.imgScr}
         alt={data.title}
       />
-      <div className="flex flex-col justify-between px-4 py-1">
+      <div className="flex flex-col justify-between px-4 py-1 overflow-x-hidden">
         <h3 className="mb-2 text-base font-semibold tracking-tight text-[#27272a] font-jakarta">
           {data.title}
         </h3>
-        {/* <p className="mb-3 font-normal text-gray-700">
-          {data.category}
-        </p> */}
       </div>
     </a>
   )
