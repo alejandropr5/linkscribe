@@ -4,7 +4,8 @@ from sqlalchemy.orm import sessionmaker
 import os
 
 DATABASE_URL = os.environ.get(
-    "DATABASE_URL", "postgresql://alejandro:991005@localhost/linkscribe"
+    "DATABASE_URL",
+    "postgresql://postgres:991005@127.0.0.1:5434/linkscribe",
 )
 
 engine = create_engine(

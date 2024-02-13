@@ -85,17 +85,10 @@ class ScrapTool:
         return " ".join(result)
 
     @staticmethod
-    def __remove_duplicate_words(text) -> str:
-        words = text.split()
-        unique_words = set(words)
-
-        return " ".join(unique_words)
-
-    @staticmethod
     def __validate_url(url: any) -> str:
         try:
             requests.get(url)
-        except requests.exceptions.MissingSchema:
+        except:
             return ""
         else:
             return url
@@ -178,8 +171,6 @@ class ScrapTool:
             dict[str, str]: A dictionary containing cleaned web content.
         """
         web = self.visit_url(website_url)
-
         web["text"] = self.clean_text(web["text"])
-        web["words"] = self.__remove_duplicate_words(web["text"])
 
         return web

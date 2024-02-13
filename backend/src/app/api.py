@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
-from sqlapp import models, database
+from sqlapp import database
 from utils import constants
 from sqlapp.database import engine
 from app.bookmark_controller import router as bookmark_router
@@ -37,5 +37,5 @@ app.add_middleware(
 )
 
 
-# app.include_router(users_router, tags=["users"], prefix="/users")
+app.include_router(users_router, tags=["users"], prefix="/users")
 app.include_router(bookmark_router, tags=["bookmark"], prefix="/bookmark")

@@ -4,7 +4,7 @@ from fastapi import Depends
 
 from model.page_categorizer import PageCategorizer
 from model.scrap_tool import ScrapTool
-from utils import bookmarks_models as models
+from utils import bookmark_models as models
 
 
 router = InferringRouter()
@@ -20,16 +20,12 @@ class BookmarkController:
         web_content = self.scrap.get_web_content(web.url)
         prediction = self.categorizer.predict([web_content["text"]])
 
-        words_list = web_content["words"].split()
         del web_content["text"]
-        del web_content["words"]
-
-        print(f"{len(words_list)=}")
 
         return models.PredictResponseBody(
             **web_content,
             category=prediction,
-            words=words_list
+            words=self.categorizer.important_words
         )
 
     # @router.post("/{username}", response_model=schemas.Bookmark)
