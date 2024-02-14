@@ -99,6 +99,9 @@ __pypackages__/
 # Environments
 .venv
 
+# local env files
+.env
+
 # mkdocs documentation
 /site
 
