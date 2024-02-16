@@ -32,6 +32,14 @@
     },
     "email-label": "Email",
     "password-label": "Password",
-    "name-label": "Name"
+    "name-label": "Name",
+    "required": "Please fill out this field",
+    "min": "Minimum input length should be ",
+    "max": "Maximum input length should be ",
+    "email": {
+      "invalid": "Enter a valid email",
+      "registered": "Email already registered"
+    }
+
   }
 }

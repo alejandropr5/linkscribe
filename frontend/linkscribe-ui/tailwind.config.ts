@@ -14,7 +14,6 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       fontFamily: {
-        archivo: "'Archivo', sans-serif",
         jakarta: "'Plus Jakarta Sans', sans-serif"
       },
       animation: {
