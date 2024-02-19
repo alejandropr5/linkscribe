@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 # from datetime import datetime
 
 from sqlapp import models, schemas
+from utils import user_models
 
 
 def get_user_by_id(db: Session, user_id: int):
@@ -18,11 +19,14 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    hashed_password = user.password
+    hashed_password = user_models.get_password_hash(
+        user.password, user_models.pwd_context
+    )
     db_user = models.User(
         name=user.name,
         email=user.email,
         password=hashed_password,
+        disabled=user.disabled
     )
     db.add(db_user)
     db.commit()

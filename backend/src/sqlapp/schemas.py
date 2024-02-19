@@ -30,6 +30,7 @@ class UserBase(BaseModel):
     email: Annotated[str, Body(
         pattern=constants.EMAIL_REGEX
     )] = "example@mail.com"
+    disabled: bool = False
 
 
 class UserCreate(UserBase):

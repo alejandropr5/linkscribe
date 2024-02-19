@@ -6,7 +6,7 @@ from sqlapp import database
 from utils import constants
 from sqlapp.database import engine
 from app.bookmark_controller import router as bookmark_router
-from app.users_controller import router as users_router
+from app.user_controller import router as users_router
 from model.page_categorizer import PageCategorizer
 from model.scrap_tool import ScrapTool
 

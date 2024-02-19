@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String  # , TIMESTAMP, ForeignKey
+from sqlalchemy import Column, Integer, String, BOOLEAN
+# , TIMESTAMP, ForeignKey
 # from sqlalchemy.orm import relationship
 
-from .database import Base
+from sqlapp.database import Base
 
 
 class User(Base):
@@ -11,6 +12,7 @@ class User(Base):
     name = Column(String)
     email = Column(String)
     password = Column(String)
+    disabled = Column(BOOLEAN)
 
     # bookmarks = relationship("Bookmark", back_populates="user")
 
