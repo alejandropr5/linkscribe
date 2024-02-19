@@ -1,7 +1,7 @@
 {
   "Header": {
     "title": "LinkScribe",
-    "sign-button-label": "Log In"
+    "signButtonLabel": "Log In"
   },
   "Body": {
     "title": {
@@ -13,26 +13,26 @@
       "second": "categorize and store your bookmarks with ease"
     }
   },
-  "SignModal": {
+  "Modal": {
     "login":{
       "title": "Log In",
       "paragraph": {
         "first": "Log in to save and manage",
-        "second": "your custom bookmarks.",
+        "second": "your custom bookmarks",
         "switch": "Don't have an account?"
       }
     },
-    "sign-up":{
+    "signUp":{
       "title": "Sign Up",
       "paragraph": {
         "first": "Sign up to save and manage",
-        "second": "your custom bookmarks.",
+        "second": "your custom bookmarks",
         "switch": "Already have an account?"
       }
     },
-    "email-label": "Email",
-    "password-label": "Password",
-    "name-label": "Name",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "nameLabel": "Name",
     "required": "Please fill out this field",
     "min": "Minimum input length should be ",
     "max": "Maximum input length should be ",
@@ -40,6 +40,8 @@
       "invalid": "Enter a valid email",
       "registered": "Email already registered"
     }
-
+  },
+  "Error": {
+    "notFound": "This page could not be found."
   }
 }
