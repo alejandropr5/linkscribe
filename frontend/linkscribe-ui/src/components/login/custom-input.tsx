@@ -15,7 +15,7 @@ export default function CustomInput(data: {
       <input
         {...data.register(data.id)}
         id={data.id}
-        className="peer px-6 py-3 w-full font-normal h-[50px] rounded-full bg-white text-[#52525b] font-sans
+        className="custom-autofill peer px-6 py-3 w-full font-normal h-[50px] rounded-full bg-white text-[#52525b] font-sans
         focus:outline-none  border-[1.5px] focus:border-2 focus:border-[#c1def1]"
         type={data.type}
         placeholder=""

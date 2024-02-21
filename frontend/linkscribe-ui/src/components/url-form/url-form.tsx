@@ -69,16 +69,16 @@ export default function URLForm({ backendUrl }: { backendUrl: string | undefined
         />
       </form>
       {isSubmitSuccessful &&
-        <div className="py-8 md:py-10 xl:py-16 2xl:py-20 ">
+        <div className="py-8 md:py-10 xl:py-12 2xl:py-14">
           <BookmarkCard
             url={bookmark.url}
-            category={bookmark.category}
             imgScr={bookmark.image}
             title={bookmark.title}
-          />
-          <CategorySelect
-          
-          />
+          >
+            <CategorySelect
+              category={bookmark.category}  
+            />
+          </BookmarkCard>
         </div>
       }
     </div>

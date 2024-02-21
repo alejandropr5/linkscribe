@@ -1,7 +1,18 @@
 {
+  "Metadata": {
+    "title": "LinkScribe",
+    "description": "Streamline Your Bookmarks Management",
+    "login": {
+      "title": "LinkScribe | Log In"
+    },
+    "signUp": {
+      "title": "LinkScribe | Sign Up"
+    }
+  },
   "Header": {
     "title": "LinkScribe",
-    "signButtonLabel": "Log In"
+    "loginLabel": "Log In",
+    "signUpLabel": "Sign Up"
   },
   "Body": {
     "title": {

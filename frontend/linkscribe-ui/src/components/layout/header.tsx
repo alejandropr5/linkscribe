@@ -2,7 +2,7 @@ import React from "react"
 import Link from "next/link"
 import linkscribe from "@public/linkscribe-logo.png"
 import ClientImage from "@/components/utils/client-image"
-import LoginButton from "@/components/layout/login-button"
+import SignButton from "@/components/layout/sign-button"
 import texts from "@messages/en.json"
 
 export default function Header() {
@@ -22,9 +22,10 @@ export default function Header() {
           </span>
         </Link>
         <div className="flex flex-row h-full items-center">
-          <LoginButton>
-            {t.signButtonLabel}
-          </LoginButton>
+          <SignButton 
+            loginLabel={t.loginLabel}
+            signUpLabel={t.signUpLabel}
+          />
         </div>
       </div>
     </header>

@@ -33,10 +33,10 @@ body {
   }
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:enabled,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
--webkit-text-fill-color: #52525b;
--webkit-box-shadow: 0 0 8px 13px #ffffff inset;
+@layer components {
+  .custom-autofill {
+    -webkit-text-fill-color: #52525b;
+    -webkit-box-shadow: 0 0 8px 13px #ffffff inset;
+    box-shadow: 0 0 8px 13px #ffffff inset;
+  }
 }

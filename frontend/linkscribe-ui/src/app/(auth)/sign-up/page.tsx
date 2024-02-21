@@ -1,4 +1,9 @@
 import SignUp from "@/components/sign-up/sign-up";
+import texts from "@messages/en.json"
+
+export const metadata = {
+  title: texts.Metadata.signUp.title
+}
 
 export default function SignUpPage () {
   return (

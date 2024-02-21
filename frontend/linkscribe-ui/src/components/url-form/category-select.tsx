@@ -1,18 +1,15 @@
 import SearchSelect from "@/components/url-form/search-select"
+import ClientImage from "@/components/utils/client-image"
+import downArrow from "@public/down-arrow.svg"
 
-export default function CategorySelect () {
+export default function CategorySelect (data: {
+  category: string
+}) {
   return (
-    <div
-      className="flex flex-row h-12 items-center bg-white border border-gray-200 rounded-md shadow max-w-xl
-      text-[#27272a] font-jakarta text-base tracking-tight">
-      <button
-        className="w-auto rounded-t-lg h-full md:w-64 md:rounded-none md:rounded-l-md bg-[#c1def193] hover:bg-gray-100 py-3
-        font-bold"
-      >
-        Save Bookmark
-      </button>
-      <div className="flex flex-col justify-between grow">
-        <SearchSelect/>
+    <div className="flex flex-row items-center rounded-md bg-[#c1def193] text-[#52525b] font-medium w-fit h-fit text-xs pl-2">
+      {data.category}
+      <div className="w-5 h-5 mx-2">
+        <ClientImage imageComponent={downArrow} description={"Down Arrow SVG"} />
       </div>
     </div>
   )
