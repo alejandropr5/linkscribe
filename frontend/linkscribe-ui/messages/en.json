@@ -22,6 +22,9 @@
     "paragraph": {
       "first": "Paste an URL into the input below, and let LinkScribe intelligently",
       "second": "categorize and store your bookmarks with ease"
+    },
+    "bookmark": {
+      "searchPlaceholder": "Search"
     }
   },
   "Modal": {
