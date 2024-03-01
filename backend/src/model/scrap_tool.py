@@ -1,11 +1,7 @@
-import re
 from bs4 import BeautifulSoup
-from typing import Union
 import bs4 as bs4
 import requests
 import spacy
-from urllib.parse import urlparse
-import requests
 
 
 class ScrapTool:
@@ -88,7 +84,9 @@ class ScrapTool:
     def __validate_url(url: any) -> str:
         try:
             requests.get(url)
-        except:
+        except requests.exceptions.ConnectionError:
+            return ""
+        except requests.exceptions.InvalidSchema:
             return ""
         else:
             return url
@@ -121,6 +119,7 @@ class ScrapTool:
         """
         content = requests.get(website_url, timeout=60).content
         soup = BeautifulSoup(content, "lxml")
+        # print(f"{soup=}")
         result = {
             "url": website_url,
             "name": self.__get_title(soup),
