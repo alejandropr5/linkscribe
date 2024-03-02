@@ -3,6 +3,7 @@ import "./globals.css";
 import PageWrapper from "@/components/layout/page-wrapper";
 import Header from "@/components/layout/header";
 import texts from "@messages/en.json"
+import Provider from "@/components/auth/provider";
 
 export const metadata: Metadata = {
   title: texts.Metadata.title,
@@ -21,11 +22,13 @@ export default function RootLayout({
       <body
         className="bg-white font-jakarta flex h-screen flex-col items-center justify-between"
       >
-        {auth}
-        <Header/>
-        <PageWrapper>
-          {children}
-        </PageWrapper>
+        <Provider>
+          {auth}
+          <Header/>
+          <PageWrapper>
+            {children}
+          </PageWrapper>
+        </Provider>
       </body>
     </html>
   );

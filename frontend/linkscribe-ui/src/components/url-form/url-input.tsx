@@ -2,7 +2,7 @@ import { FieldValues, UseFormRegister } from "react-hook-form"
 import ClientImage from "@/components/utils/client-image"
 import linkSVG from "@public/link.svg"
 import searchSVG from "@public/search.svg"
-import IndetProgressBar from "@/components/url-form/indeterminate-progress-bar"
+import ProgressBar from "@/components/url-form/indeterminate-progress-bar"
 
 export default function URLInput (data: {
     register: UseFormRegister<FieldValues>
@@ -31,7 +31,7 @@ export default function URLInput (data: {
         <ClientImage imageComponent={searchSVG} description={"Search SVG"} />
       </button>
       {data.isSubmitting &&
-        <IndetProgressBar />
+        <ProgressBar />
       }
     </>
   )

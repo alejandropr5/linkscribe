@@ -1,8 +1,8 @@
 import Link from "next/link"
-import SignUpForm from "@/components/sign-up/sign-up-form"
+import SignUpForm from "@/components/auth/sign-up/sign-up-form"
 import ModalText from "@/components/auth-modal/modal-text"
 import texts from "@messages/en.json"
-import SwitchLink from "../auth-modal/switch-link"
+import SwitchLink from "../../auth-modal/switch-link"
 
 export default function SignUp() {
   const BACKEND_URL = process.env.BACKEND_URL

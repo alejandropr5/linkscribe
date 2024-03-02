@@ -2,9 +2,9 @@
 
 import React from "react"
 import { useForm } from "react-hook-form"
-import { APIConstants } from "@/components/utils/constants"
-import CustomInput from "@/components/login/custom-input"
-import PasswordInput from "@/components/login/password-input"
+import { signIn } from "next-auth/react"
+import CustomInput from "@/components/auth/login/custom-input"
+import PasswordInput from "@/components/auth/login/password-input"
 
 export default function LoginForm(loginData: {
   backendUrl: string | undefined
@@ -17,18 +17,13 @@ export default function LoginForm(loginData: {
   })
 
   const onSubmit = async (data: any) => {
-    var formdata = new FormData()
-    formdata.append("username", data.loginEmail)
-    formdata.append("password", data.loginPassword)
-
-    fetch(loginData.backendUrl + APIConstants.LOGIN, {
-      method: "POST",
-      body: formdata,
-      redirect: "follow"
+    await signIn("credentials", {
+      email: data.loginEmail,
+      password: data.loginPassword,
+      redirect: true,
+      callbackUrl: "/"
     })
-      .then(response => response.json())
-      .then(result => console.log(result))
-      .catch(error => console.log("error", error))
+    .then(response => console.log(response))
   }
 
   return (

@@ -7,8 +7,10 @@ import URLInput from "@/components/url-form/url-input"
 import { APIConstants, DEFAULT_IMG } from "@/components/utils/constants"
 import CategorySelect from "@/components/url-form/category-select"
 
-
-export default function URLForm({ backendUrl }: { backendUrl: string | undefined }) {
+export default function URLForm(data: {
+  backendUrl: string | undefined
+  searchPlaceholder: string
+}) {
   const {
     register,
     handleSubmit,
@@ -22,18 +24,24 @@ export default function URLForm({ backendUrl }: { backendUrl: string | undefined
     image: ""
   })
 
+  const setCategory = (newCategory: string) => {
+    setBookmark(prevState => ({
+      ...prevState,
+      category: newCategory
+  }))}
+
   var imageURL = useRef<string>(DEFAULT_IMG.src)
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (formData: any) => {
     imageURL.current = DEFAULT_IMG.src
 
     const myHeaders = new Headers()
     myHeaders.append("Content-Type", "application/json")
-    await fetch(backendUrl + APIConstants.PREDICT_PATH, {
+    await fetch(data.backendUrl + APIConstants.PREDICT_PATH, {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
-        "url": data.urlInput
+        "url": formData.urlInput
       })
     })
       .then(response => response.json())
@@ -69,14 +77,16 @@ export default function URLForm({ backendUrl }: { backendUrl: string | undefined
         />
       </form>
       {isSubmitSuccessful &&
-        <div className="py-8 md:py-10 xl:py-12 2xl:py-14">
+        <div className="pt-12 pb-36 2xl:py-28">
           <BookmarkCard
             url={bookmark.url}
             imgScr={bookmark.image}
             title={bookmark.title}
           >
             <CategorySelect
-              category={bookmark.category}  
+              category={bookmark.category}
+              setCategory={setCategory}
+              searchPlaceholder={data.searchPlaceholder}
             />
           </BookmarkCard>
         </div>

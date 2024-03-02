@@ -2,9 +2,9 @@
 
 import React from "react"
 import { useForm } from "react-hook-form"
-import CustomInput from "@/components/sign-up/custom-input"
-import PasswordInput from "@/components/sign-up/password-input"
-import EmailInput from "@/components/sign-up/email-input"
+import CustomInput from "@/components/auth/sign-up/custom-input"
+import PasswordInput from "@/components/auth/sign-up/password-input"
+import EmailInput from "@/components/auth/sign-up/email-input"
 import { APIConstants } from "@/components/utils/constants"
 
 export default function SignUpForm(signData: {

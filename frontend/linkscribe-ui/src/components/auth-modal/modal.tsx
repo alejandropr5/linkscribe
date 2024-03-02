@@ -7,7 +7,7 @@ export default function Modal(data: {
   const router = useRouter()
   return (
     <div
-      className="fixed inset-0 backdrop-filter backdrop-blur-sm z-50 flex items-center justify-center px-6 bg-black/50"
+      className="absolute min-h-screen inset-0 backdrop-filter backdrop-blur-sm z-50 flex items-center justify-center px-6 bg-black/50"
       onClick={() => router.back()}
     >
       <div

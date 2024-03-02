@@ -1,7 +1,5 @@
 import URLForm from "@/components/url-form/url-form"
 import texts from "@messages/en.json"
-import CategorySelect from "@/components/url-form/category-select"
-import BookmarkCard from "@/components/url-form/bookmark-card"
 
 export default function Home() {
   const BACKEND_URL = process.env.BACKEND_URL
@@ -21,7 +19,10 @@ export default function Home() {
           {t.paragraph.second}
         </p>
       </div>
-      <URLForm backendUrl={BACKEND_URL} />
+      <URLForm
+        backendUrl={BACKEND_URL}
+        searchPlaceholder={t.bookmark.searchPlaceholder}
+      />
     </div>
   )
 }

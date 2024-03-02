@@ -2,7 +2,7 @@
 
 import React from "react"
 
-export default function IndetProgressBar () {
+export default function IndeterminateProgressBar () {
   return (
     <div className="absolute bottom-0 w-full">
       <div className="h-[3px] w-full bg-[#c1def193]">
