@@ -12,14 +12,14 @@ from utils.constants import AuthConstants
 router = APIRouter()
 
 
-@router.post("/", response_model=models.Token)
+@router.post("/", response_model=models.AuthUser)
 def create_user(
     user: schemas.UserCreate, db: Session = Depends(models.get_db)
 ):
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    crud.create_user(db=db, user=user)
+    new_user = crud.create_user(db=db, user=user)
 
     access_token_expires = timedelta(
         minutes=AuthConstants.ACCESS_TOKEN_EXPIRE_MINUTES
@@ -27,7 +27,12 @@ def create_user(
     access_token = models.create_access_token(
         data={"email": user.email}, expires_delta=access_token_expires
     )
-    return models.Token(access_token=access_token, token_type="bearer")
+    return models.AuthUser(
+        name=new_user.name,
+        email=new_user.email,
+        access_token=access_token,
+        token_type="bearer"
+    )
 
 
 @router.get("/", response_model=list[schemas.User])
@@ -46,11 +51,11 @@ def is_available(email: str, db: Session = Depends(models.get_db)):
     return {"available": db_user is None}
 
 
-@router.post("/login")
+@router.post("/login", response_model=models.AuthUser)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(models.get_db),
-) -> models.Token:
+):
     user = models.authenticate_user(
         db, form_data.username, form_data.password, models.pwd_context
     )
@@ -66,7 +71,12 @@ async def login_for_access_token(
     access_token = models.create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
-    return models.Token(access_token=access_token, token_type="bearer")
+    return models.AuthUser(
+        name=user.name,
+        email=user.email,
+        access_token=access_token,
+        token_type="bearer"
+    )
 
 
 @router.get("/me/", response_model=schemas.User)

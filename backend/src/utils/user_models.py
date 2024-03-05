@@ -22,7 +22,9 @@ def get_db():
         db.close()
 
 
-class Token(BaseModel):
+class AuthUser(BaseModel):
+    name: str
+    email: str
     access_token: str
     token_type: str
 
