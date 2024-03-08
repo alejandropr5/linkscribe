@@ -1,10 +1,12 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { Session } from "next-auth"
 import ClientImage from "@/components/utils/client-image"
 import userSVG from "@public/user.svg"
 
 export default function UserButton (data: {
+  session: Session
   onClick: () => void
 }) {
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
@@ -32,7 +34,7 @@ export default function UserButton (data: {
       </button>    
       {showDropdown &&
         <div
-          className="absolute bg-white right-0 top-[100%] rounded-xl shadow-lg py-1 w-64 z-10 app-background-color border border-color mt-1"
+          className="absolute bg-white right-0 top-[100%] rounded-xl shadow-lg py-1 max-w-64 z-10 app-background-color border border-color mt-1"
           ref={dropdown}
         >
           <div
@@ -44,7 +46,7 @@ export default function UserButton (data: {
             </div>
           </div>
           <div className="px-4 py-2 text-sm text-[#60606b] truncate border-t border-color-subtle mt-1">
-            alejandro.perdomo@uao.edu.co
+            {data.session.user?.email}
           </div>          
         </div>
       }

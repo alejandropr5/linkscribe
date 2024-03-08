@@ -2,10 +2,13 @@
 
 import React from "react"
 import { useForm } from "react-hook-form"
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import CustomInput from "@/components/auth/sign-up/custom-input"
 import PasswordInput from "@/components/auth/sign-up/password-input"
 import EmailInput from "@/components/auth/sign-up/email-input"
 import { APIConstants } from "@/components/utils/constants"
+
 
 export default function SignUpForm(signData: {
     backendUrl: string | undefined
@@ -19,6 +22,7 @@ export default function SignUpForm(signData: {
     registered: string
     buttonLabel: string
   }) {
+  const router = useRouter()
   const {
     register,
     formState: { errors },
@@ -39,8 +43,19 @@ export default function SignUpForm(signData: {
         "password": data.signPassword
       })
     })
-      .then(response => response.json())
-      .then(result => console.log(result))
+      .then(res => res.json())
+      .then(() => {
+        signIn("credentials", {
+          email: data.signEmail,
+          password: data.signPassword,
+          redirect: false
+        })
+        .then(response => {
+          if (response?.status === 200) {
+            router.back()
+          }
+        })        
+      })
       .catch(error => console.log("error", error))
   }
 

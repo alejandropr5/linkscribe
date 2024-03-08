@@ -20,6 +20,7 @@ export default function Login() {
         buttonLabel={tModal.login.title}
         emailLabel={tModal.emailLabel}
         passLabel={tModal.passwordLabel}
+        errorMessage={tModal.login.errorMessage}
       />
       <SwitchLink
         href="/sign-up"

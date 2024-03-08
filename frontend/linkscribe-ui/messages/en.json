@@ -30,6 +30,7 @@
   "Modal": {
     "login":{
       "title": "Log In",
+      "errorMessage": "Incorrect password or email",
       "paragraph": {
         "first": "Log in to save and manage",
         "second": "your custom bookmarks",

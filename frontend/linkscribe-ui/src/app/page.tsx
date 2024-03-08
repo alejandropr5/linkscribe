@@ -1,5 +1,6 @@
 import URLForm from "@/components/url-form/url-form"
 import texts from "@messages/en.json"
+import { ToastContainer } from "react-toastify"
 
 export default function Home() {
   const BACKEND_URL = process.env.BACKEND_URL

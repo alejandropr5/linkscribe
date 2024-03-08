@@ -30,14 +30,14 @@ export default NextAuth({
             redirect: "follow"
           }
         )
-        const user = await res.json()
-        console.log(user)
   
-        if (user) {
+        if (res.status === 200) {
           // Any object returned will be saved in `user` property of the JWT
-          return user
+          // console.log(res.json())
+          return res.json()
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
+          // console.log(res.json())
           return null
   
           // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
@@ -45,7 +45,13 @@ export default NextAuth({
       }
     })
   ],
-  session: {
-    strategy: "jwt"
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user }
+    },
+    async session({ session, token, user }) {
+      session.user = token as any
+      return session
+    }
   }
 })
