@@ -1,4 +1,3 @@
-import Link from "next/link"
 import LoginForm from "@/components/auth/login/login-form"
 import ModalText from "@/components/auth-modal/modal-text"
 import SwitchLink from "@/components/auth-modal/switch-link"

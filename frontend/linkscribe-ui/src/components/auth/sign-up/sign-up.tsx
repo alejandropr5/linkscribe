@@ -1,4 +1,3 @@
-import Link from "next/link"
 import SignUpForm from "@/components/auth/sign-up/sign-up-form"
 import ModalText from "@/components/auth-modal/modal-text"
 import texts from "@messages/en.json"

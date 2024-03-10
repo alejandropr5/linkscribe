@@ -8,7 +8,7 @@ export const metadata = {
 export default function SignUpPage () {
   return (
     <div className="my-6 2xl:my-14">
-      <SignUp/>
+      <SignUp />
     </div>
   )
 }

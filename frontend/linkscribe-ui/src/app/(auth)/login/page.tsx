@@ -1,14 +1,17 @@
 import Login from "@/components/auth/login/login"
+import AuthRedirect from "@/components/hoc/auth-redirect"
 import texts from "@messages/en.json"
 
 export const metadata = {
   title: texts.Metadata.login.title
 }
 
-export default function LoginPage () {
+function LoginPage () {
   return (
     <div className="my-6 2xl:my-14">
-      <Login/>
+      <Login />
     </div>
   )
 }
+
+export default AuthRedirect(LoginPage)

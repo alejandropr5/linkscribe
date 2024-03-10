@@ -9,19 +9,19 @@ export default function SignButton(data: {
     loginLabel: string
     signUpLabel: string
   }) {
-    const router = useRouter();
-    const pathname = usePathname();
-    const isLogin = pathname?.startsWith("/login");
-    const { data: session, status } = useSession();
-    const [loading, setLoading] = useState(true);
+    const router = useRouter()
+    const pathname = usePathname()
+    const isLogin = pathname?.startsWith("/login")
+    const { data: session, status } = useSession()
+    const [loading, setLoading] = useState(true)
   
     useEffect(() => {
       if (status === "loading") {
-        setLoading(true);
+        setLoading(true)
       } else {
-        setLoading(false);
+        setLoading(false)
       }
-    }, [status]);
+    }, [status])
   
     return (
       <div className="ml-auto flex gap-2">
@@ -30,7 +30,7 @@ export default function SignButton(data: {
         ) : session ? (
           <UserButton
             onClick={() => {
-              signOut({ redirect: false });
+              signOut({ redirect: false })
             }}
             session={session}
           />
@@ -46,5 +46,5 @@ export default function SignButton(data: {
           </button>
         )}
       </div>
-    );
+    )
   }
