@@ -7,19 +7,10 @@ from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime, timedelta, timezone
 from fastapi import Cookie, Depends, HTTPException, status
 
-from sqlapp import models, crud
-from sqlapp.database import SessionLocal
+from sqlapp import models, crud, database
 from utils.constants import AuthConstants
 
 CookieParam = Annotated[Optional[str], Cookie()]
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 class AuthUser(BaseModel):
@@ -70,18 +61,18 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
-    db: Session = Depends(get_db),
+    db: Session = Depends(database.get_db)
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
+        headers={"WWW-Authenticate": "Bearer"}
     )
     try:
         payload = jwt.decode(
             token,
             AuthConstants.SECRET_KEY,
-            algorithms=[AuthConstants.ALGORITHM],
+            algorithms=[AuthConstants.ALGORITHM]
         )
         username: str = payload.get("sub")
         if username is None:

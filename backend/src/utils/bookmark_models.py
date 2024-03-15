@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from datetime import datetime
 from fastapi import Request, Body
 
-from sqlapp.database import SessionLocal
 from utils import constants
 
 
@@ -29,16 +28,8 @@ class DateRange(BaseModel):
     final_date: datetime
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-async def get_categorizer(request: Request):
-    return request.app.state.categorizer
+async def get_model(request: Request):
+    return request.app.state.model
 
 
 async def get_scrap_tool(request: Request):

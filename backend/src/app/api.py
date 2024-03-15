@@ -7,21 +7,17 @@ from utils import constants
 from sqlapp.database import engine
 from app.bookmark_controller import router as bookmark_router
 from app.user_controller import router as users_router
-from model.page_categorizer import PageCategorizer
-from model.scrap_tool import ScrapTool
+from app.category_controller import router as category_router
+from model.model import Model
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.categorizer = PageCategorizer(
-        constants.ModelsPath.MODEL, constants.ModelsPath.VECTORIZER
-    )
-    app.state.scrap_tool = ScrapTool()
+    app.state.model = Model()
     yield
 
     # Clean up the models and release the resources
-    del app.state.categorizer
-    del app.state.scrap_tool
+    del app.state.model
 
 
 app = FastAPI(lifespan=lifespan)
@@ -39,3 +35,4 @@ app.add_middleware(
 
 app.include_router(users_router, tags=["users"], prefix="/users")
 app.include_router(bookmark_router, tags=["bookmark"], prefix="/bookmark")
+app.include_router(category_router, tags=["category"], prefix="/category")
