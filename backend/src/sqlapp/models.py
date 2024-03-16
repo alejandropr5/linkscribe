@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, ForeignKey
-from sqlalchemy.orm import relationship
+# from sqlalchemy.orm import relationship
 
 from sqlapp.database import Base
 
@@ -13,8 +13,6 @@ class User(Base):
     password = Column(String)
     disabled = Column(Boolean, default=False)
 
-    # bookmarks = relationship("Bookmark", back_populates="user")
-
 
 class Category(Base):
     __tablename__ = "categories"
@@ -23,8 +21,6 @@ class Category(Base):
     name = Column(String(400))
     father_id = Column(Integer)
     user_id = Column(Integer, ForeignKey("users.id"))
-
-    # categories = relationship("Category", back_populates="bookmark")
 
 
 class Bookmark(Base):
@@ -37,9 +33,6 @@ class Bookmark(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     created_at = Column(TIMESTAMP, server_default="")
 
-    words = relationship("Word", back_populates="bookmark")
-    # user = relationship("User", back_populates="bookmarks")
-
 
 class Word(Base):
     __tablename__ = "words"
@@ -47,8 +40,6 @@ class Word(Base):
     id = Column(Integer, primary_key=True, index=True)
     word = Column(String(40))
     bookmark_id = Column(Integer, ForeignKey("bookmarks.id"))
-
-    bookmark = relationship("Bookmark", back_populates="words")
 
 
 class CategoryBookmark(Base):
