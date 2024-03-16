@@ -19,9 +19,6 @@ class Word(WordBase):
     id: int
     bookmark_id: int
 
-    # class Config:
-    #     orm_mode = True
-
 
 # bookmark table
 class BookmarkBase(BaseModel):
@@ -39,18 +36,13 @@ class Bookmark(BookmarkBase):
     user_id: int
     created_at: datetime
 
-    words: list[Word] = []
-
-    class Config:
-        orm_mode = True
-
 
 # user table
 class UserBase(BaseModel):
     name: Annotated[str, Body(min_length=1, max_length=40)]
-    email: Annotated[str, Body(
-        pattern=constants.EMAIL_REGEX
-    )] = "example@mail.com"
+    email: Annotated[
+        str, Body(pattern=constants.EMAIL_REGEX)
+    ] = "example@mail.com"
 
 
 class UserCreate(UserBase):
@@ -60,10 +52,6 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     disabled: bool
-    # bookmarks: list[Bookmark] = []
-
-    # class Config:
-    #     orm_mode = True
 
 
 # categories table
@@ -80,9 +68,6 @@ class Category(CategoryBase):
     id: int
     user_id: int
 
-    # class Config:
-    #     orm_mode = True
-
 
 # category_bookmark table
 class CategoryBookmarkBase(BaseModel):
@@ -96,6 +81,3 @@ class CategoryBookmarkCreate(CategoryBookmarkBase):
 class CategoryBookmark(CategoryBookmarkBase):
     category_id: int
     bookmark_id: int
-
-    # class Config:
-    #     orm_mode = True

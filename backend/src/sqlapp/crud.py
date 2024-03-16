@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+import sqlalchemy
 # from datetime import datetime
 
 from sqlapp import models, schemas
@@ -109,8 +110,8 @@ def create_user_bookmark(
 def get_user_bookmarks(
     db: Session,
     user_id: int,
-    categories_id: list[int],
-    words: str,
+    categories_id: list[int] | None,
+    search_text: str | None,
     skip: int = 0,
     limit: int = 100
 ):
@@ -118,13 +119,24 @@ def get_user_bookmarks(
     cb = models.CategoryBookmark
     w = models.Word
 
-    response = db.query(b.id, b.name, w.word)\
+    query = db.query(b)\
         .join(cb, b.id == cb.bookmark_id)\
         .outerjoin(w, b.id == w.bookmark_id)\
         .filter(b.user_id == user_id)\
-        .filter(cb.category_id.in_(categories_id))\
-        .filter(b.name.ilike(f"%{words}%") | w.word.ilike(f"%{words}%"))\
-        .offset(skip).limit(limit).all()
+        .order_by(b.created_at)
+
+    if categories_id is not None:
+        query = query.filter(cb.category_id.in_(categories_id))
+
+    if search_text is not None:
+        search_words = search_text.split()
+        contain_words = (w.word.ilike(f"%{word}%") for word in search_words)
+
+        query = query.filter(
+            b.name.ilike(f"%{search_text}%") | sqlalchemy.or_(*contain_words)
+        )
+
+    response = query.offset(skip).limit(limit).distinct().all()
 
     return response
 

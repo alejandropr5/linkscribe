@@ -11,7 +11,7 @@ def validate_father_id(db: Session, user_id: int, father_id: int):
         if father_category is None:
             raise HTTPException(
                 status_code=400,
-                detail="Category father id not in user categories."
+                detail="Category father id not in user categories.",
             )
 
 
@@ -21,7 +21,6 @@ def get_user_category(db: Session, user_id: int, category_id: int):
     )
     if category is None:
         raise HTTPException(
-            status_code=400,
-            detail="Category id not in user categories."
+            status_code=400, detail="Category id not in user categories."
         )
     return category

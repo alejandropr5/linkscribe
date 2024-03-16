@@ -15,12 +15,10 @@ async def create_user_category(
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],
-    db: Session = Depends(database.get_db)
+    db: Session = Depends(database.get_db),
 ):
     category_models.validate_father_id(
-        db,
-        user_id=current_user.id,
-        father_id=category.father_id
+        db, user_id=current_user.id, father_id=category.father_id
     )
 
     new_category = crud.create_user_category(
@@ -36,7 +34,7 @@ async def delete_user_category(
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],
-    db: Session = Depends(database.get_db)
+    db: Session = Depends(database.get_db),
 ):
     category = category_models.get_user_category(
         db, user_id=current_user.id, category_id=category_id
@@ -53,7 +51,7 @@ def update_user_category(
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],
-    db: Session = Depends(database.get_db)
+    db: Session = Depends(database.get_db),
 ):
     category_models.get_user_category(
         db, user_id=current_user.id, category_id=category_id
@@ -61,16 +59,14 @@ def update_user_category(
 
     if category_update.father_id is not None:
         category_models.validate_father_id(
-            db,
-            user_id=current_user.id,
-            father_id=category_update.father_id
+            db, user_id=current_user.id, father_id=category_update.father_id
         )
 
     updated_category = crud.update_category(
         db,
         user_id=current_user.id,
         category_id=category_id,
-        new_category=category_update
+        new_category=category_update,
     )
 
     return updated_category
@@ -83,7 +79,7 @@ def read_user_categories(
     ],
     skip: int = 0,
     limit: int = 100,
-    db: Session = Depends(database.get_db)
+    db: Session = Depends(database.get_db),
 ):
     categories = crud.get_user_categories(
         db, user_id=current_user.id, skip=skip, limit=limit

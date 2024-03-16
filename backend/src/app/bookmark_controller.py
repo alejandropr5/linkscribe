@@ -13,13 +13,11 @@ router = APIRouter()
 @router.post("/predict")
 def predict(
     web: models.PredictRequestBody,
-    model: Annotated[Model, Depends(models.get_model)]
+    model: Annotated[Model, Depends(models.get_model)],
 ):
     prediction = model.predict(web.url)
 
-    return models.PredictResponseBody(
-        **prediction
-    )
+    return models.PredictResponseBody(**prediction)
 
 
 @router.post("/{category_id}")
@@ -29,7 +27,7 @@ def create_user_bookmark(
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],
-    db: Session = Depends(database.get_db)
+    db: Session = Depends(database.get_db),
 ):
     category_models.get_user_category(
         db, user_id=current_user.id, category_id=category_id
@@ -48,19 +46,21 @@ def read_user_bookmarks(
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],
-    q: Annotated[str | None, Query()] = None,
+    search: Annotated[str | None, Query()] = None,
     cat: Annotated[list[int] | None, Query()] = None,
     skip: Annotated[int, Query()] = 0,
     limit: Annotated[int, Query()] = 100,
-    db: Session = Depends(database.get_db)
+    db: Session = Depends(database.get_db),
 ):
+    print(f"{search=}")
+    print(f"{cat=}")
     bookmarks = crud.get_user_bookmarks(
         db,
         user_id=current_user.id,
         categories_id=cat,
-        words=q,
+        search_text=search,
         skip=skip,
-        limit=limit
+        limit=limit,
     )
 
     return bookmarks

@@ -31,7 +31,7 @@ def create_user(
         name=new_user.name,
         email=new_user.email,
         access_token=access_token,
-        token_type="bearer"
+        token_type="bearer",
     )
 
 
@@ -65,5 +65,5 @@ async def login_for_access_token(
         name=user.name,
         email=user.email,
         access_token=access_token,
-        token_type="bearer"
+        token_type="bearer",
     )

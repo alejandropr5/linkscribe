@@ -22,7 +22,7 @@ class PageCategorizer:
         "Education",
         "Computers and Technology",
         "Business/Corporate",
-        "Adult"
+        "Adult",
     ]
 
     def __init__(

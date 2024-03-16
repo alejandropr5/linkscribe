@@ -61,18 +61,18 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
-    db: Session = Depends(database.get_db)
+    db: Session = Depends(database.get_db),
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"}
+        headers={"WWW-Authenticate": "Bearer"},
     )
     try:
         payload = jwt.decode(
             token,
             AuthConstants.SECRET_KEY,
-            algorithms=[AuthConstants.ALGORITHM]
+            algorithms=[AuthConstants.ALGORITHM],
         )
         username: str = payload.get("sub")
         if username is None:

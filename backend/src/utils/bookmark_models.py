@@ -7,11 +7,14 @@ from utils import constants
 
 
 class PredictRequestBody(BaseModel):
-    url: Annotated[str, Body(
-        title="Website URL",
-        description="The URL of the website to visit.",
-        pattern=constants.URL_REGEX
-    )] = "https://www.example.com"
+    url: Annotated[
+        str,
+        Body(
+            title="Website URL",
+            description="The URL of the website to visit.",
+            pattern=constants.URL_REGEX,
+        ),
+    ] = "https://www.example.com"
 
 
 class PredictResponseBody(BaseModel):

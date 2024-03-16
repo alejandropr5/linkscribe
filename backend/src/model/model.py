@@ -6,8 +6,7 @@ from model.scrap_tool import ScrapTool
 class Model:
     def __init__(self) -> None:
         self.categorizer = PageCategorizer(
-            constants.ModelsPath.MODEL,
-            constants.ModelsPath.VECTORIZER
+            constants.ModelsPath.MODEL, constants.ModelsPath.VECTORIZER
         )
         self.scrap_tool = ScrapTool()
 
@@ -20,5 +19,5 @@ class Model:
         return {
             **web_content,
             "category": prediction,
-            "words": self.categorizer.important_words
+            "words": self.categorizer.important_words,
         }
