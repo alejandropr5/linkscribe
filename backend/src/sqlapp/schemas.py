@@ -31,9 +31,15 @@ class BookmarkCreate(BookmarkBase):
     words: list[str] = []
 
 
+class BookmarkUpdate(BaseModel):
+    name: str | None
+    category_id: int | None
+
+
 class Bookmark(BookmarkBase):
     id: int
     user_id: int
+    category_id: int
     created_at: datetime
 
 
@@ -67,17 +73,3 @@ class CategoryCreate(CategoryBase):
 class Category(CategoryBase):
     id: int
     user_id: int
-
-
-# category_bookmark table
-class CategoryBookmarkBase(BaseModel):
-    pass
-
-
-class CategoryBookmarkCreate(CategoryBookmarkBase):
-    pass
-
-
-class CategoryBookmark(CategoryBookmarkBase):
-    category_id: int
-    bookmark_id: int

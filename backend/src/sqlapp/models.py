@@ -22,6 +22,8 @@ class Category(Base):
     father_id = Column(Integer, ForeignKey("categories.id"))
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
+    bookmarks = relationship("Bookmark", back_populates="category")
+
 
 class Bookmark(Base):
     __tablename__ = "bookmarks"
@@ -31,10 +33,12 @@ class Bookmark(Base):
     url = Column(String(500), nullable=False)
     image = Column(String(800), nullable=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
 
     created_at = Column(TIMESTAMP, server_default="")
 
     words = relationship("Word", back_populates="bookmark")
+    category = relationship("Category", back_populates="bookmarks")
 
 
 class Word(Base):
@@ -45,12 +49,3 @@ class Word(Base):
     bookmark_id = Column(Integer, ForeignKey("bookmarks.id"), nullable=False)
 
     bookmark = relationship("Bookmark", back_populates="words")
-
-
-class CategoryBookmark(Base):
-    __tablename__ = "category_bookmark"
-
-    category_id = Column(
-        Integer, ForeignKey("categories.id"), primary_key=True
-    )
-    bookmark_id = Column(Integer, ForeignKey("bookmarks.id"), primary_key=True)

@@ -93,13 +93,13 @@ def create_user_bookmark(
         name=bookmark.name,
         url=bookmark.url,
         image=bookmark.image,
-        user_id=user_id
+        user_id=user_id,
+        category_id=category_id
     )
     db.add(db_bookmark)
     db.commit()
     db.refresh(db_bookmark)
 
-    create_category_bookmark(db, category_id, db_bookmark.id)
     create_bookmark_words(db, bookmark.words, db_bookmark.id)
 
     db.refresh(db_bookmark)
@@ -116,18 +116,16 @@ def get_user_bookmarks(
     limit: int = 100
 ):
     b = models.Bookmark
-    cb = models.CategoryBookmark
     w = models.Word
 
     query = db.query(b)\
-        .join(cb, b.id == cb.bookmark_id)\
         .join(w, b.id == w.bookmark_id)\
         .filter(b.user_id == user_id)\
         .order_by(b.created_at) \
         .group_by(b.id)
 
     if categories_id is not None:
-        query = query.filter(cb.category_id.in_(categories_id))
+        query = query.filter(b.category_id.in_(categories_id))
 
     if search_text is not None:
         search_words = search_text.split()
@@ -148,20 +146,6 @@ def get_user_bookmark_by_id(db: Session, user_id: int, bookmark_id: int):
         user_id=user_id
     )
     return response.first()
-
-
-def create_category_bookmark(
-    db: Session, category_id: int, bookmark_id: int
-):
-    db_category_bookmark = models.CategoryBookmark(
-        category_id=category_id,
-        bookmark_id=bookmark_id
-    )
-    db.add(db_category_bookmark)
-    db.commit()
-    db.refresh(db_category_bookmark)
-
-    return db_category_bookmark
 
 
 def get_bookmark_words(
@@ -190,15 +174,19 @@ def update_bookmark(
     db: Session,
     user_id: id,
     bookmark_id: int,
-    category_id: int,
-    new_bookmark: schemas.BookmarkCreate,
+    new_bookmark: schemas.BookmarkUpdate,
 ):
-    db_category = get_user_category_by_id(db, user_id, bookmark_id)
+    db_bookmark = db.query(models.Bookmark).filter_by(
+        id=bookmark_id,
+        user_id=user_id
+    ).first()
 
-    db_category.name = new_bookmark.name
-    db_category.father_id = new_bookmark.father_id
+    if db_bookmark is not None:
+        if new_bookmark.name is not None:
+            db_bookmark.name = new_bookmark.name
+        db_bookmark.category_id = new_bookmark.category_id
 
-    db.commit()
-    db.refresh(db_category)
+        db.commit()
+        db.refresh(db_bookmark)
 
-    return db_category
+    return db_bookmark

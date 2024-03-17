@@ -1,10 +1,10 @@
 from typing import Annotated
-from fastapi import Depends, APIRouter, Query
+from fastapi import Depends, APIRouter, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from model.model import Model
 from sqlapp import crud, database, schemas
-from utils import bookmark_models, category_models, user_models
+from utils import bookmark_models, user_models, category_models
 
 
 router = APIRouter()
@@ -29,10 +29,6 @@ async def create_user_bookmark(
     ],
     db: Session = Depends(database.get_db),
 ):
-    category_models.get_user_category(
-        db, user_id=current_user.id, category_id=category_id
-    )
-
     db_category = crud.create_user_bookmark(
         db, user_id=current_user.id, category_id=category_id, bookmark=bookmark
     )
@@ -65,25 +61,32 @@ async def read_user_bookmarks(
     return bookmarks
 
 
-@router.put("/")
+@router.put("/{bookmark_id}")
 async def update_user_bookmark(
     bookmark_id: int,
-    bookmark_update: schemas.BookmarkCreate,
+    bookmark_update: schemas.BookmarkUpdate,
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],
     db: Session = Depends(database.get_db),
 ):
-    old_bookmark = bookmark_models.get_user_bookmark(
-        db, user_id=current_user.id, bookmark_id=bookmark_id
-    )
+    if bookmark_update.category_id is not None:
+        category_models.get_user_category(
+            db,
+            user_id=current_user.id,
+            category_id=bookmark_update.category_id
+        )
 
     updated_bookmark = crud.update_bookmark(
         db,
         user_id=current_user.id,
         bookmark_id=bookmark_id,
-        new_bookmark=bookmark_update,
-        category_id=1
+        new_bookmark=bookmark_update
     )
+
+    if updated_bookmark in None:
+        raise HTTPException(
+            status_code=400, detail="Bookmark id is not in user bookmarks."
+        )
 
     return updated_bookmark
