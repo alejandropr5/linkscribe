@@ -1,8 +1,10 @@
 from typing import Annotated
 from pydantic import BaseModel
 from datetime import datetime
-from fastapi import Request, Body
+from fastapi import HTTPException, Request, Body
+from sqlalchemy.orm import Session
 
+from sqlapp import crud
 from utils import constants
 
 
@@ -37,3 +39,14 @@ async def get_model(request: Request):
 
 async def get_scrap_tool(request: Request):
     return request.app.state.scrap_tool
+
+
+async def get_user_bookmark(db: Session, user_id: int, bookmark_id: int):
+    bookmark = crud.get_user_bookmark_by_id(
+        db, user_id=user_id, bookmark_id=bookmark_id
+    )
+    if bookmark is None:
+        raise HTTPException(
+            status_code=400, detail="Bookmark id not in user bookmarks."
+        )
+    return bookmark

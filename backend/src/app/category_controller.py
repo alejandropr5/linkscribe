@@ -45,7 +45,7 @@ async def delete_user_category(
 
 
 @router.put("/{category_id}")
-def update_user_category(
+async def update_user_category(
     category_id: int,
     category_update: schemas.CategoryCreate,
     current_user: Annotated[
@@ -73,7 +73,7 @@ def update_user_category(
 
 
 @router.get("/", response_model=list)
-def read_user_categories(
+async def read_user_categories(
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlapp import crud
 
 
-def validate_father_id(db: Session, user_id: int, father_id: int):
+async def validate_father_id(db: Session, user_id: int, father_id: int):
     if father_id is not None:
         father_category = crud.get_user_category_by_id(
             db, user_id=user_id, category_id=father_id
@@ -15,7 +15,7 @@ def validate_father_id(db: Session, user_id: int, father_id: int):
             )
 
 
-def get_user_category(db: Session, user_id: int, category_id: int):
+async def get_user_category(db: Session, user_id: int, category_id: int):
     category = crud.get_user_category_by_id(
         db, user_id=user_id, category_id=category_id
     )

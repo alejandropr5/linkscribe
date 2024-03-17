@@ -4,24 +4,24 @@ from sqlalchemy.orm import Session
 
 from model.model import Model
 from sqlapp import crud, database, schemas
-from utils import bookmark_models as models, category_models, user_models
+from utils import bookmark_models, category_models, user_models
 
 
 router = APIRouter()
 
 
 @router.post("/predict")
-def predict(
-    web: models.PredictRequestBody,
-    model: Annotated[Model, Depends(models.get_model)],
+async def predict(
+    web: bookmark_models.PredictRequestBody,
+    model: Annotated[Model, Depends(bookmark_models.get_model)],
 ):
     prediction = model.predict(web.url)
 
-    return models.PredictResponseBody(**prediction)
+    return bookmark_models.PredictResponseBody(**prediction)
 
 
 @router.post("/{category_id}")
-def create_user_bookmark(
+async def create_user_bookmark(
     category_id: int,
     bookmark: schemas.BookmarkCreate,
     current_user: Annotated[
@@ -40,9 +40,8 @@ def create_user_bookmark(
     return db_category
 
 
-# , response_model=list[schemas.Bookmark]
 @router.get("/")
-def read_user_bookmarks(
+async def read_user_bookmarks(
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],
@@ -64,3 +63,27 @@ def read_user_bookmarks(
     )
 
     return bookmarks
+
+
+@router.put("/")
+async def update_user_bookmark(
+    bookmark_id: int,
+    bookmark_update: schemas.BookmarkCreate,
+    current_user: Annotated[
+        schemas.User, Depends(user_models.get_current_active_user)
+    ],
+    db: Session = Depends(database.get_db),
+):
+    old_bookmark = bookmark_models.get_user_bookmark(
+        db, user_id=current_user.id, bookmark_id=bookmark_id
+    )
+
+    updated_bookmark = crud.update_bookmark(
+        db,
+        user_id=current_user.id,
+        bookmark_id=bookmark_id,
+        new_bookmark=bookmark_update,
+        category_id=1
+    )
+
+    return updated_bookmark

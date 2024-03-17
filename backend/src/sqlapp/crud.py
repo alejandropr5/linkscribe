@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-import sqlalchemy
+from sqlalchemy import or_, func, distinct
 # from datetime import datetime
 
 from sqlapp import models, schemas
@@ -121,9 +121,10 @@ def get_user_bookmarks(
 
     query = db.query(b)\
         .join(cb, b.id == cb.bookmark_id)\
-        .outerjoin(w, b.id == w.bookmark_id)\
+        .join(w, b.id == w.bookmark_id)\
         .filter(b.user_id == user_id)\
-        .order_by(b.created_at)
+        .order_by(b.created_at) \
+        .group_by(b.id)
 
     if categories_id is not None:
         query = query.filter(cb.category_id.in_(categories_id))
@@ -133,12 +134,20 @@ def get_user_bookmarks(
         contain_words = (w.word.ilike(f"%{word}%") for word in search_words)
 
         query = query.filter(
-            b.name.ilike(f"%{search_text}%") | sqlalchemy.or_(*contain_words)
-        )
+            b.name.ilike(f"%{search_text}%") | or_(*contain_words)
+        ).having(func.count(distinct(w.word)) == len(search_words))
 
     response = query.offset(skip).limit(limit).distinct().all()
 
     return response
+
+
+def get_user_bookmark_by_id(db: Session, user_id: int, bookmark_id: int):
+    response = db.query(models.Bookmark).filter_by(
+        id=bookmark_id,
+        user_id=user_id
+    )
+    return response.first()
 
 
 def create_category_bookmark(
@@ -175,3 +184,21 @@ def create_bookmark_words(
     db.commit()
 
     return get_bookmark_words(db, bookmark_id)
+
+
+def update_bookmark(
+    db: Session,
+    user_id: id,
+    bookmark_id: int,
+    category_id: int,
+    new_bookmark: schemas.BookmarkCreate,
+):
+    db_category = get_user_category_by_id(db, user_id, bookmark_id)
+
+    db_category.name = new_bookmark.name
+    db_category.father_id = new_bookmark.father_id
+
+    db.commit()
+    db.refresh(db_category)
+
+    return db_category
