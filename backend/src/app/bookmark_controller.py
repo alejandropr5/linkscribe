@@ -31,8 +31,6 @@ def read_user_bookmarks(
     limit: Annotated[int, Query()] = 100,
     db: Session = Depends(database.get_db),
 ):
-    print(f"{search=}")
-    print(f"{cat=}")
     bookmarks = crud.get_user_bookmarks(
         db,
         user_id=current_user.id,

@@ -8,6 +8,7 @@ from utils import user_models
 
 # users
 
+
 def get_user_by_id(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -41,6 +42,7 @@ def delete_user(db: Session, user: schemas.User):
 
 
 # categories
+
 
 def create_user_category(
     db: Session, category: schemas.CategoryCreate, user_id: int
@@ -149,6 +151,7 @@ def create_user_category_bookmark(
 
 
 # bookmarks
+
 
 def get_user_bookmarks(
     db: Session,
