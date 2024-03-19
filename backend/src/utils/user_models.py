@@ -20,6 +20,10 @@ class AuthUser(BaseModel):
     token_type: str
 
 
+class AvailableResponse(BaseModel):
+    is_available: bool
+
+
 class TokenData(BaseModel):
     username: str | None = None
 

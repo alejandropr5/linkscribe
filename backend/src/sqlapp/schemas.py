@@ -19,6 +19,9 @@ class Word(WordBase):
     id: int
     bookmark_id: int
 
+    class Config:
+        orm_mode = True
+
 
 # bookmark table
 class BookmarkBase(BaseModel):
@@ -42,6 +45,9 @@ class Bookmark(BookmarkBase):
     category_id: int
     created_at: datetime
 
+    class Config:
+        orm_mode = True
+
 
 # user table
 class UserBase(BaseModel):
@@ -59,6 +65,9 @@ class User(UserBase):
     id: int
     disabled: bool
 
+    class Config:
+        orm_mode = True
+
 
 # categories table
 class CategoryBase(BaseModel):
@@ -70,6 +79,17 @@ class CategoryCreate(CategoryBase):
     pass
 
 
+class CategoryChild(BaseModel):
+    child_id: int
+    child_name: str
+    has_children: bool
+
+
 class Category(CategoryBase):
     id: int
     user_id: int
+
+    children: list[CategoryChild] = []
+
+    class Config:
+        orm_mode = True

@@ -1,6 +1,6 @@
 from typing import Annotated
 from sqlalchemy.orm import Session
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, Query
 
 from sqlapp import crud, schemas, database
 from utils import category_models, user_models
@@ -9,8 +9,8 @@ from utils import category_models, user_models
 router = APIRouter()
 
 
-@router.post("/")
-async def create_user_category(
+@router.post("/", response_model=schemas.Category)
+def create_user_category(
     category: schemas.CategoryCreate,
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
@@ -21,15 +21,13 @@ async def create_user_category(
         db, user_id=current_user.id, father_id=category.father_id
     )
 
-    new_category = crud.create_user_category(
+    return crud.create_user_category(
         db, category=category, user_id=current_user.id
     )
 
-    return new_category
 
-
-@router.delete("/{category_id}")
-async def delete_user_category(
+@router.delete("/{category_id}", response_model=schemas.Category)
+def delete_user_category(
     category_id: int,
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
@@ -44,8 +42,8 @@ async def delete_user_category(
     return category
 
 
-@router.put("/{category_id}")
-async def update_user_category(
+@router.put("/{category_id}", response_model=schemas.Category)
+def update_user_category(
     category_id: int,
     category_update: schemas.CategoryCreate,
     current_user: Annotated[
@@ -62,26 +60,48 @@ async def update_user_category(
             db, user_id=current_user.id, father_id=category_update.father_id
         )
 
-    updated_category = crud.update_category(
+    return crud.update_category(
         db,
         user_id=current_user.id,
         category_id=category_id,
         new_category=category_update,
     )
 
-    return updated_category
 
-
-@router.get("/", response_model=list)
-async def read_user_categories(
+@router.get("/", response_model=schemas.Category)
+def read_user_category(
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],
-    skip: int = 0,
-    limit: int = 100,
+    category_id: Annotated[int | None, Query()] = None,
     db: Session = Depends(database.get_db),
 ):
-    categories = crud.get_user_categories(
-        db, user_id=current_user.id, skip=skip, limit=limit
+    category_db = category_models.get_user_category(
+        db, user_id=current_user.id, category_id=category_id
     )
-    return categories
+
+    children = crud.get_category_children(
+        db, user_id=current_user.id, category_id=category_id
+    )
+
+    return schemas.Category(**category_db.__dict__, children=children)
+
+
+@router.post("/{category_id}/bookmarks", response_model=schemas.Bookmark)
+def create_user_category_bookmark(
+    bookmark: schemas.BookmarkCreate,
+    category_id: int,
+    current_user: Annotated[
+        schemas.User, Depends(user_models.get_current_active_user)
+    ],
+    db: Session = Depends(database.get_db),
+):
+    category_models.get_user_category(
+        db, user_id=current_user.id, category_id=category_id
+    )
+
+    db_category = crud.create_user_category_bookmark(
+        db, user_id=current_user.id, category_id=category_id, bookmark=bookmark
+    )
+
+    return db_category

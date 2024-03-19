@@ -10,7 +10,7 @@ from utils import bookmark_models, user_models, category_models
 router = APIRouter()
 
 
-@router.post("/predict")
+@router.post("/predict", response_model=bookmark_models.PredictResponseBody)
 async def predict(
     web: bookmark_models.PredictRequestBody,
     model: Annotated[Model, Depends(bookmark_models.get_model)],
@@ -20,24 +20,8 @@ async def predict(
     return bookmark_models.PredictResponseBody(**prediction)
 
 
-@router.post("/{category_id}")
-async def create_user_bookmark(
-    category_id: int,
-    bookmark: schemas.BookmarkCreate,
-    current_user: Annotated[
-        schemas.User, Depends(user_models.get_current_active_user)
-    ],
-    db: Session = Depends(database.get_db),
-):
-    db_category = crud.create_user_bookmark(
-        db, user_id=current_user.id, category_id=category_id, bookmark=bookmark
-    )
-
-    return db_category
-
-
 @router.get("/")
-async def read_user_bookmarks(
+def read_user_bookmarks(
     current_user: Annotated[
         schemas.User, Depends(user_models.get_current_active_user)
     ],
@@ -62,7 +46,7 @@ async def read_user_bookmarks(
 
 
 @router.put("/{bookmark_id}")
-async def update_user_bookmark(
+def update_user_bookmark(
     bookmark_id: int,
     bookmark_update: schemas.BookmarkUpdate,
     current_user: Annotated[
@@ -74,19 +58,35 @@ async def update_user_bookmark(
         category_models.get_user_category(
             db,
             user_id=current_user.id,
-            category_id=bookmark_update.category_id
+            category_id=bookmark_update.category_id,
         )
 
     updated_bookmark = crud.update_bookmark(
         db,
         user_id=current_user.id,
         bookmark_id=bookmark_id,
-        new_bookmark=bookmark_update
+        new_bookmark=bookmark_update,
     )
 
-    if updated_bookmark in None:
+    if updated_bookmark is None:
         raise HTTPException(
             status_code=400, detail="Bookmark id is not in user bookmarks."
         )
 
     return updated_bookmark
+
+
+@router.delete("/{bookmark_id}")
+def delete_user_bookmark(
+    bookmark_id: int,
+    current_user: Annotated[
+        schemas.User, Depends(user_models.get_current_active_user)
+    ],
+    db: Session = Depends(database.get_db),
+):
+    bookmark = bookmark_models.get_user_bookmark(
+        db, user_id=current_user.id, bookmark_id=bookmark_id
+    )
+    crud.delete_bookmark(db, bookmark)
+
+    return bookmark

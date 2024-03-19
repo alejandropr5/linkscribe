@@ -20,8 +20,8 @@ async def lifespan(app: FastAPI):
     del app.state.model
 
 
-app = FastAPI(lifespan=lifespan)
 database.Base.metadata.create_all(bind=engine)
+app = FastAPI(lifespan=lifespan)
 
 
 app.add_middleware(
@@ -34,5 +34,5 @@ app.add_middleware(
 
 
 app.include_router(users_router, tags=["users"], prefix="/users")
-app.include_router(bookmark_router, tags=["bookmark"], prefix="/bookmark")
-app.include_router(category_router, tags=["category"], prefix="/category")
+app.include_router(category_router, tags=["categories"], prefix="/categories")
+app.include_router(bookmark_router, tags=["bookmarks"], prefix="/bookmarks")

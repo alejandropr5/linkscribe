@@ -41,7 +41,7 @@ async def get_scrap_tool(request: Request):
     return request.app.state.scrap_tool
 
 
-async def get_user_bookmark(db: Session, user_id: int, bookmark_id: int):
+def get_user_bookmark(db: Session, user_id: int, bookmark_id: int):
     bookmark = crud.get_user_bookmark_by_id(
         db, user_id=user_id, bookmark_id=bookmark_id
     )
