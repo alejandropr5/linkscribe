@@ -14,6 +14,8 @@ export default function SignButton(data: {
     const isLogin = pathname?.startsWith("/login")
     const { data: session, status } = useSession()
     const [loading, setLoading] = useState(true)
+
+    console.log(session)
   
     useEffect(() => {
       if (status === "loading") {

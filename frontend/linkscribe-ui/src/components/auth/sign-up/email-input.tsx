@@ -33,7 +33,7 @@ export default function EmailInput(data: {
       })
         .then(response => response.json())
         .then(result => {
-          available = result.available
+          available = result.is_available
         })
         .catch(error => console.log("error", error))
     }

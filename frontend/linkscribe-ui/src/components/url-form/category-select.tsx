@@ -1,6 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import SearchSelect from "@/components/url-form/search-select"
 import ClientImage from "@/components/utils/client-image"
 import downArrow from "@public/down-arrow.svg"
@@ -9,8 +11,11 @@ export default function CategorySelect (data: {
   category: string
   setCategory: (newCategory: string) => void
   searchPlaceholder: string
+  backendUrl: string | undefined
 }) {
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
+  const { data: session } = useSession()
+  const router = useRouter()
   const dropdown = useRef<HTMLDivElement>(null)
   
   useEffect(() => {
@@ -26,10 +31,18 @@ export default function CategorySelect (data: {
     }
   }, [dropdown])
 
+  const handleOnClick = () => {
+    if (session) {
+      setShowDropdown(true)
+    } else {
+      router.push("/login", { scroll: false })
+    }
+  }
+
   return (
     <div className="relative w-fit">
       <button
-        onClick={() => {setShowDropdown(true)}}
+        onClick={handleOnClick}
         type="button"
         className="flex flex-row items-center rounded-md bg-[#c1def193] text-[#52525b] font-medium w-fit h-fit text-xs pl-2"
       >
@@ -46,6 +59,7 @@ export default function CategorySelect (data: {
             setCategory={data.setCategory}
             setShowDropdown={setShowDropdown}
             searchPlaceholder={data.searchPlaceholder}
+            backendUrl={data.backendUrl}
           />
         </div>      
       }

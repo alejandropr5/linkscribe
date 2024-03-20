@@ -87,6 +87,7 @@ export default function URLForm(data: {
               category={bookmark.category}
               setCategory={setCategory}
               searchPlaceholder={data.searchPlaceholder}
+              backendUrl={data.backendUrl}
             />
           </BookmarkCard>
         </div>
