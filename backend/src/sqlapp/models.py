@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, ForeignKey
-# from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship
 
 from sqlapp.database import Base
 
@@ -21,6 +21,8 @@ class Category(Base):
     name = Column(String(40), nullable=False)
     father_id = Column(Integer, ForeignKey("categories.id"))
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    children = relationship("Category")
 
 
 class Bookmark(Base):

@@ -79,17 +79,14 @@ class CategoryCreate(CategoryBase):
     pass
 
 
-class CategoryChild(BaseModel):
-    child_id: int
-    child_name: str
-    has_children: bool
-
-
 class Category(CategoryBase):
     id: int
     user_id: int
 
-    children: list[CategoryChild] = []
+    children: list["Category"] = []
 
     class Config:
         orm_mode = True
+
+
+Category.update_forward_refs()

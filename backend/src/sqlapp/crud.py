@@ -1,13 +1,12 @@
 from sqlalchemy.orm import Session, aliased
-from sqlalchemy import or_, func, distinct, exists
+from sqlalchemy import or_, func, distinct
 # from datetime import datetime
 
 from sqlapp import models, schemas
 from utils import user_models
 
 
-# users
-
+# %% ---------------------- users ----------------------
 
 def get_user_by_id(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -41,8 +40,7 @@ def delete_user(db: Session, user: schemas.User):
     db.commit()
 
 
-# categories
-
+# %% ---------------------- categories ----------------------
 
 def create_user_category(
     db: Session, category: schemas.CategoryCreate, user_id: int
@@ -100,32 +98,6 @@ def update_category(
     return db_category
 
 
-def get_category_children(
-    db: Session, user_id: int, category_id: int | None = None
-):
-    if category_id is None:
-        root_category = get_user_category(db, user_id=user_id)
-        category_id = root_category.id
-
-    c = aliased(models.Category)
-    cc = aliased(models.Category)
-
-    query = (
-        db.query(
-            cc.id.label("child_id"),
-            cc.name.label("child_name"),
-            exists()
-            .where(cc.id == models.Category.father_id)
-            .label("has_children"),
-        )
-        .join(c, c.id == cc.father_id)
-        .filter(c.user_id == user_id, c.id == category_id)
-        .order_by(cc.id)
-    )
-
-    return query.all()
-
-
 def create_user_category_bookmark(
     db: Session,
     user_id: int,
@@ -150,8 +122,7 @@ def create_user_category_bookmark(
     return db_bookmark
 
 
-# bookmarks
-
+# %% ---------------------- bookmarks ----------------------
 
 def get_user_bookmarks(
     db: Session,
@@ -161,8 +132,8 @@ def get_user_bookmarks(
     skip: int = 0,
     limit: int = 100,
 ):
-    b = models.Bookmark
-    w = models.Word
+    b = aliased(models.Bookmark)
+    w = aliased(models.Word)
 
     query = (
         db.query(b)
