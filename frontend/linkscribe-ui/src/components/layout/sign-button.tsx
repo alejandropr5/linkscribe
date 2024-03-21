@@ -15,8 +15,6 @@ export default function SignButton(data: {
     const { data: session, status } = useSession()
     const [loading, setLoading] = useState(true)
 
-    console.log(session)
-  
     useEffect(() => {
       if (status === "loading") {
         setLoading(true)

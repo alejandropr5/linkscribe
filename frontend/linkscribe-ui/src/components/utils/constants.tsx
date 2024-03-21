@@ -24,7 +24,4 @@ export interface CategoryNode {
   father_id: number | undefined
 
   children: CategoryNode[]
-
-  setCategory: (newCategory: string) => void
-  setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>
 }

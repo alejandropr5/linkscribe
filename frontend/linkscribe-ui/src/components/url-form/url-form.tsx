@@ -2,10 +2,11 @@
 
 import React, { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
-import BookmarkCard from "@/components/url-form/bookmark-card"
+import BookmarkCard from "@/components/url-form/bookmark-card/bookmark-card"
+import BookmarkForm from "@/components/url-form/bookmark-card/bookmark-form"
 import URLInput from "@/components/url-form/url-input"
 import { APIConstants, DEFAULT_IMG } from "@/components/utils/constants"
-import CategorySelect from "@/components/url-form/category-select"
+import CategorySelect from "@/components/url-form/bookmark-card/category-select"
 
 export default function URLForm(data: {
   backendUrl: string | undefined
@@ -46,7 +47,6 @@ export default function URLForm(data: {
     })
       .then(response => response.json())
       .then(result => {
-        console.log(result)
         if (result.image !== "") {
           imageURL.current = result.image
         }
@@ -77,7 +77,7 @@ export default function URLForm(data: {
         />
       </form>
       {isSubmitSuccessful &&
-        <div className="pt-12 pb-36 2xl:py-28">
+        <BookmarkForm>
           <BookmarkCard
             url={bookmark.url}
             imgScr={bookmark.image}
@@ -90,7 +90,7 @@ export default function URLForm(data: {
               backendUrl={data.backendUrl}
             />
           </BookmarkCard>
-        </div>
+        </BookmarkForm>
       }
     </div>
   )
