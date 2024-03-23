@@ -86,7 +86,7 @@ export default function URLForm(data: {
           register={register}
         />
       </form>
-      {isSubmitSuccessful &&
+      {isSubmitSuccessful && (!isSubmitting) &&
         <BookmarkForm
           backendUrl={data.backendUrl}
           setCategory={setCategory}

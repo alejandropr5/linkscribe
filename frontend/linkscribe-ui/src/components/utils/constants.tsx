@@ -9,7 +9,8 @@ export const APIConstants = Object.freeze({
   CREATE_USER: "/users",
   LOGIN: "/users/login",
   GET_AVAILABILITY: "/users/available/",
-  READ_USER_CATEGORY_ROOT: "/categories/root"
+  READ_USER_CATEGORY_ROOT: "/categories/root",
+  CREATE_USER_CATEGORY: "/categories"
 })
 
 export const CREATE_CATEGORY_BOOKMARK = (categoryId: number) => {

@@ -12,7 +12,13 @@ export default function CategorySelect () {
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
   const router = useRouter()
   const dropdown = useRef<HTMLDivElement>(null)
-  const { categories, bookmark, setCategory, session } = useBookmarkFormContext()
+  const {
+    categories,
+    bookmark,
+    setCategory,
+    session,
+    isSubmitSuccessful
+  } = useBookmarkFormContext()
   
   useEffect(() => {
     const handleOutSideClick = (event: any) => {
@@ -40,14 +46,17 @@ export default function CategorySelect () {
       <button
         onClick={handleOnClick}
         type="button"
-        className="flex flex-row items-center rounded-md bg-[#c1def193] text-[#52525b] font-medium w-fit h-fit text-xs pl-2"
+        className="flex flex-row items-center rounded-md bg-[#c1def193] text-[#52525b] font-medium w-fit h-fit text-xs px-2"
+        disabled={isSubmitSuccessful ? true : false}
       >
-        <div className="flex items-center max-w-[252px] h-5 overflow-hidden text-ellipsis ">
+        <div className="flex items-center max-w-[252px] h-5 overflow-hidden text-ellipsis">
           {bookmark?.category?.name}
         </div>
-        <div className="w-5 h-5 mx-2">
-          <ClientImage imageComponent={downArrow} description={"Down Arrow SVG"} />
-        </div>
+        {!isSubmitSuccessful &&
+          <div className="w-5 h-5 ml-2">
+            <ClientImage imageComponent={downArrow} description={"Down Arrow SVG"} />
+          </div>
+        }
       </button>
       {showDropdown &&
         <div className="absolute pb-2" ref={dropdown}>

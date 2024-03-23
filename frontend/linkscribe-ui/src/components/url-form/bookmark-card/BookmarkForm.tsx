@@ -3,23 +3,25 @@ import React, { useState, useEffect, ReactNode, createContext, useContext } from
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
-import { FieldValues, UseFormRegister, useForm } from "react-hook-form"
-import { APIConstants, Bookmark, CREATE_CATEGORY_BOOKMARK, CategoryNode } from "@/components/utils/constants"
+import { useForm } from "react-hook-form"
+import { Bookmark, CategoryNode } from "@/components/utils/constants"
+import { createUserBookmark } from "@/components/utils/bookmarkAPI"
+import { createUserCategory, getUserCategories } from "@/components/utils/categoryAPI"
 
 interface ContextProps {
-  register: UseFormRegister<FieldValues> | undefined
   bookmark: Bookmark | undefined
   categories: CategoryNode | undefined
   setCategory: (newCategory: CategoryNode) => void
   session: Session | null
+  isSubmitSuccessful: boolean
 }
 
 const BookmarkFormContext = createContext<ContextProps>({
-  register: undefined,
   bookmark: undefined,
   categories: undefined,
   setCategory: () => {},
-  session: null
+  session: null,
+  isSubmitSuccessful: false
 })
 
 export default function BookmarkForm({
@@ -32,24 +34,14 @@ export default function BookmarkForm({
   backendUrl: string | undefined
   setCategory: (newCategory: CategoryNode) => void
   bookmark: Bookmark
-}) {  
+}) {
+  const { handleSubmit, formState: { isSubmitSuccessful } } = useForm({ mode: "all" })
   const { data: session } = useSession()
   const [categories, setCategories] = useState<CategoryNode>()
   const router = useRouter()
 
   useEffect(() => {
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      session?.user?.token_type + " " + session?.user?.access_token
-    );
-    
-    fetch(backendUrl + APIConstants.READ_USER_CATEGORY_ROOT, {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow'
-    })
-      .then(response => response.json())
+    getUserCategories(backendUrl, session)
       .then((result: CategoryNode) => {
         console.log(result)
         const categoryIndex = result.children.findIndex(
@@ -69,81 +61,37 @@ export default function BookmarkForm({
 
         setCategories(result)
       })
-      .catch(error => console.log('error', error));
+      .catch(error => console.log('error', error))
   }, [session?.user?.token_type, session?.user?.access_token])
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (session) {
       var categoryId = bookmark.category.id
 
       if (categoryId === 0){
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append(
-          "Authorization",
-          session?.user?.token_type + " " + session?.user?.access_token
-        )   
-        
-        var raw = JSON.stringify({
-          "name": bookmark.category.name
-        })
-        
-        fetch("http://0.0.0.0:8000/categories", {
-          method: 'POST',
-          headers: myHeaders,
-          body: raw,
-          redirect: 'follow'
-        })
-          .then(response => response.json())
-          .then(result => {
+        await createUserCategory(backendUrl, session, bookmark)
+          .then((result: CategoryNode) => {
             console.log(result)
             categoryId = result.id
           })
           .catch(error => console.log('error', error));
       }
 
-      var myHeaders = new Headers()
-      myHeaders.append("Content-Type", "application/json")
-      myHeaders.append(
-        "Authorization",
-        session?.user?.token_type + " " + session?.user?.access_token
-      )      
-      
-      var raw = JSON.stringify({
-        "name": bookmark.title,
-        "url": bookmark.url,
-        "image": bookmark.url,
-        "words": bookmark.words
-      })
-      
-      fetch(backendUrl + CREATE_CATEGORY_BOOKMARK(categoryId), {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-      })
-        .then(response => response.json())
+      await createUserBookmark(backendUrl, session, categoryId, bookmark)
         .then(result => console.log(result))
         .catch(error => console.log('error', error))
     } else {
       router.push("/login", { scroll: false })
     }
   }
-
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting, isSubmitSuccessful }
-  } = useForm({ mode: "all" })
-
   return (
     <BookmarkFormContext.Provider
       value={{
-        register,
         bookmark,
         categories,
         setCategory,
-        session
+        session,
+        isSubmitSuccessful
       }}
     >
       <form className="pt-12 pb-36 2xl:py-28" onSubmit={handleSubmit(onSubmit)}>
