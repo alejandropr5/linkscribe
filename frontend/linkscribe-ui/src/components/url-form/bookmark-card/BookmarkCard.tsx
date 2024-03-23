@@ -2,12 +2,11 @@
 
 import React from "react"
 import Image from "next/image"
+import { Bookmark } from "@/components/utils/constants"
 
-export default function BookmarkCard(data: {
-  children?: React.ReactNode
-  url: string
-  imgScr: string
-  title: string
+export default function BookmarkCard({ children, bookmark }: {
+  children?: React.ReactNode,
+  bookmark: Bookmark
 }) {
   return (
     <div
@@ -17,8 +16,8 @@ export default function BookmarkCard(data: {
       <div className="flex justify-center items-center overflow-hidden my-1 rounded-lg min-w-64 max-w-64">
         <div className="mx-1 my-auto">
           <Image
-            src={data.imgScr}
-            alt={data.title}
+            src={bookmark.image}
+            alt={bookmark.title}
             className="w-fit max-h-[152px] rounded-lg"
             height={160}
             width={256}
@@ -33,12 +32,12 @@ export default function BookmarkCard(data: {
             className="text-base font-normal leading-tight tracking-tight text-[#27272a]
             max-w-[292px] line-clamp-2
             hover:underline"
-            href={data.url}
+            href={bookmark.url}
             target="_blank"
           >
-            {data.title}
+            {bookmark.title}
           </a>
-          {data.children}
+          {children}
         </div>
         <button type="submit" className="px-6 py-1 rounded-full font-medium bg-[#00152a] text-white w-full">
           <span>save bookmark</span>

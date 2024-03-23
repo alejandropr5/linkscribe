@@ -5,27 +5,32 @@ import { useForm } from "react-hook-form"
 import BookmarkCard from "@/components/url-form/bookmark-card/BookmarkCard"
 import BookmarkForm from "@/components/url-form/bookmark-card/BookmarkForm"
 import URLInput from "@/components/url-form/URLInput"
-import { APIConstants, DEFAULT_IMG } from "@/components/utils/constants"
+import { APIConstants, DEFAULT_IMG, Bookmark, CategoryNode } from "@/components/utils/constants"
 import CategorySelect from "@/components/url-form/bookmark-card/CategorySelect"
 
 export default function URLForm(data: {
   backendUrl: string | undefined
-  searchPlaceholder: string
 }) {
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, isSubmitSuccessful }
   } = useForm({ mode: "all" })
-  const bookmarkWords = useRef<string[]>()
-  const [bookmark, setBookmark] = useState({
+
+  const [bookmark, setBookmark] = useState<Bookmark>({
     url: "",
     title: "",
-    category: "",
-    image: ""
+    image: "",
+    words: [],
+    category: {
+      id: 0,
+      name: "",
+      father_id: 0,
+      children: []
+    }
   })
 
-  const setCategory = (newCategory: string) => {
+  const setCategory = (newCategory: CategoryNode) => {
     setBookmark(prevState => ({
       ...prevState,
       category: newCategory
@@ -55,9 +60,14 @@ export default function URLForm(data: {
           url: result.url,
           title: result.name,
           image: imageURL.current,
-          category: result.category
+          words: result.words,
+          category: {
+            id: 0,
+            name: result.category,
+            father_id: 0,
+            children: []
+          }
         })
-        bookmarkWords.current = result.words
       })
       .catch(error => {
         console.log("error", error)
@@ -77,18 +87,13 @@ export default function URLForm(data: {
         />
       </form>
       {isSubmitSuccessful &&
-        <BookmarkForm>
-          <BookmarkCard
-            url={bookmark.url}
-            imgScr={bookmark.image}
-            title={bookmark.title}
-          >
-            <CategorySelect
-              category={bookmark.category}
-              setCategory={setCategory}
-              searchPlaceholder={data.searchPlaceholder}
-              backendUrl={data.backendUrl}
-            />
+        <BookmarkForm
+          backendUrl={data.backendUrl}
+          setCategory={setCategory}
+          bookmark={bookmark}
+        >
+          <BookmarkCard bookmark={bookmark} >
+            <CategorySelect />
           </BookmarkCard>
         </BookmarkForm>
       }

@@ -12,6 +12,10 @@ export const APIConstants = Object.freeze({
   READ_USER_CATEGORY_ROOT: "/categories/root"
 })
 
+export const CREATE_CATEGORY_BOOKMARK = (categoryId: number) => {
+  return (`/categories/${categoryId}/bookmarks`)
+}
+
 /**
  * Default image to show when bookmark img is empty.
  * @constant
@@ -19,9 +23,17 @@ export const APIConstants = Object.freeze({
 export const DEFAULT_IMG = defaultImage
 
 export interface CategoryNode {
-  id: number | undefined
-  name: string | undefined
-  father_id: number | undefined
+  id: number
+  name: string
+  father_id: number
 
   children: CategoryNode[]
+}
+
+export interface Bookmark {
+  url: string
+  title: string
+  image: string
+  words: string[]
+  category: CategoryNode
 }

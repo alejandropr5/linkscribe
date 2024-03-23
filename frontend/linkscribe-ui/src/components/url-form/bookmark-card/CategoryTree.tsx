@@ -3,8 +3,9 @@ import { CategoryNode } from "@/components/utils/constants"
 import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
 
-interface CategoryProps extends CategoryNode {
-  setCategory: (newCategory: string) => void
+interface CategoryProps {
+  categoryNode: CategoryNode
+  setCategory: (newCategory: CategoryNode) => void
   setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>
   isFirst: boolean
 }
@@ -13,7 +14,7 @@ const CategoryTree: React.FC<CategoryProps> = (categoryProps: CategoryProps) => 
   const [showChildren, setShowChildren] = useState<boolean>(categoryProps.isFirst)
 
   const handleCategoryClick = () => {
-    categoryProps.setCategory(categoryProps.name as string)
+    categoryProps.setCategory(categoryProps.categoryNode)
     categoryProps.setShowDropdown(false)
   }
 
@@ -28,7 +29,7 @@ const CategoryTree: React.FC<CategoryProps> = (categoryProps: CategoryProps) => 
         onClick={handleCategoryClick}
         className="relative flex flex-row py-2 h-[38px] text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md overflow-hidden"
       >
-        {categoryProps.children?.length > 0 &&
+        {categoryProps.categoryNode.children?.length > 0 &&
           <div
             className="w-5 h-5 ml-[3px] hover:bg-gray-300 rounded-md"
             onClick={handleArrowClick}
@@ -37,16 +38,16 @@ const CategoryTree: React.FC<CategoryProps> = (categoryProps: CategoryProps) => 
           </div>
         }
         <div className="absolute left-[27px] overflow-hidden text-ellipsis">
-          {categoryProps.name}
+          {categoryProps.categoryNode.name}
         </div>
       </div>
       <div 
         className="relative ml-3 border-l-[1px] border-gray-300 pl-2 my-[2px]"
       >
-        {showChildren && (categoryProps.children ?? []).map(
+        {showChildren && (categoryProps.categoryNode.children ?? []).map(
           (node: CategoryNode) =>
             <CategoryTree
-              {...node}
+              categoryNode={node}
               setCategory={categoryProps.setCategory}
               setShowDropdown={categoryProps.setShowDropdown}
               isFirst={false}

@@ -19,7 +19,8 @@ export default function URLInput (data: {
         placeholder="URL"
         autoComplete="url"
         className="px-14 w-full font-normal placeholder-shown:font-medium h-full rounded-full bg-transparent text-[#27272a] font-sans
-        focus:outline-none focus:border-[#c1def1] border-[1.5px] focus:border-2" />
+        focus:outline-none focus:border-[#c1def1] border-[1.5px] focus:border-2"
+      />
       <div className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 left-5">
         <ClientImage imageComponent={linkSVG} description={"Link SVG"} />
       </div>
