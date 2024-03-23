@@ -1,4 +1,4 @@
-import Login from "@/components/auth/login/login"
+import Login from "@/components/auth/login/Login"
 import texts from "@messages/en.json"
 
 export const metadata = {

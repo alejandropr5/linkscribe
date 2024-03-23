@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import PageWrapper from "@/components/layout/page-wrapper";
-import Header from "@/components/layout/header";
+import PageWrapper from "@/components/layout/PageWrapper";
+import Header from "@/components/layout/Header";
+import Provider from "@/components/auth/Provider";
 import texts from "@messages/en.json"
-import Provider from "@/components/auth/provider";
 
 export const metadata: Metadata = {
   title: texts.Metadata.title,

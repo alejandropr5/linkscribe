@@ -1,6 +1,6 @@
-import Modal from "@/components/auth-modal/modal"
-import ModalHeader from "@/components/auth-modal/modal-header"
-import Login from "@/components/auth/login/login"
+import Modal from "@/components/auth-modal/Modal"
+import ModalHeader from "@/components/auth-modal/ModalHeader"
+import Login from "@/components/auth/login/Login"
 
 export default function LoginModal() {
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { CategoryNode } from "@/components/utils/constants"
-import ClientImage from "@/components/utils/client-image"
+import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
 
 interface CategoryProps extends CategoryNode {

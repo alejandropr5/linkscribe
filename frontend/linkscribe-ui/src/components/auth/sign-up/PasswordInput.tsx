@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form"
 import showSVG from "@public/show.svg"
 import hideSVG from "@public/hide.svg"
-import ClientImage from "@/components/utils/client-image"
+import ClientImage from "@/components/utils/ClientImage"
 
 export default function PasswordInput(data: {
   register: UseFormRegister<FieldValues>

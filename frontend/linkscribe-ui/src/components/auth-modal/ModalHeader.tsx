@@ -1,7 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation"
 
-import ClientImage from "@/components/utils/client-image"
+import ClientImage from "@/components/utils/ClientImage"
 import quitSVG from "@public/quit.svg"
 
 export default function ModalHeader () {

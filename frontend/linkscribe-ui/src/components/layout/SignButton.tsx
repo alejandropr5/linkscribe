@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { usePathname } from "next/navigation"
-import UserButton from "./user-button"
+import UserButton from "@/components/layout/UserButton"
 
 export default function SignButton(data: {
     loginLabel: string

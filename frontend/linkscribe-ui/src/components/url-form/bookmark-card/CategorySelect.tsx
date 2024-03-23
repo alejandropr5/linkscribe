@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import SearchSelect from "@/components/url-form/bookmark-card/search-select"
-import ClientImage from "@/components/utils/client-image"
+import SearchSelect from "@/components/url-form/bookmark-card/SelectList"
+import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
 import { CategoryNode } from "@/components/utils/constants"
 

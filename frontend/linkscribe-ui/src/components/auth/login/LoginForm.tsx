@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Flip, toast, ToastContainer } from "react-toastify"
-import CustomInput from "@/components/auth/login/custom-input"
-import PasswordInput from "@/components/auth/login/password-input"
+import CustomInput from "@/components/auth/login/CustomInput"
+import PasswordInput from "@/components/auth/login/PasswordInput"
 import "react-toastify/dist/ReactToastify.css"
 
 export default function LoginForm(loginData: {

@@ -1,6 +1,6 @@
-import LoginForm from "@/components/auth/login/login-form"
-import ModalText from "@/components/auth-modal/modal-text"
-import SwitchLink from "@/components/auth-modal/switch-link"
+import LoginForm from "@/components/auth/login/LoginForm"
+import ModalText from "@/components/auth-modal/ModalText"
+import SwitchLink from "@/components/auth-modal/SwitchLink"
 import texts from "@messages/en.json"
 
 export default function Login() {

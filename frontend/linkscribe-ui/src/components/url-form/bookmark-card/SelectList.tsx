@@ -1,9 +1,8 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { APIConstants } from "@/components/utils/constants"
 import { useSession } from "next-auth/react"
-import { CategoryNode } from "@/components/utils/constants"
-import CategoryTree from "./category-tree"
+import { APIConstants, CategoryNode } from "@/components/utils/constants"
+import CategoryTree from "@/components/url-form/bookmark-card/CategoryNode"
 
 
 export default function SelectList (data: {
@@ -47,7 +46,7 @@ export default function SelectList (data: {
         data.setCategories(result)
       })
       .catch(error => console.log('error', error));
-  }, [data.backendUrl, session?.user?.token_type, session?.user?.access_token])
+  }, [session?.user?.token_type, session?.user?.access_token])
 
   return (
       <div

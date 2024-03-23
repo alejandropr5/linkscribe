@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import ClientImage from "@/components/utils/client-image"
+import ClientImage from "@/components/utils/ClientImage"
 import OuterLink from "@public/outer-link.svg"
 
 export default function NavBar () {

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Session } from "next-auth"
-import ClientImage from "@/components/utils/client-image"
+import ClientImage from "@/components/utils/ClientImage"
 import userSVG from "@public/user.svg"
 
 export default function UserButton (data: {

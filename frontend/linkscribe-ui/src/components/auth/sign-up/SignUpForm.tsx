@@ -4,9 +4,9 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import CustomInput from "@/components/auth/sign-up/custom-input"
-import PasswordInput from "@/components/auth/sign-up/password-input"
-import EmailInput from "@/components/auth/sign-up/email-input"
+import CustomInput from "@/components/auth/sign-up/CustomInput"
+import PasswordInput from "@/components/auth/sign-up/PasswordInput"
+import EmailInput from "@/components/auth/sign-up/EmailInput"
 import { APIConstants } from "@/components/utils/constants"
 
 

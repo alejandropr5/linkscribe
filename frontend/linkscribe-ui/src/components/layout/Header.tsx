@@ -1,9 +1,9 @@
 import React from "react"
 import Link from "next/link"
 import linkscribe from "@public/linkscribe-logo.png"
-import ClientImage from "@/components/utils/client-image"
-import SignButton from "@/components/layout/sign-button"
-import NavBar from "@/components/layout/nav-bar"
+import ClientImage from "@/components/utils/ClientImage"
+import SignButton from "@/components/layout/SignButton"
+import NavBar from "@/components/layout/NavBar"
 import texts from "@messages/en.json"
 
 export default function Header() {
