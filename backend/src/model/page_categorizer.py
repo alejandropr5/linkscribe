@@ -53,6 +53,16 @@ class PageCategorizer:
         with open(path, "rb") as file:
             return pickle.load(file)
 
+    @staticmethod
+    def __word_list_split(word_list: list[str]) -> list[str]:
+        result = []
+
+        for word in word_list:
+            words = word.split()
+            result.extend(filter(lambda x: x not in result, words))
+
+        return result
+
     def __get_important_words(
         self, vectors, max_rate: float = 0.5
     ) -> list[str]:
@@ -62,7 +72,7 @@ class PageCategorizer:
         words_index = vectors_array >= min_value
         words = self.feature_names[words_index.squeeze()]
 
-        return list(words)
+        return self.__word_list_split(list(words))
 
     def predict(self, texts: list[str]) -> str:
         """Predicts the category of a given text extracted from a web
