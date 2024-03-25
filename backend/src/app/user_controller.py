@@ -38,9 +38,7 @@ def create_user(
 @router.get("/available/{email}", response_model=user_models.AvailableResponse)
 def is_available(email: str, db: Session = Depends(database.get_db)):
     db_user = crud.get_user_by_email(db, email=email)
-    return user_models.AvailableResponse(
-        is_available=(db_user is None)
-    )
+    return user_models.AvailableResponse(is_available=(db_user is None))
 
 
 @router.post("/login", response_model=user_models.AuthUser)
