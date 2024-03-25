@@ -3,7 +3,7 @@
 import React from "react"
 import { useForm } from "react-hook-form"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import CustomInput from "@/components/auth/sign-up/CustomInput"
 import PasswordInput from "@/components/auth/sign-up/PasswordInput"
 import EmailInput from "@/components/auth/sign-up/EmailInput"
@@ -23,6 +23,9 @@ export default function SignUpForm(signData: {
     buttonLabel: string
   }) {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirect = searchParams?.get("redirect") 
+  
   const {
     register,
     formState: { errors },
@@ -52,7 +55,9 @@ export default function SignUpForm(signData: {
         })
         .then(response => {
           if (response?.status === 200) {
-            router.back()
+            router.push(redirect ? `${redirect}` : "/", {
+              scroll: false
+            })   
           }
         })        
       })

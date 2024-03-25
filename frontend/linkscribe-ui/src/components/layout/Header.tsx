@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Suspense } from "react"
 import Link from "next/link"
 import linkscribe from "@public/linkscribe-logo.png"
 import ClientImage from "@/components/utils/ClientImage"
@@ -25,10 +25,12 @@ export default function Header() {
           </Link>
           <NavBar/>
         </div>
-        <SignButton 
-          loginLabel={t.loginLabel}
-          signUpLabel={t.signUpLabel}
-        />
+        <Suspense>
+          <SignButton
+            loginLabel={t.loginLabel}
+            signUpLabel={t.signUpLabel}
+          />
+        </Suspense>
       </div>
     </header>
   )

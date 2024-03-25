@@ -1,17 +1,28 @@
+"use client"
 import Link from "next/link"
+import { usePathname, useSearchParams } from "next/navigation"
 
 export default function SwitchLink (data: {
-  href: string
   paragraph: string
   linkText: string
 }) {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const params = searchParams?.toString()
+
   return (
     <div className="flex justify-center mt-4 space-x-1">
       <span className="text-[#71717a] text-sm">
         {data.paragraph}
       </span>
       <Link
-        href={data.href}
+        href={
+          pathname?.startsWith("/login") ? (
+            "/sign-up" + "?" + params
+          ) : (
+            "/login" + "?" + params
+          )
+        }
         className="text-[#20b0ff] text-sm hover:underline"
         replace
         scroll={false}

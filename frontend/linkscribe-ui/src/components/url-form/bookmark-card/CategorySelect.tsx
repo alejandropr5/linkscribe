@@ -6,20 +6,54 @@ import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
 import CategoryTree from "@/components/url-form/bookmark-card/CategoryTree"
 import { useBookmarkFormContext } from "@/components/url-form/bookmark-card/BookmarkForm"
-
+import { CategoryNode } from "@/components/utils/constants"
+import { getUserCategories } from "@/components/utils/categoryAPI"
 
 export default function CategorySelect () {
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
+  const [categories, setCategories] = useState<CategoryNode>()
+
   const router = useRouter()
   const dropdown = useRef<HTMLDivElement>(null)
   const {
-    categories,
     bookmark,
     setCategory,
+    backendUrl,
     session,
     isSubmitSuccessful
   } = useBookmarkFormContext()
-  
+
+  const bookmarkCategoryNameRef = useRef<string | null>(null);
+  const setCategoryRef = useRef<(newCategory: CategoryNode) => void>(() => {});
+
+  useEffect(() => {
+    if (session) {
+      getUserCategories(backendUrl, session as any)
+        .then((result: CategoryNode) => {
+          const categoryIndex = result.children.findIndex(
+            child => child.name === bookmarkCategoryNameRef.current
+          )
+          if (categoryIndex === -1) {
+            result.children.push({
+              id: 0,
+              name: bookmarkCategoryNameRef.current || "",
+              father_id: result.id,
+              children: []
+            })
+          } else {
+            setCategoryRef.current(result.children[categoryIndex])
+          }
+          setCategories(result)
+        })
+        .catch(error => console.log('error', error))
+    }
+  }, [backendUrl, session])
+
+  useEffect(() => {
+    bookmarkCategoryNameRef.current = bookmark?.category?.name || null;
+    setCategoryRef.current = setCategory;
+  }, [bookmark?.category?.name, setCategory]);
+
   useEffect(() => {
     const handleOutSideClick = (event: any) => {
       if (!dropdown.current?.contains(event.target)) {

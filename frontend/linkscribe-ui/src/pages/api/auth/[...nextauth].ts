@@ -1,14 +1,7 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { APIConstants } from "@/components/utils/constants";
-
-interface User {
-  name?: string | null | undefined;
-  email?: string | null | undefined;
-  image?: string | null | undefined;
-  access_token?: string | null | undefined;
-  token_type?: string | null | undefined;
-}
+import { CustomUser } from "@/components/utils/constants";
 
 export default NextAuth({
   providers: [
@@ -57,11 +50,11 @@ export default NextAuth({
     async jwt({ token, user }) {
       return {
         ...token, 
-        ...user as User
+        ...user as CustomUser
       }
     },
     async session({ session, token, user }) {
-      session.user = token as User
+      session.user = token as CustomUser
       return session
     }
   }

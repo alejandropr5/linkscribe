@@ -3,7 +3,7 @@
 import React from "react"
 import { useForm } from "react-hook-form"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Flip, toast, ToastContainer } from "react-toastify"
 import CustomInput from "@/components/auth/login/CustomInput"
 import PasswordInput from "@/components/auth/login/PasswordInput"
@@ -17,6 +17,9 @@ export default function LoginForm(loginData: {
   errorMessage: string
 }) {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirect = searchParams?.get("redirect") 
+
   const { register, handleSubmit } = useForm({
     mode: "onSubmit"
   })
@@ -29,8 +32,11 @@ export default function LoginForm(loginData: {
     })
     .then(response => {
       if (response?.status === 200) {
-        router.back()
-      } else if (response?.status === 401) {
+        router.push(redirect ? `${redirect}` : "/", {
+          scroll: false
+        })        
+      }
+      else if (response?.status === 401) {
         toast.error(loginData.errorMessage, {
           position: "bottom-center",
           autoClose: 3000,

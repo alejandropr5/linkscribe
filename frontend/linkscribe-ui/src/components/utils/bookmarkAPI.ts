@@ -1,9 +1,10 @@
+"use client"
 import { Bookmark, CREATE_CATEGORY_BOOKMARK } from "@/components/utils/constants"
-import { Session } from "next-auth"
+import { CustomUser } from "@/components/utils/constants"
 
-export const createUserBookmark = async (
+export const createUserBookmark = (
   backendUrl: string | undefined,
-  session: Session,
+  user: CustomUser | undefined,
   categoryId: number,
   bookmark: Bookmark
 ) : Promise<Bookmark>  => {
@@ -11,7 +12,7 @@ export const createUserBookmark = async (
   myHeaders.append("Content-Type", "application/json")
   myHeaders.append(
     "Authorization",
-    session?.user?.token_type + " " + session?.user?.access_token
+    user?.token_type + " " + user?.access_token
   )      
   
   var raw = JSON.stringify({
@@ -21,12 +22,13 @@ export const createUserBookmark = async (
     "words": bookmark.words
   })
   
-  const result = await fetch(backendUrl + CREATE_CATEGORY_BOOKMARK(categoryId), {
+  const result = fetch(backendUrl + CREATE_CATEGORY_BOOKMARK(categoryId), {
     method: 'POST',
     headers: myHeaders,
     body: raw,
     redirect: 'follow'
   })
+  .then(response => response.json())
 
-  return result.json()
+  return result
 }

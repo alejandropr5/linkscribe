@@ -1,47 +1,50 @@
-import { APIConstants, Bookmark, CategoryNode } from "@/components/utils/constants";
-import { Session } from "next-auth"
+"use client"
+import { APIConstants, Bookmark, CategoryNode } from "@/components/utils/constants"
+import { CustomUser } from "@/components/utils/constants"
 
-export const getUserCategories = async (
+export const getUserCategories = (
   backendUrl: string | undefined,
-  session: Session | null
+  user: CustomUser | undefined
 ) : Promise<CategoryNode> => {
   var myHeaders = new Headers();
   myHeaders.append(
     "Authorization",
-    session?.user?.token_type + " " + session?.user?.access_token
+    user?.token_type + " " + user?.access_token
   );
   
-  const response = await fetch(backendUrl + APIConstants.READ_USER_CATEGORY_ROOT, {
+  const result = fetch(backendUrl + APIConstants.READ_USER_CATEGORY_ROOT, {
     method: 'GET',
     headers: myHeaders,
     redirect: 'follow'
   })
+  .then(response => response.json())
   
-  return response.json()
+  return result
 }
 
 export const createUserCategory = async (
   backendUrl: string | undefined,
-  session: Session,
+  user: CustomUser | undefined,
   bookmark: Bookmark
 ) : Promise<CategoryNode>  => {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append(
     "Authorization",
-    session?.user?.token_type + " " + session?.user?.access_token
+    user?.token_type + " " + user?.access_token
   )   
   
   var raw = JSON.stringify({
     "name": bookmark.category.name
   })
   
-  const response = await fetch(backendUrl + APIConstants.CREATE_USER_CATEGORY, {
+  const result = await fetch(backendUrl + APIConstants.CREATE_USER_CATEGORY, {
     method: 'POST',
     headers: myHeaders,
     body: raw,
     redirect: 'follow'
   })
+  .then(response => response.json())
   
-  return response.json()
+  return result
 }

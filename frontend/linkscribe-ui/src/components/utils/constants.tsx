@@ -38,3 +38,11 @@ export interface Bookmark {
   words: string[]
   category: CategoryNode
 }
+
+export interface CustomUser {
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+  access_token?: string | null | undefined;
+  token_type?: string | null | undefined;
+}

@@ -1,3 +1,4 @@
+import React, { Suspense } from "react"
 import LoginForm from "@/components/auth/login/LoginForm"
 import ModalText from "@/components/auth-modal/ModalText"
 import SwitchLink from "@/components/auth-modal/SwitchLink"
@@ -14,18 +15,19 @@ export default function Login() {
         pFirst={tModal.login.paragraph.first}
         pSecond={tModal.login.paragraph.second}
       />
-      <LoginForm
-        backendUrl={BACKEND_URL}
-        buttonLabel={tModal.login.title}
-        emailLabel={tModal.emailLabel}
-        passLabel={tModal.passwordLabel}
-        errorMessage={tModal.login.errorMessage}
-      />
-      <SwitchLink
-        href="/sign-up"
-        linkText={tModal.signUp.title}
-        paragraph={tModal.login.paragraph.switch}
-      />
+      <Suspense>
+        <LoginForm
+          backendUrl={BACKEND_URL}
+          buttonLabel={tModal.login.title}
+          emailLabel={tModal.emailLabel}
+          passLabel={tModal.passwordLabel}
+          errorMessage={tModal.login.errorMessage}
+        />
+        <SwitchLink
+          linkText={tModal.signUp.title}
+          paragraph={tModal.login.paragraph.switch}
+        />
+      </Suspense>
     </div>
   )
 }

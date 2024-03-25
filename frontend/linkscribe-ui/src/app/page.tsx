@@ -21,7 +21,6 @@ export default function Home() {
       </div>
       <URLForm
         backendUrl={BACKEND_URL}
-        searchPlaceholder={t.bookmark.searchPlaceholder}
       />
     </div>
   )

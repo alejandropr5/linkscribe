@@ -1,8 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { usePathname } from "next/navigation"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import UserButton from "@/components/layout/UserButton"
 
 export default function SignButton(data: {
@@ -11,7 +10,7 @@ export default function SignButton(data: {
   }) {
     const router = useRouter()
     const pathname = usePathname()
-    const isLogin = pathname?.startsWith("/login")
+    const searchParams = useSearchParams()
     const { data: session, status } = useSession()
     const [loading, setLoading] = useState(true)
 
@@ -22,6 +21,19 @@ export default function SignButton(data: {
         setLoading(false)
       }
     }, [status])
+
+    const handleOnClick = () => {
+      const params = searchParams?.toString()
+        if (pathname?.startsWith("/login")) {
+          router.replace("/sign-up?" + params, { scroll: false })
+        }
+        else if (pathname?.startsWith("/sign-up")) {
+          router.replace("/login?" + params, { scroll: false })
+        }
+        else {
+          router.push(`/login?redirect=${pathname}`, { scroll: false })
+        }
+    }
   
     return (
       <div className="ml-auto flex gap-2">
@@ -30,7 +42,7 @@ export default function SignButton(data: {
         ) : session ? (
           <UserButton
             onClick={() => {
-              signOut({ redirect: false })
+              signOut({ redirect: true, callbackUrl: "/" })
             }}
             session={session}
           />
@@ -38,11 +50,9 @@ export default function SignButton(data: {
           <button
             type="button"
             className="bg-[#00152a] rounded-full font-medium text-white text-sm font-sans px-4 py-2"
-            onClick={() =>
-              router.push(isLogin ? "/sign-up" : "/login", { scroll: false })
-            }
+            onClick={handleOnClick}
           >
-            {isLogin ? data.signUpLabel : data.loginLabel}
+            {pathname?.startsWith("/login") ? data.signUpLabel : data.loginLabel}
           </button>
         )}
       </div>
