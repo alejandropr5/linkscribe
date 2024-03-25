@@ -24,21 +24,21 @@ export default function SignButton(data: {
 
     const handleOnClick = () => {
       const params = searchParams?.toString()
-        if (pathname?.startsWith("/login")) {
-          router.replace("/sign-up?" + params, { scroll: false })
+        if (pathname?.startsWith("/auth/login")) {
+          router.replace("/auth/sign-up?" + params, { scroll: false })
         }
         else if (pathname?.startsWith("/sign-up")) {
-          router.replace("/login?" + params, { scroll: false })
+          router.replace("/auth/login?" + params, { scroll: false })
         }
         else {
-          router.push(`/login?redirect=${pathname}`, { scroll: false })
+          router.push(`/auth/login?redirect=${pathname}`, { scroll: false })
         }
     }
   
     return (
       <div className="ml-auto flex gap-2">
         {loading ? ( 
-          <div className="w-7 h-7 rounded-full bg-slate-300"/>
+          <div className="w-7 h-7 rounded-full bg-slate-300 animate-pulse"/>
         ) : session ? (
           <UserButton
             onClick={() => {

@@ -17,10 +17,10 @@ export default function SwitchLink (data: {
       </span>
       <Link
         href={
-          pathname?.startsWith("/login") ? (
-            "/sign-up" + "?" + params
+          pathname?.startsWith("/auth/login") ? (
+            "/auth/sign-up" + "?" + params
           ) : (
-            "/login" + "?" + params
+            "/auth/login" + "?" + params
           )
         }
         className="text-[#20b0ff] text-sm hover:underline"

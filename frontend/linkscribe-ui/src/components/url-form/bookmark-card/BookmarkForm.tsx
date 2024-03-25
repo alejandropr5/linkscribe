@@ -54,7 +54,7 @@ export default function BookmarkForm({
       await createUserBookmark(backendUrl, session as any, categoryId, bookmark)
         .catch(error => console.log('error', error))
     } else {
-      router.push("/login", { scroll: false })
+      router.push("/auth/login", { scroll: false })
     }
   }
   return (

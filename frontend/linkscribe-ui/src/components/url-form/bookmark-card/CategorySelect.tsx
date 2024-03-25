@@ -71,7 +71,7 @@ export default function CategorySelect () {
     if (session) {
       setShowDropdown(true)
     } else {
-      router.push("/login", { scroll: false })
+      router.push("/auth/login", { scroll: false })
     }
   }
 
