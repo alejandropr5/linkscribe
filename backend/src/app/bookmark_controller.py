@@ -1,5 +1,6 @@
 from typing import Annotated
-from fastapi import Depends, APIRouter, HTTPException, Query
+from fastapi import Depends, APIRouter, HTTPException, Query, status
+import requests
 from sqlalchemy.orm import Session
 
 from model.model import Model
@@ -15,7 +16,13 @@ async def predict(
     web: bookmark_models.PredictRequestBody,
     model: Annotated[Model, Depends(bookmark_models.get_model)],
 ):
-    prediction = model.predict(web.url)
+    try:
+        prediction = model.predict(web.url)
+    except requests.exceptions.ConnectionError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The provided URL does not exist or is not accessible."
+        )
 
     return bookmark_models.PredictResponseBody(**prediction)
 
