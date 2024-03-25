@@ -28,7 +28,7 @@ export default function CategorySelect () {
 
   useEffect(() => {
     if (session) {
-      getUserCategories(backendUrl, session as any)
+      getUserCategories(backendUrl, session.user as any)
         .then((result: CategoryNode) => {
           const categoryIndex = result.children.findIndex(
             child => child.name === bookmarkCategoryNameRef.current
@@ -45,7 +45,6 @@ export default function CategorySelect () {
           }
           setCategories(result)
         })
-        .catch(error => console.log('error', error))
     }
   }, [backendUrl, session])
 

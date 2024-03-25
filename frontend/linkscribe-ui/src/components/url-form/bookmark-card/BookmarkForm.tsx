@@ -44,19 +44,25 @@ export default function BookmarkForm({
 
     if (session) {
        if (categoryId === 0){
-        await createUserCategory(backendUrl, session as any, bookmark)
-          .then((result: CategoryNode) => {
-            categoryId = result.id
-          })
-          .catch(error => console.log('error', error));
-      }
+        const result = await createUserCategory(backendUrl, session.user as any, bookmark)
 
-      await createUserBookmark(backendUrl, session as any, categoryId, bookmark)
-        .catch(error => console.log('error', error))
+        categoryId = result.id
+      }
+      await createUserBookmark(backendUrl, session.user as any, categoryId, bookmark)
     } else {
+      throw new Error("Not authenticated", {
+        cause: session
+      })
+    }
+  }
+
+  const onError = (e: any) => {
+    console.error(e)
+    if (e.message === "Not authenticated") {
       router.push("/auth/login", { scroll: false })
     }
   }
+
   return (
     <BookmarkFormContext.Provider
       value={{
@@ -67,7 +73,10 @@ export default function BookmarkForm({
         isSubmitSuccessful
       }}
     >
-      <form className="pt-12 pb-36 2xl:py-28" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="pt-12 pb-36 2xl:py-28"
+        onSubmit={(e: any) => handleSubmit(onSubmit)(e).catch(e => onError(e))}
+      >
         {children}
       </form>
     </BookmarkFormContext.Provider>

@@ -2,11 +2,14 @@
 
 import React, { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
+import { Flip, toast, ToastContainer } from "react-toastify"
 import BookmarkCard from "@/components/url-form/bookmark-card/BookmarkCard"
 import BookmarkForm from "@/components/url-form/bookmark-card/BookmarkForm"
 import URLInput from "@/components/url-form/URLInput"
-import { APIConstants, DEFAULT_IMG, Bookmark, CategoryNode } from "@/components/utils/constants"
+import { DEFAULT_IMG, Bookmark, CategoryNode } from "@/components/utils/constants"
 import CategorySelect from "@/components/url-form/bookmark-card/CategorySelect"
+import { predictBookmark } from "@/components//utils/bookmarkAPI"
+import "react-toastify/dist/ReactToastify.css"
 
 export default function URLForm(data: {
   backendUrl: string | undefined
@@ -38,46 +41,51 @@ export default function URLForm(data: {
 
   var imageURL = useRef<string>(DEFAULT_IMG.src)
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async  (formData: any) => {
     imageURL.current = DEFAULT_IMG.src
 
     const myHeaders = new Headers()
     myHeaders.append("Content-Type", "application/json")
-    await fetch(data.backendUrl + APIConstants.PREDICT_PATH, {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        "url": formData.urlInput
-      })
-    })
-      .then(response => response.json())
-      .then(result => {
-        if (result.image !== "") {
-          imageURL.current = result.image
-        }
 
-        setBookmark({
-          url: result.url,
-          title: result.name,
-          image: imageURL.current,
-          words: result.words,
-          category: {
-            id: 0,
-            name: result.category,
-            father_id: 0,
-            children: []
-          }
-        })
-      })
-      .catch(error => {
-        console.log("error", error)
-      })
+    const result = await predictBookmark(data.backendUrl, formData.urlInput)
+
+    if (result.image !== "") {
+      imageURL.current = result.image
+    }
+  
+    setBookmark({
+      url: result.url,
+      title: result.name,
+      image: imageURL.current,
+      words: result.words,
+      category: {
+        id: 0,
+        name: result.category,
+        father_id: 0,
+        children: []
+      }
+    })
+  }
+
+  const onError = (e: any) => {
+    console.log(e.message)
+    toast.error(e.message, {
+      position: "bottom-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "colored",
+      transition: Flip,
+    })
   }
 
   return (
     <div className="w-[580px] mx-auto">
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(e: any) => handleSubmit(onSubmit)(e).catch(e => onError(e))}
         className="md:relative h-14 fixed left-4 right-4 bottom-6 z-40 md:inset-0 rounded-full overflow-hidden shadow-lg shadow-[#c1def193]"
       >
         <URLInput
@@ -97,6 +105,7 @@ export default function URLForm(data: {
           </BookmarkCard>
         </BookmarkForm>
       }
+      <ToastContainer />
     </div>
   )
 }

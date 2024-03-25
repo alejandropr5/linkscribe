@@ -1,5 +1,5 @@
 "use client"
-import { Bookmark, CREATE_CATEGORY_BOOKMARK } from "@/components/utils/constants"
+import { Bookmark, CREATE_CATEGORY_BOOKMARK, APIConstants, BookmarkPredicted } from "@/components/utils/constants"
 import { CustomUser } from "@/components/utils/constants"
 
 export const createUserBookmark = (
@@ -28,7 +28,47 @@ export const createUserBookmark = (
     body: raw,
     redirect: 'follow'
   })
-  .then(response => response.json())
+  .then(res => {
+    if (!res.ok) {
+      return res.json().then(error => {
+        throw new Error(error.detail, {
+          cause: res
+        })
+      })
+    }
+
+    return res.json()
+  })
+
+  return result
+}
+
+
+export const predictBookmark = (
+  backendUrl: string | undefined,
+  url: string
+) : Promise<BookmarkPredicted>  => {
+  const myHeaders = new Headers()
+  myHeaders.append("Content-Type", "application/json")
+
+  const result = fetch(backendUrl + APIConstants.PREDICT_PATH, {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({
+      "url": url
+    })
+  })
+  .then(res => {
+    if (!res.ok) {
+      return res.json().then(error => {
+        throw new Error(error.detail, {
+          cause: res
+        })
+      })
+    }
+
+    return res.json()
+  })
 
   return result
 }

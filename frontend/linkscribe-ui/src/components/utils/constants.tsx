@@ -39,6 +39,14 @@ export interface Bookmark {
   category: CategoryNode
 }
 
+export interface BookmarkPredicted {
+  url: string
+  name: string
+  image: string
+  words: string[]  
+  category: string
+}
+
 export interface CustomUser {
   name?: string | null | undefined;
   email?: string | null | undefined;

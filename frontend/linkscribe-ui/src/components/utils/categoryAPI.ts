@@ -17,12 +17,22 @@ export const getUserCategories = (
     headers: myHeaders,
     redirect: 'follow'
   })
-  .then(response => response.json())
+  .then(res => {
+    if (!res.ok) {
+      return res.json().then(error => {
+        throw new Error(error.detail, {
+          cause: res
+        })
+      })
+    }
+
+    return res.json()
+  })
   
   return result
 }
 
-export const createUserCategory = async (
+export const createUserCategory = (
   backendUrl: string | undefined,
   user: CustomUser | undefined,
   bookmark: Bookmark
@@ -38,13 +48,23 @@ export const createUserCategory = async (
     "name": bookmark.category.name
   })
   
-  const result = await fetch(backendUrl + APIConstants.CREATE_USER_CATEGORY, {
+  const result = fetch(backendUrl + APIConstants.CREATE_USER_CATEGORY, {
     method: 'POST',
     headers: myHeaders,
     body: raw,
     redirect: 'follow'
   })
-  .then(response => response.json())
+  .then(res => {
+    if (!res.ok) {
+      return res.json().then(error => {
+        throw new Error(error.detail, {
+          cause: res
+        })
+      })
+    }
+
+    return res.json()
+  })
   
   return result
 }
