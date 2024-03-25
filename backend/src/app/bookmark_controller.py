@@ -18,10 +18,13 @@ async def predict(
 ):
     try:
         prediction = model.predict(web.url)
-    except requests.exceptions.ConnectionError:
+    except (
+        requests.exceptions.ConnectionError,
+        requests.exceptions.MissingSchema,
+    ):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="The provided URL does not exist or is not accessible."
+            detail="The provided URL does not exist or is not accessible.",
         )
 
     return bookmark_models.PredictResponseBody(**prediction)
