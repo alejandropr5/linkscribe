@@ -42,7 +42,7 @@ def delete_user_category(
     return category
 
 
-@router.put("/{category_id}", response_model=schemas.Category)
+@router.patch("/{category_id}", response_model=schemas.Category)
 def update_user_category(
     category_id: int,
     category_update: schemas.CategoryCreate,

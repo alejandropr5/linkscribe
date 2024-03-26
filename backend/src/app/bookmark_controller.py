@@ -53,7 +53,7 @@ def read_user_bookmarks(
     return bookmarks
 
 
-@router.put("/{bookmark_id}")
+@router.patch("/{bookmark_id}")
 def update_user_bookmark(
     bookmark_id: int,
     bookmark_update: schemas.BookmarkUpdate,
