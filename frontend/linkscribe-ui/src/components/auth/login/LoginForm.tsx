@@ -4,10 +4,9 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Flip, toast, ToastContainer } from "react-toastify"
+import { toast } from "react-toastify"
 import CustomInput from "@/components/auth/login/CustomInput"
 import PasswordInput from "@/components/auth/login/PasswordInput"
-import "react-toastify/dist/ReactToastify.css"
 
 export default function LoginForm(loginData: {
   backendUrl: string | undefined
@@ -37,17 +36,7 @@ export default function LoginForm(loginData: {
         })        
       }
       else if (response?.status === 401) {
-        toast.error(loginData.errorMessage, {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-          theme: "colored",
-          transition: Flip,
-        })
+        toast.error(loginData.errorMessage)
       }
     })
   }
@@ -74,7 +63,6 @@ export default function LoginForm(loginData: {
           <span>{loginData.buttonLabel}</span>
         </button>
       </form>
-      <ToastContainer />
     </div>
   )
 }

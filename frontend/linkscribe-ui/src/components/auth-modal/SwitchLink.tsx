@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
+import { pathNames } from "@/components/utils/constants"
 
 export default function SwitchLink (data: {
   paragraph: string
@@ -17,10 +18,10 @@ export default function SwitchLink (data: {
       </span>
       <Link
         href={
-          pathname?.startsWith("/auth/login") ? (
-            "/auth/sign-up" + "?" + params
+          pathname?.startsWith(pathNames.login) ? (
+            pathNames.signUp + `?${params}`
           ) : (
-            "/auth/login" + "?" + params
+            pathNames.login + `?${params}`
           )
         }
         className="text-[#20b0ff] text-sm hover:underline"

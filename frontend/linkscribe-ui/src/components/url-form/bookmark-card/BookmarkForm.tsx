@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { Bookmark, CategoryNode } from "@/components/utils/constants"
 import { createUserBookmark } from "@/components/utils/bookmarkAPI"
 import { createUserCategory } from "@/components/utils/categoryAPI"
+import { pathNames } from "@/components/utils/constants"
 
 interface ContextProps {
   bookmark: Bookmark | undefined
@@ -59,7 +60,7 @@ export default function BookmarkForm({
   const onError = (e: any) => {
     console.error(e)
     if (e.message === "Not authenticated") {
-      router.push("/auth/login", { scroll: false })
+      router.push(pathNames.login, { scroll: false })
     }
   }
 

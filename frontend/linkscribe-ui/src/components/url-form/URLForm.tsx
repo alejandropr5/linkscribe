@@ -2,14 +2,13 @@
 
 import React, { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
-import { Flip, toast, ToastContainer } from "react-toastify"
+import { toast } from "react-toastify"
 import BookmarkCard from "@/components/url-form/bookmark-card/BookmarkCard"
 import BookmarkForm from "@/components/url-form/bookmark-card/BookmarkForm"
 import URLInput from "@/components/url-form/URLInput"
 import { DEFAULT_IMG, Bookmark, CategoryNode } from "@/components/utils/constants"
 import CategorySelect from "@/components/url-form/bookmark-card/CategorySelect"
 import { predictBookmark } from "@/components//utils/bookmarkAPI"
-import "react-toastify/dist/ReactToastify.css"
 
 export default function URLForm(data: {
   backendUrl: string | undefined
@@ -68,18 +67,7 @@ export default function URLForm(data: {
   }
 
   const onError = (e: any) => {
-    console.log(e.message)
-    toast.error(e.message, {
-      position: "bottom-center",
-      autoClose: 3000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "colored",
-      transition: Flip,
-    })
+    toast.error(e.message)
   }
 
   return (
@@ -105,7 +93,6 @@ export default function URLForm(data: {
           </BookmarkCard>
         </BookmarkForm>
       }
-      <ToastContainer />
     </div>
   )
 }

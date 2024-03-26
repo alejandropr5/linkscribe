@@ -13,6 +13,11 @@ export const APIConstants = Object.freeze({
   CREATE_USER_CATEGORY: "/categories"
 })
 
+export const pathNames = Object.freeze({
+  login: "/auth/login",
+  signUp: "/auth/sign-up"
+})
+
 export const CREATE_CATEGORY_BOOKMARK = (categoryId: number) => {
   return (`/categories/${categoryId}/bookmarks`)
 }

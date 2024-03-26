@@ -4,6 +4,8 @@ import PageWrapper from "@/components/layout/PageWrapper";
 import Header from "@/components/layout/Header";
 import Provider from "@/components/auth/Provider";
 import texts from "@messages/en.json"
+import { ToastContainer, Flip } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 export const metadata: Metadata = {
   title: texts.Metadata.title,
@@ -29,6 +31,16 @@ export default function RootLayout({
             {children}
           </PageWrapper>
         </Provider>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={3500}
+          hideProgressBar={true}
+          closeOnClick={true}
+          pauseOnHover={false}
+          draggable={false}
+          theme="colored"
+          transition={Flip}
+        />
       </body>
     </html>
   );

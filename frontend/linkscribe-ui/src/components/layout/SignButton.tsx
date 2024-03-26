@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import { signOut, useSession } from "next-auth/react"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import UserButton from "@/components/layout/UserButton"
+import { pathNames } from "@/components/utils/constants"
 
 export default function SignButton(data: {
     loginLabel: string
@@ -24,14 +25,14 @@ export default function SignButton(data: {
 
     const handleOnClick = () => {
       const params = searchParams?.toString()
-        if (pathname?.startsWith("/auth/login")) {
-          router.replace("/auth/sign-up?" + params, { scroll: false })
+        if (pathname?.startsWith(pathNames.login)) {
+          router.replace(pathNames.signUp + `?${params}`, { scroll: false })
         }
         else if (pathname?.startsWith("/sign-up")) {
-          router.replace("/auth/login?" + params, { scroll: false })
+          router.replace(pathNames.login + `?${params}`, { scroll: false })
         }
         else {
-          router.push(`/auth/login?redirect=${pathname}`, { scroll: false })
+          router.push(pathNames.login + `?redirect=${pathname}`, { scroll: false })
         }
     }
   
@@ -52,7 +53,7 @@ export default function SignButton(data: {
             className="bg-[#00152a] rounded-full font-medium text-white text-sm font-sans px-4 py-2"
             onClick={handleOnClick}
           >
-            {pathname?.startsWith("/login") ? data.signUpLabel : data.loginLabel}
+            {pathname?.startsWith(pathNames.login) ? data.signUpLabel : data.loginLabel}
           </button>
         )}
       </div>

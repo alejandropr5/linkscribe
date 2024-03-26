@@ -8,6 +8,7 @@ import CategoryTree from "@/components/url-form/bookmark-card/CategoryTree"
 import { useBookmarkFormContext } from "@/components/url-form/bookmark-card/BookmarkForm"
 import { CategoryNode } from "@/components/utils/constants"
 import { getUserCategories } from "@/components/utils/categoryAPI"
+import { pathNames } from "@/components/utils/constants"
 
 export default function CategorySelect () {
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
@@ -70,7 +71,7 @@ export default function CategorySelect () {
     if (session) {
       setShowDropdown(true)
     } else {
-      router.push("/auth/login", { scroll: false })
+      router.push(pathNames.login, { scroll: false })
     }
   }
 

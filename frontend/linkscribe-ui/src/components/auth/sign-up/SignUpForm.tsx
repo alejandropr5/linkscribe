@@ -61,7 +61,6 @@ export default function SignUpForm(signData: {
           }
         })        
       })
-      .catch(error => console.log("error", error))
   }
 
   return (

@@ -1,11 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { getToken } from "next-auth/jwt"
+import { pathNames } from "@/components/utils/constants"
  
 export async function middleware(req: NextRequest) {
   
   const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
  
-  if (req.nextUrl.pathname.startsWith("/auth/login") || req.nextUrl.pathname.startsWith("/auth/sign-up")) {
+  if (req.nextUrl.pathname.startsWith(pathNames.login) || req.nextUrl.pathname.startsWith(pathNames.signUp)) {
     if (session) {
       return NextResponse.redirect(new URL("/", req.url))
     }
@@ -15,7 +16,7 @@ export async function middleware(req: NextRequest) {
     if (!session) {
       const requestedPage = req.nextUrl.pathname
       const url = req.nextUrl.clone()
-      url.pathname = "/login"
+      url.pathname = pathNames.login
       url.search = `redirect=${requestedPage}`
       return NextResponse.redirect(url)
     }
