@@ -15,8 +15,7 @@ export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith("/saved")) {
     if (!session) {
       const requestedPage = req.nextUrl.pathname
-      const url = req.nextUrl.clone()
-      url.pathname = pathNames.login
+      const url = new URL(pathNames.login, req.url)
       url.search = `redirect=${requestedPage}`
       return NextResponse.redirect(url)
     }

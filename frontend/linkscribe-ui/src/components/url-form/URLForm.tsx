@@ -74,7 +74,7 @@ export default function URLForm(data: {
     <div className="w-[580px] mx-auto">
       <form
         onSubmit={(e: any) => handleSubmit(onSubmit)(e).catch(e => onError(e))}
-        className="md:relative h-14 fixed left-4 right-4 bottom-6 z-40 md:inset-0 rounded-full overflow-hidden shadow-lg shadow-[#c1def193]"
+        className="relative h-14 bottom-6 z-40 inset-0 rounded-full overflow-hidden shadow-lg shadow-[#c1def193]"
       >
         <URLInput
           id="urlInput"

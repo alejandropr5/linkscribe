@@ -44,25 +44,25 @@ export default function BookmarkCard({ children, bookmark }: {
           {children}
         </div>
           {isSubmitSuccessful ? (
-            <button
-              type="submit"
-              className="flex flex-row justify-center items-center px-6 py-1  rounded-full font-medium bg-[#8cb394] text-white w-full"
-              disabled
-            >
-              <span>bookmark saved</span>
-              <div className="w-5 h-5 ml-2">
-                <ClientImage imageComponent={CircleCheck} description={"Circle check SVG"} />
-              </div>               
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="px-6 py-1 rounded-full font-medium bg-[#00152a] text-white w-full"
-            >
-              <span>save bookmark</span>             
-            </button>
-          )
-        }
+              <button
+                type="submit"
+                className="flex flex-row justify-center items-center px-6 py-1  rounded-full font-medium bg-[#8cb394] text-white w-full"
+                disabled
+              >
+                <span>bookmark saved</span>
+                <div className="w-5 h-5 ml-2">
+                  <ClientImage imageComponent={CircleCheck} description={"Circle check SVG"} />
+                </div>               
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="px-6 py-1 rounded-full font-medium bg-[#00152a] text-white w-full"
+              >
+                <span>save bookmark</span>             
+              </button>
+            )
+          }
       </div>
     </div>
   )

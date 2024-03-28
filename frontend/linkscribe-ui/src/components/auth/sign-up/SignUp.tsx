@@ -9,7 +9,7 @@ export default function SignUp() {
   const tModal = texts.Modal
 
   return (
-    <div className="p-6 sm:pb-10 sm:px-14 pt-0 sm:pt-0 font-sans">
+    <div className="p-6 sm:pb-10 sm:px-14 pt-0 font-sans">
       <ModalText
         title={tModal.signUp.title}
         pFirst={tModal.signUp.paragraph.first}

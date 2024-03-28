@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="bg-white font-jakarta flex h-screen flex-col items-center justify-between"
+        className="bg-white font-jakarta flex h-screen flex-col"
       >
         <Provider>
           {auth}

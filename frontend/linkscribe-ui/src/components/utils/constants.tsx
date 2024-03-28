@@ -10,7 +10,8 @@ export const APIConstants = Object.freeze({
   LOGIN: "/users/login",
   GET_AVAILABILITY: "/users/available/",
   READ_USER_CATEGORY_ROOT: "/categories/root",
-  CREATE_USER_CATEGORY: "/categories"
+  CREATE_USER_CATEGORY: "/categories",
+  READ_USER_BOOKMARKS: "/bookmarks"
 })
 
 export const pathNames = Object.freeze({
@@ -58,4 +59,14 @@ export interface CustomUser {
   image?: string | null | undefined;
   access_token?: string | null | undefined;
   token_type?: string | null | undefined;
+}
+
+export interface BookmarkResponse {
+  id: number
+  name: string
+  url: string
+  image: string
+  user_id: number
+  category_id: number
+  created_at: Date
 }

@@ -1,5 +1,5 @@
 "use client"
-import React, { ReactNode, createContext, useContext, useRef } from "react"
+import React, { ReactNode, createContext, useContext } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
@@ -75,7 +75,7 @@ export default function BookmarkForm({
       }}
     >
       <form
-        className="pt-12 pb-36 2xl:py-28"
+        className="py-12 2xl:py-14"
         onSubmit={(e: any) => handleSubmit(onSubmit)(e).catch(e => onError(e))}
       >
         {children}
