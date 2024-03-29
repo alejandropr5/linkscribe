@@ -19,7 +19,7 @@ export const createUserBookmark = (
   var raw = JSON.stringify({
     "name": bookmark.title,
     "url": bookmark.url,
-    "image": bookmark.url,
+    "image": bookmark.image,
     "words": bookmark.words
   })
   

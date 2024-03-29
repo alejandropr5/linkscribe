@@ -1,12 +1,11 @@
 "use client"
 import React, { ReactNode, createContext, useContext, useEffect } from "react"
+import { FieldValues, UseFormRegister, UseFormSetValue, useForm, useWatch } from "react-hook-form"
 import { useSession } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
 import { Session } from "next-auth"
 import queryString from "query-string"
-import { FieldValues, UseFormRegister, UseFormSetValue, useForm, useWatch } from "react-hook-form"
-import { createUserCategory } from "@/components/utils/categoryAPI"
-import { pathNames } from "@/components/utils/constants"
+
 
 interface ContextProps {
   session: Session | null

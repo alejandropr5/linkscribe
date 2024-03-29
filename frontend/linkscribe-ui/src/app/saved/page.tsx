@@ -12,7 +12,9 @@ export default function SavedPage() {
     //   w-full
     //   border-r-[1px] border-r-[#eaecf0] h-[calc(100vh-56px)] overflow-y-auto"
     // >
+    <div className="py-6">
       <Bookmarks backendUrl={BACKEND_URL} />
+    </div>
     // </div>
   )
 }

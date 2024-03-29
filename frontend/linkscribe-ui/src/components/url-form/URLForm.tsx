@@ -71,7 +71,7 @@ export default function URLForm(data: {
   }
 
   return (
-    <div className="w-[580px] mx-auto">
+    <div className="max-w-[580px] md:w-[580px] mx-auto">
       <form
         onSubmit={(e: any) => handleSubmit(onSubmit)(e).catch(e => onError(e))}
         className="relative h-14 bottom-6 z-40 inset-0 rounded-full overflow-hidden shadow-lg shadow-[#c1def193]"

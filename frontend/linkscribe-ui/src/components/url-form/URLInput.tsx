@@ -1,8 +1,19 @@
 import { FieldValues, UseFormRegister } from "react-hook-form"
 import ClientImage from "@/components/utils/ClientImage"
-import ProgressBar from "@/components/url-form/IndeterminateProgressBar"
 import linkSVG from "@public/link.svg"
 import searchSVG from "@public/search.svg"
+
+
+function ProgressBar () {
+  return (
+    <div className="absolute bottom-0 w-full">
+      <div className="h-[3px] w-full bg-[#c1def193]">
+        <div className="animate-progress w-full h-full bg-[#a6dbff] origin-left-right rounded-full"/>
+      </div>
+    </div> 
+  )
+}
+
 
 export default function URLInput (data: {
     register: UseFormRegister<FieldValues>

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import PageWrapper from "@/components/layout/PageWrapper";
 import Header from "@/components/layout/Header";
 import Provider from "@/components/auth/Provider";
 import texts from "@messages/en.json"
@@ -22,14 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="bg-white font-jakarta flex h-screen flex-col"
+        className="bg-white font-jakarta flex max-w-screen h-fit flex-col items-center justify-between"
       >
         <Provider>
           {auth}
           <Header/>
-          <PageWrapper>
+          <div className="flex flex-row min-h-[calc(100vh-56px)] w-full bg-gradient-to-br from-white to-[#f3f8fc]">
             {children}
-          </PageWrapper>
+          </div>
         </Provider>
         <ToastContainer
           position="bottom-center"

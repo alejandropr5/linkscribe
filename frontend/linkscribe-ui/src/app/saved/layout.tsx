@@ -16,11 +16,15 @@ export default function RootLayout({
 }) {
   return (
     <div className="w-full text-black flex flex-row">
-      <SideBarContainer>
-        { sidebar }
-      </SideBarContainer>
       <div
-        className="flex flex-col min-h-full h-fit w-full justify-center px-6 z-0 items-center"
+        className="sticky top-[56px] flex flex-col
+        w-[350px] 2xl:w-[370px] 3xl:w-[400px]
+        border-r-[1px] border-r-[#eaecf0] h-[calc(100vh-56px)] overflow-y-auto"
+      >
+        { sidebar }
+      </div>
+      <div
+        className="flex flex-col min-h-full h-fit w-full px-6 z-0 items-center"
       >
         { children }
       </div>
