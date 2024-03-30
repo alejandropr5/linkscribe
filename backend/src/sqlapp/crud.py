@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session, aliased
-from sqlalchemy import or_, func, distinct
+from sqlalchemy import or_, func, not_
 # from datetime import datetime
 
 from sqlapp import models, schemas
@@ -151,11 +151,19 @@ def get_user_bookmarks(
 
     if search_text is not None:
         search_words = search_text.split()
-        contain_words = (w.word.ilike(f"%{word}%") for word in search_words)
+        print(search_words)
+        contain_words = (w.word.ilike(f"{word}%") for word in search_words)
 
-        query = query.filter(
-            b.name.ilike(f"%{search_text}%") | or_(*contain_words)
-        ).having(func.count(distinct(w.word)) == len(search_words))
+        query = (
+            query.filter(
+                b.name.ilike(f"%{search_text}%") | or_(*contain_words)
+            )
+            .having(
+                ((func.count(func.distinct(w.word)) == len(search_words))
+                    & not_(b.name.ilike(f"%{search_text}%")))
+                | b.name.ilike(f"%{search_text}%")
+            )
+        )
 
     response = query.offset(skip).limit(limit).distinct().all()
 
