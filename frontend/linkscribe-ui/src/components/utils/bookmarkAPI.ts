@@ -1,7 +1,9 @@
 "use client"
+import { ReadonlyURLSearchParams } from "next/navigation"
+import queryString from "query-string"
 import { Bookmark, CREATE_CATEGORY_BOOKMARK, APIConstants, BookmarkPredicted, BookmarkResponse } from "@/components/utils/constants"
 import { CustomUser } from "@/components/utils/constants"
-import { ReadonlyURLSearchParams } from "next/navigation"
+
 
 export const createUserBookmark = (
   backendUrl: string | undefined,
@@ -84,10 +86,12 @@ export const readBookmarks = (
   myHeaders.append(
     "Authorization",
     user?.token_type + " " + user?.access_token
-  )  
+  )
+
+  const params = queryString.pick(searchParams?.toString() ?? "", ["cat", "search"])
 
   const result = fetch(
-    backendUrl + APIConstants.READ_USER_BOOKMARKS + `?${searchParams}`,
+    backendUrl + APIConstants.READ_USER_BOOKMARKS + `?${params}`,
     {
       method: "GET",
       headers: myHeaders

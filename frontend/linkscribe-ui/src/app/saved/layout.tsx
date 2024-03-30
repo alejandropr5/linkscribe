@@ -1,18 +1,19 @@
-import type { Metadata } from "next";
+import type { Metadata } from "next"
 import texts from "@messages/en.json"
-import SideBarContainer from "@/components/saved-page/sidebar/SideBarContainer";
 
 export const metadata: Metadata = {
   title: texts.Metadata.saved.title,
   description: texts.Metadata.description,
-};
+}
 
 export default function RootLayout({
   children,
-  sidebar
+  sidebar,
+  search
 }: {
   children: React.ReactNode,
-  sidebar: React.ReactNode;
+  sidebar: React.ReactNode,
+  search: React.ReactNode;
 }) {
   return (
     <div className="w-full text-black flex flex-row">
@@ -26,6 +27,7 @@ export default function RootLayout({
       <div
         className="flex flex-col min-h-full h-fit w-full px-6 z-0 items-center"
       >
+        { search }
         { children }
       </div>
     </div>

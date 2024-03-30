@@ -2,7 +2,7 @@
 import React, { ReactNode, createContext, useContext, useEffect } from "react"
 import { FieldValues, UseFormRegister, UseFormSetValue, useForm, useWatch } from "react-hook-form"
 import { useSession } from "next-auth/react"
-import { useRouter, usePathname } from "next/navigation"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { Session } from "next-auth"
 import queryString from "query-string"
 
@@ -12,7 +12,6 @@ interface ContextProps {
   backendUrl: string | undefined
   register: UseFormRegister<FieldValues>
   setValue: UseFormSetValue<FieldValues>
-  // isSubmitSuccessful: boolean
 }
 
 const SideBarFormContext = createContext<ContextProps>({
@@ -20,7 +19,6 @@ const SideBarFormContext = createContext<ContextProps>({
   session: null,
   register: null as any,
   setValue: null as any,
-  // isSubmitSuccessful: false
 })
 
 export default function SideBarForm({
@@ -30,19 +28,14 @@ export default function SideBarForm({
   children: ReactNode
   backendUrl: string | undefined
 }) {
-  const {
-    register,
-    // handleSubmit,
-    setValue,
-    control
-    // formState: { isSubmitSuccessful }
-  } = useForm({ mode: "all" })
-
+  const { register, setValue, control } = useForm({ mode: "all" })
   const data = useWatch({ control: control })
 
   const { data: session } = useSession()
   const router = useRouter()
   const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const params = queryString.parse(searchParams?.toString() ?? "")  
 
   useEffect(() => {  
     const categories = Object.keys({ ...data })
@@ -53,15 +46,12 @@ export default function SideBarForm({
       return acc
     }, [])
 
+    params.cat = (categories.length > 0 ? categories : null)
     const stringfiedParams = queryString.stringify({"cat": categories})
 
     router.push(pathname + (stringfiedParams ? `?${stringfiedParams}` : ""))
     
-  }, [data, pathname, router])
-
-  const onError = (e: any) => {
-
-  }
+  }, [data, params])
 
   return (
     <SideBarFormContext.Provider
@@ -70,12 +60,9 @@ export default function SideBarForm({
         session,
         register,
         setValue,
-        // isSubmitSuccessful
       }}
     >
-      <form
-        // onSubmit={(e: any) => handleSubmit(onSubmit)(e).catch(e => onError(e))}
-      >
+      <form>
         {children}
       </form>
     </SideBarFormContext.Provider>

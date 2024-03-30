@@ -18,18 +18,10 @@ const CategoryTreeSkeleton: React.FC<CategoryTreeSkeletonProps> = ({
   return (
     <>
       <div
-        className="relative flex flex-row items-center h-[38px] rounded-l-md rounded-r-full bg-[#ecf3ff] animate-pulse"
-      >
-        {CategorySkeletonNode.children?.length > 0 &&
-          <div
-            className="w-5 h-5 ml-[5px] hover:bg-gray-300 rounded-md"
-          >
-            <ClientImage imageComponent={downArrow} description={"Down Arrow SVG"} />
-          </div>
-        }
-      </div>
+        className="relative flex flex-row items-center h-[38px] rounded-l-md rounded-r-full bg-[#f1f6ff] animate-pulse"
+      />
       <div 
-        className="relative ml-[14px] border-l-[1px] border-gray-300 pl-2 my-[2px]"
+        className="relative ml-[14px] border-l-[1px] border-gray-100 pl-2 my-[2px]"
       >
         {(CategorySkeletonNode.children ?? []).map(
           (node: CategorySkeletonNode) =>
@@ -46,13 +38,64 @@ const CategoryTreeSkeleton: React.FC<CategoryTreeSkeletonProps> = ({
 export default function BookmarkFolderSkeleton() {
   const categories: CategorySkeletonNode = {
     id: 0,
-    children: []
+    children: [
+      {
+        id: 1,
+        children: []
+      },
+      {
+        id: 2,
+        children: [
+          {
+            id: 21,
+            children: []
+          },
+          {
+            id: 22,
+            children: []
+          },
+          {
+            id: 23,
+            children: []
+          }
+        ]
+      },
+      {
+        id: 3,
+        children: []
+      },
+      {
+        id: 4,
+        children: []
+      },
+      {
+        id: 5,
+        children: []
+      },
+      {
+        id: 6,
+        children: [
+          {
+            id: 61,
+            children: []
+          },
+          {
+            id: 62,
+            children: []
+          },
+          {
+            id: 63,
+            children: []
+          }
+        ]
+      }            
+    ]
   }
   return (
-    <>
+    <div className="mr-1 overflow-y-auto">
       <CategoryTreeSkeleton
         CategorySkeletonNode={categories}
       />
-    </>
+    </div>
   )
 }

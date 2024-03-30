@@ -12,20 +12,18 @@ import downArrow from "@public/down-arrow.svg"
 
 interface CategoryProps {
   categoryNode: CategoryNode
-  isFirst: boolean
 }
 
 
 const CategoryTree: React.FC<CategoryProps> = ({
-    categoryNode,
-    isFirst
+    categoryNode
 }: CategoryProps) => {
   const searchParams = useSearchParams()
   const params = queryString.parse(searchParams?.toString() ?? "")
 
   const [ showChildren, setShowChildren ] = useState<boolean>(true)
   const [ isClicked, setIsClicked ] = useState<boolean>(
-    params.cat?.includes(categoryNode.id.toString()) ?? isFirst
+    params.cat?.includes(categoryNode.id.toString()) ?? false
   )
   const { register, setValue } = useSideBarFormContext()
 
@@ -73,7 +71,6 @@ const CategoryTree: React.FC<CategoryProps> = ({
           (node: CategoryNode) =>
             <CategoryTree
               categoryNode={node}
-              isFirst={false}
               key={node.id}
             />
         )}
@@ -99,7 +96,6 @@ export default function BookmarkFolder() {
       {categories ? (
         <CategoryTree
           categoryNode={categories as any}
-          isFirst={true}
         />
       ) : (
         <BookmarkFolderSkeleton />
