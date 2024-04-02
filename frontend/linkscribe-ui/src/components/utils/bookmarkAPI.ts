@@ -79,7 +79,8 @@ export const predictBookmark = (
 export const readBookmarks = (
   backendUrl: string | undefined,
   user: CustomUser | undefined,
-  searchParams: ReadonlyURLSearchParams | null
+  searchParams: ReadonlyURLSearchParams | null,
+  signal?: AbortSignal
 ) : Promise<BookmarkResponse[]>  => {
   var myHeaders = new Headers()
   myHeaders.append("Content-Type", "application/json")
@@ -94,7 +95,8 @@ export const readBookmarks = (
     backendUrl + APIConstants.READ_USER_BOOKMARKS + `?${params}`,
     {
       method: "GET",
-      headers: myHeaders
+      headers: myHeaders,
+      signal: signal
     }
   )
   .then(res => {
@@ -107,6 +109,12 @@ export const readBookmarks = (
     }
 
     return res.json()
+  })
+  .catch(error => {
+    if (error instanceof DOMException) {
+    } else {
+        throw error
+    }
   })
 
   return result

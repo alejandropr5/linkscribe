@@ -32,14 +32,15 @@ export default function SearchInput() {
         type="text"
         placeholder="Search"
         autoComplete="text"
-        className="px-14 w-full font-normal placeholder-shown:font-medium h-full rounded-full bg-transparent text-[#27272a] font-sans text-sm min-[500px]:text-base
+        className="px-14 w-full bottom-6 h-14 rounded-full bg-white shadow-md shadow-[#c1def193]
+        text-[#27272a] font-sans text-sm min-[500px]:text-base font-normal placeholder-shown:font-medium
         focus:outline-none focus:border-[#c1def1] border-[1.5px] focus:border-2"
         value={searchInput}
         onChange={handleOnChange}
       />
       <button
         type="submit"
-        className="absolute top-1/2 transform -translate-y-1/2 w-9 h-9 right-4 rounded-full p-2
+        className="absolute top-1/2 transform -translate-y-1/2 w-9 h-9 left-4 rounded-full p-2
         hover:bg-[#c1def193]"
       >
         <ClientImage imageComponent={searchSVG} description={"Search SVG"} />

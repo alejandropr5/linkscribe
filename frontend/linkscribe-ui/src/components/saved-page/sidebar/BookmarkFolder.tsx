@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import queryString from "query-string"
-import { useSideBarFormContext } from "@/components/saved-page/sidebar/SideBarFormContext"
-import { getUserCategories } from "@/components/utils/categoryAPI"
+import { useCategoryFormContext } from "@/components/saved-page/sidebar/CategoryForm"
 import { CategoryNode } from "@/components/utils/constants"
 import BookmarkFolderSkeleton from "@/components/saved-page/sidebar/BookmarkFolderSkeleton"
 import ClientImage from "@/components/utils/ClientImage"
@@ -25,7 +24,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
   const [ isClicked, setIsClicked ] = useState<boolean>(
     params.cat?.includes(categoryNode.id.toString()) ?? false
   )
-  const { register, setValue } = useSideBarFormContext()
+  const { register, setValue } = useCategoryFormContext()
 
   useEffect(() => {
     setValue(categoryNode.id.toString(), isClicked)
@@ -40,6 +39,8 @@ const CategoryTree: React.FC<CategoryProps> = ({
     setShowChildren(!showChildren)
   }
 
+  const hasChildren: boolean = categoryNode.children?.length > 0
+
   return (
     <>
       <div
@@ -47,7 +48,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
         className={`relative flex flex-row items-center py-2 h-[38px] cursor-pointer rounded-l-md rounded-r-full overflow-hidden w-full
         text-gray-700 active:bg-blue-100 ${ isClicked ? "bg-[#e8f0fe]" : "hover:bg-gray-100" }`}
       >
-        {categoryNode.children?.length > 0 &&
+        {hasChildren &&
           <div
             className="w-5 h-5 ml-[5px] hover:bg-gray-300 rounded-md"
             onClick={handleArrowClick}
@@ -55,17 +56,21 @@ const CategoryTree: React.FC<CategoryProps> = ({
             <ClientImage imageComponent={downArrow} description={"Down Arrow SVG"} />
           </div>
         }
-        <div className="absolute left-[30px] overflow-hidden text-ellipsis font-jakarta font-medium text-nowrap">
+        <p
+          className={`pr-2 overflow-hidden text-ellipsis font-jakarta font-medium text-nowrap
+          ${hasChildren ? "pl-1" : "pl-[30px]" }`}
+        >
           { categoryNode.name }
-        </div>
+        </p>
         <input
+          id={categoryNode.id.toString()}
           className="hidden"
           type="checkbox"
           {...register(categoryNode.id.toString())}
         />
       </div>
       <div 
-        className="relative ml-[14px] border-l-[1px] border-gray-300 pl-2 my-[2px]"
+        className="ml-[14px] border-l-[1px] border-gray-300 pl-2 my-[2px]"
       >
         {showChildren && (categoryNode.children ?? []).map(
           (node: CategoryNode) =>
@@ -81,18 +86,10 @@ const CategoryTree: React.FC<CategoryProps> = ({
 
 
 export default function BookmarkFolder() {
-  const { backendUrl, session } = useSideBarFormContext()
-  const [categories, setCategories] = useState<CategoryNode>()
-
-  useEffect(() => {
-    if (session) {
-      getUserCategories(backendUrl, session.user as any)
-      .then((result: CategoryNode) => setCategories(result))
-    }
-  }, [backendUrl, session])  
+  const { categories } = useCategoryFormContext()
 
   return (
-    <div className="mr-1 overflow-y-auto">
+    <div className="relative mr-1 overflow-y-auto">
       {categories ? (
         <CategoryTree
           categoryNode={categories as any}

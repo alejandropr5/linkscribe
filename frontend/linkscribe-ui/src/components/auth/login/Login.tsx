@@ -1,7 +1,7 @@
 import React, { Suspense } from "react"
 import LoginForm from "@/components/auth/login/LoginForm"
-import ModalText from "@/components/auth-modal/ModalText"
-import SwitchLink from "@/components/auth-modal/SwitchLink"
+import ModalText from "@/components/modal/ModalText"
+import SwitchLink from "@/components/modal/SwitchLink"
 import texts from "@messages/en.json"
 
 export default function Login() {

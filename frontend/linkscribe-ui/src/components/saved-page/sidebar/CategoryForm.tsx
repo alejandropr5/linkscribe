@@ -1,10 +1,12 @@
 "use client"
-import React, { ReactNode, createContext, useContext, useEffect } from "react"
+import React, { ReactNode, createContext, useContext, useEffect, useState } from "react"
 import { FieldValues, UseFormRegister, UseFormSetValue, useForm, useWatch } from "react-hook-form"
 import { useSession } from "next-auth/react"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { Session } from "next-auth"
 import queryString from "query-string"
+import { getUserCategories } from "@/components/utils/categoryAPI"
+import { CategoryNode } from "@/components/utils/constants"
 
 
 interface ContextProps {
@@ -12,22 +14,25 @@ interface ContextProps {
   backendUrl: string | undefined
   register: UseFormRegister<FieldValues>
   setValue: UseFormSetValue<FieldValues>
+  categories: CategoryNode | undefined
 }
 
-const SideBarFormContext = createContext<ContextProps>({
+const CategoryFormContext = createContext<ContextProps>({
   backendUrl: undefined,
   session: null,
   register: null as any,
   setValue: null as any,
+  categories: null as any
 })
 
-export default function SideBarForm({
+export default function CategoryForm({
   children,
   backendUrl
 }: {
   children: ReactNode
   backendUrl: string | undefined
 }) {
+  const [categories, setCategories] = useState<CategoryNode>()
   const { register, setValue, control } = useForm({ mode: "all" })
   const data = useWatch({ control: control })
 
@@ -53,20 +58,27 @@ export default function SideBarForm({
     
   }, [data, params])
 
+
+  useEffect(() => {
+    if (session) {
+      getUserCategories(backendUrl, session.user as any)
+      .then((result: CategoryNode) => setCategories(result))
+    }
+  }, [backendUrl, session])  
+
   return (
-    <SideBarFormContext.Provider
+    <CategoryFormContext.Provider
       value={{
         backendUrl,
         session,
         register,
         setValue,
+        categories
       }}
     >
-      <form>
-        {children}
-      </form>
-    </SideBarFormContext.Provider>
+      {children}
+    </CategoryFormContext.Provider>
   )
 }
 
-export const useSideBarFormContext = () => useContext(SideBarFormContext)
+export const useCategoryFormContext = () => useContext(CategoryFormContext)

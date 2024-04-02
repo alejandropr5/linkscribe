@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Grid</title>
+    <g id="Grid" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Container" x="0" y="0" width="24" height="24">
+
+</rect>
+        <rect id="shape-1" stroke="#030819" stroke-width="2" stroke-linecap="round" x="4" y="4" width="6" height="6" rx="1.5">
+
+</rect>
+        <rect id="shape-2" stroke="#030819" stroke-width="2" stroke-linecap="round" x="4" y="14" width="6" height="6" rx="1.5">
+
+</rect>
+        <rect id="shape-3" stroke="#030819" stroke-width="2" stroke-linecap="round" x="14" y="4" width="6" height="6" rx="1.5">
+
+</rect>
+        <rect id="shape-4" stroke="#030819" stroke-width="2" stroke-linecap="round" x="14" y="14" width="6" height="6" rx="1.5">
+
+</rect>
+    </g>
+</svg>

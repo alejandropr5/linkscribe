@@ -1,8 +1,8 @@
 import { Suspense } from "react"
 import SignUpForm from "@/components/auth/sign-up/SignUpForm"
-import ModalText from "@/components/auth-modal/ModalText"
+import ModalText from "@/components/modal/ModalText"
 import texts from "@messages/en.json"
-import SwitchLink from "../../auth-modal/SwitchLink"
+import SwitchLink from "../../modal/SwitchLink"
 
 export default function SignUp() {
   const BACKEND_URL = process.env.BACKEND_URL
