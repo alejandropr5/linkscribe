@@ -154,15 +154,17 @@ def get_user_bookmarks(
         print(search_words)
         contain_words = (w.word.ilike(f"{word}%") for word in search_words)
 
-        query = (
-            query.filter(
-                b.name.ilike(f"%{search_text}%") | or_(*contain_words)
+        query = query.filter(
+            b.name.ilike(f"%{search_text}%")
+            | b.url.ilike(f"%{search_text}%")
+            | or_(*contain_words)
+        ).having(
+            (
+                (func.count(func.distinct(w.word)) == len(search_words))
+                & not_(b.name.ilike(f"%{search_text}%"))
             )
-            .having(
-                ((func.count(func.distinct(w.word)) == len(search_words))
-                    & not_(b.name.ilike(f"%{search_text}%")))
-                | b.name.ilike(f"%{search_text}%")
-            )
+            | b.name.ilike(f"%{search_text}%")
+            | b.url.ilike(f"%{search_text}%")
         )
 
     response = query.offset(skip).limit(limit).distinct().all()
