@@ -6,7 +6,7 @@ import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
 import CategoryTree from "@/components/url-form/bookmark-card/CategoryTree"
 import { useBookmarkFormContext } from "@/components/url-form/bookmark-card/BookmarkForm"
-import { CategoryNode } from "@/components/utils/constants"
+import { CategoryNode } from "@/types/types"
 import { getUserCategories } from "@/components/utils/categoryAPI"
 import { pathNames } from "@/components/utils/constants"
 

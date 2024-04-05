@@ -5,6 +5,7 @@ import Provider from "@/components/auth/Provider";
 import texts from "@messages/en.json"
 import { ToastContainer, Flip } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import BookmarkEditModal from "@/components/saved-page/bookmarks/BookmarkEditRSC";
 
 export const metadata: Metadata = {
   title: texts.Metadata.title,
@@ -29,6 +30,7 @@ export default function RootLayout({
           <div className="flex flex-row min-h-[calc(100vh-56px)] w-full bg-gradient-to-br from-white to-[#f3f8fc]">
             {children}
           </div>
+          <BookmarkEditModal />
         </Provider>
         <ToastContainer
           position="bottom-center"

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { CategoryNode } from "@/components/utils/constants"
+import { CategoryNode } from "@/types/types"
 import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
 

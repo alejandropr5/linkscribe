@@ -1,6 +1,7 @@
 "use client"
-import { APIConstants, Bookmark, CategoryNode } from "@/components/utils/constants"
-import { CustomUser } from "@/components/utils/constants"
+import { APIConstants } from "@/components/utils/constants"
+import { Bookmark, CategoryNode, CustomUser } from "@/types/types"
+
 
 export const getUserCategories = (
   backendUrl: string | undefined,

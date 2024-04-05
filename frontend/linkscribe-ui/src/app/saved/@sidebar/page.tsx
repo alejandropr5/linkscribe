@@ -5,16 +5,14 @@ import BookmarkFolderSkeleton from "@/components/saved-page/sidebar/BookmarkFold
 
 
 export default function SidebarPage() {
-  // const BACKEND_URL = process.env.BACKEND_URL
+  const BACKEND_URL = process.env.BACKEND_URL
   return (
-    // <SideBarForm 
-    //   backendUrl={BACKEND_URL}
-    // >
+    <SideBarForm 
+      backendUrl={BACKEND_URL}
+    >
       <Suspense>
-        <form>
-          <BookmarkFolder />
-        </form>
+        <BookmarkFolder />
       </Suspense>
-    // </SideBarForm>
+    </SideBarForm>
   )
 }

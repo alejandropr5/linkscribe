@@ -1,8 +1,8 @@
 "use client"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import queryString from "query-string"
-import { Bookmark, CREATE_CATEGORY_BOOKMARK, APIConstants, BookmarkPredicted, BookmarkResponse } from "@/components/utils/constants"
-import { CustomUser } from "@/components/utils/constants"
+import { CREATE_CATEGORY_BOOKMARK, APIConstants } from "@/components/utils/constants"
+import { Bookmark, BookmarkPredicted, BookmarkResponse, BookmarkUpdate, CustomUser } from "@/types/types"
 
 
 export const createUserBookmark = (
@@ -26,10 +26,10 @@ export const createUserBookmark = (
   })
   
   const result = fetch(backendUrl + CREATE_CATEGORY_BOOKMARK(categoryId), {
-    method: 'POST',
+    method: "POST",
     headers: myHeaders,
     body: raw,
-    redirect: 'follow'
+    redirect: "follow"
   })
   .then(res => {
     if (!res.ok) {
@@ -115,6 +115,51 @@ export const readBookmarks = (
     } else {
         throw error
     }
+  })
+
+  return result
+}
+
+
+export const updateUserBookmark = (
+  backendUrl: string | undefined,
+  user: CustomUser | undefined,
+  bookmarkId: number,
+  bookmark: BookmarkUpdate
+) : Promise<Bookmark>  => {
+  var myHeaders = new Headers()
+  myHeaders.append("Content-Type", "application/json")
+  myHeaders.append(
+    "Authorization",
+    user?.token_type + " " + user?.access_token
+  )      
+  
+  var raw = JSON.stringify({
+    "name": bookmark.name,
+    "url": bookmark.url,
+    "category_id": bookmark.category_id
+  })
+  console.log(raw)
+  
+  const result = fetch(
+    backendUrl + APIConstants.PATCH_USER_BOOKMARK + bookmarkId.toString(),
+    {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow"
+    }
+  )
+  .then(res => {
+    if (!res.ok) {
+      return res.json().then(error => {
+        throw new Error(error.detail, {
+          cause: res
+        })
+      })
+    }
+
+    return res.json()
   })
 
   return result

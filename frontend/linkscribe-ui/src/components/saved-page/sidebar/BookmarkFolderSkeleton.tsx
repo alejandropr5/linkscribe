@@ -1,6 +1,4 @@
 import React from "react"
-import ClientImage from "@/components/utils/ClientImage"
-import downArrow from "@public/down-arrow.svg"
 
 
 interface CategorySkeletonNode {

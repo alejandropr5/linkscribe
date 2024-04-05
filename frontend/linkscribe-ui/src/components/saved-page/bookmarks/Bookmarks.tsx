@@ -4,46 +4,17 @@ import React, { useEffect, useState, useRef } from "react"
 import { readBookmarks } from "@/components/utils/bookmarkAPI"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
-import { BookmarkResponse as Bookmark } from "@/components/utils/constants"
+import { BookmarkResponse as Bookmark } from "@/types/types"
+import useBookmarkData from "@/hooks/useBookmarkData"
 import ClientImage from "@/components/utils/ClientImage"
 import optionsSVG from "@public/options.svg"
-
-
-function EditBookmark ({ bookmark }: {
-  bookmark: Bookmark
-}) {
-  const [ showModal, setShowModal ] = useState<boolean>(false)
-  return (
-    <>
-      <div
-        className="px-4 py-2 text-sm text-[#60606b] hover:bg-gray-100 cursor-pointer"
-        onClick={() => { setShowModal(true) }}
-      >
-        Edit
-      </div>
-      {showModal &&
-        <div
-          className="absolute min-h-screen inset-0 backdrop-filter backdrop-blur-sm z-50 flex items-center justify-center px-6 bg-black/50"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="h-auto overflow-hidden rounded-2xl bg-white shadow-2xl w-full max-w-md"
-            onClick={e => e.stopPropagation()}
-          >
-            woli
-          </div>
-        </div>
-      }
-    </>
-  )
-}
 
 
 function OptionsButton ({ bookmark }: {
   bookmark: Bookmark
 }) {
   const [ showDropdown, setShowDropdown ] = useState<boolean>(false)
-
+  const { setBookmark } = useBookmarkData()
   const dropdown = useRef<HTMLDivElement>(null)
   
   useEffect(() => {
@@ -64,7 +35,7 @@ function OptionsButton ({ bookmark }: {
       <button
         className="w-7 h-7 p-2 rounded-full my-auto
         hover:bg-[#c1def193]"
-        onClick={() => {setShowDropdown(true)}}
+        onClick={() => setShowDropdown(true)}
       >
         <ClientImage imageComponent={optionsSVG} description={"options SVG"} />
       </button>
@@ -73,7 +44,15 @@ function OptionsButton ({ bookmark }: {
           className="absolute bg-white right-0 top-[100%] rounded-xl shadow-lg max-w-64 z-10 app-background-color border border-color mt-1 overflow-hidden"
           ref={dropdown}
         >
-          <EditBookmark bookmark={bookmark} />
+          <div
+            className="px-4 py-2 text-sm text-[#60606b] hover:bg-gray-100 cursor-pointer"
+            onClick={() => {
+              setBookmark(bookmark)
+              setShowDropdown(false)
+            }}
+          >
+            Edit
+          </div>
           <div className="px-4 py-2 text-sm text-[#e76c6c] hover:bg-gray-100 cursor-pointer">
             Delete
           </div>          
@@ -158,7 +137,7 @@ export default function Bookmarks({
 
   return (
     <div className="bg-white rounded-2xl w-full">
-      {(bookmarksList ?? []).map((bookmark: Bookmark, index) => 
+      {(bookmarksList ?? []).map((bookmark: Bookmark, index) =>
         <BookmarkComponent
           bookmark={bookmark}
           key={bookmark.id}

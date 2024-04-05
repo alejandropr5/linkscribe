@@ -2,7 +2,7 @@
 
 import React from "react"
 import Image from "next/image"
-import { Bookmark } from "@/components/utils/constants"
+import { Bookmark } from "@/types/types"
 import { useBookmarkFormContext } from "@/components/url-form/bookmark-card/BookmarkForm"
 import ClientImage from "@/components/utils/ClientImage"
 import CircleCheck from "@public/check-circle.svg"

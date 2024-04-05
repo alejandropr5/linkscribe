@@ -6,7 +6,8 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { Session } from "next-auth"
 import queryString from "query-string"
 import { getUserCategories } from "@/components/utils/categoryAPI"
-import { CategoryNode } from "@/components/utils/constants"
+import { CategoryNode } from "@/types/types"
+import useCategoriesData from "@/hooks/useCategoriesData"
 
 
 interface ContextProps {
@@ -32,7 +33,8 @@ export default function CategoryForm({
   children: ReactNode
   backendUrl: string | undefined
 }) {
-  const [categories, setCategories] = useState<CategoryNode>()
+  // const [categories, setCategories] = useState<CategoryNode>()
+  const { categories, setCategories } = useCategoriesData()
   const { register, setValue, control } = useForm({ mode: "all" })
   const data = useWatch({ control: control })
 
@@ -62,7 +64,9 @@ export default function CategoryForm({
   useEffect(() => {
     if (session) {
       getUserCategories(backendUrl, session.user as any)
-      .then((result: CategoryNode) => setCategories(result))
+      .then((result: CategoryNode) => {
+        setCategories(result)
+      })
     }
   }, [backendUrl, session])  
 
@@ -76,7 +80,9 @@ export default function CategoryForm({
         categories
       }}
     >
-      {children}
+      <form>
+        {children}
+      </form>
     </CategoryFormContext.Provider>
   )
 }
