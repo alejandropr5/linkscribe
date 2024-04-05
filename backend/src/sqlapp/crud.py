@@ -214,8 +214,9 @@ def update_bookmark(
     )
 
     if db_bookmark is not None:
-        if new_bookmark.name is not None:
-            db_bookmark.name = new_bookmark.name
+        # if new_bookmark.name is not None:
+        db_bookmark.name = new_bookmark.name
+        db_bookmark.url = new_bookmark.url
         db_bookmark.category_id = new_bookmark.category_id
 
         db.commit()

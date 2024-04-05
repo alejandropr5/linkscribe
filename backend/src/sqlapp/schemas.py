@@ -35,8 +35,9 @@ class BookmarkCreate(BookmarkBase):
 
 
 class BookmarkUpdate(BaseModel):
-    name: str | None
-    category_id: int | None
+    name: str
+    url: str
+    category_id: int
 
 
 class Bookmark(BookmarkBase):
