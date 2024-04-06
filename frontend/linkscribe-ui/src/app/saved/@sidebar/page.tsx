@@ -1,7 +1,6 @@
 import React, { Suspense } from "react"
 import SideBarForm from "@/components/saved-page/sidebar/CategoryForm"
 import BookmarkFolder from "@/components/saved-page/sidebar/BookmarkFolder"
-import BookmarkFolderSkeleton from "@/components/saved-page/sidebar/BookmarkFolderSkeleton"
 
 
 export default function SidebarPage() {

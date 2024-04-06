@@ -1,6 +1,6 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useReducer } from "react"
 import { readBookmarks } from "@/components/utils/bookmarkAPI"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
@@ -10,13 +10,14 @@ import ClientImage from "@/components/utils/ClientImage"
 import optionsSVG from "@public/options.svg"
 
 
-function OptionsButton ({ bookmark }: {
-  bookmark: Bookmark
+function OptionsDropdown ({ bookmark, setShowDropdown }: {
+  bookmark: Bookmark,
+  setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-  const [ showDropdown, setShowDropdown ] = useState<boolean>(false)
   const { setBookmark } = useBookmarkData()
   const dropdown = useRef<HTMLDivElement>(null)
-  
+  console.log("optionsDropdown")
+
   useEffect(() => {
     const handleOutSideClick = (event: any) => {
       if (!dropdown.current?.contains(event.target)) {
@@ -28,8 +29,34 @@ function OptionsButton ({ bookmark }: {
     return () => {
       window.removeEventListener("mousedown", handleOutSideClick)
     }
-  }, [dropdown])
+  }, [dropdown, setShowDropdown])
 
+  return (  
+    <div
+      className="absolute bg-white right-0 top-[100%] rounded-xl shadow-lg max-w-64 z-10 app-background-color border border-color mt-1 overflow-hidden"
+      ref={dropdown}
+    >
+      <div
+        className="px-4 py-2 text-sm text-[#60606b] hover:bg-gray-100 cursor-pointer"
+        onClick={() => {
+          setBookmark(bookmark)
+          setShowDropdown(false)
+        }}
+      >
+        Edit
+      </div>
+      <div className="px-4 py-2 text-sm text-[#e76c6c] hover:bg-gray-100 cursor-pointer">
+        Delete
+      </div>          
+    </div>
+  )
+}
+
+
+function OptionsButton ({ bookmark }: {
+  bookmark: Bookmark
+}) {
+  const [ showDropdown, setShowDropdown ] = useState<boolean>(false)
   return (
     <div className="relative">
       <button
@@ -40,23 +67,7 @@ function OptionsButton ({ bookmark }: {
         <ClientImage imageComponent={optionsSVG} description={"options SVG"} />
       </button>
       {showDropdown &&
-        <div
-          className="absolute bg-white right-0 top-[100%] rounded-xl shadow-lg max-w-64 z-10 app-background-color border border-color mt-1 overflow-hidden"
-          ref={dropdown}
-        >
-          <div
-            className="px-4 py-2 text-sm text-[#60606b] hover:bg-gray-100 cursor-pointer"
-            onClick={() => {
-              setBookmark(bookmark)
-              setShowDropdown(false)
-            }}
-          >
-            Edit
-          </div>
-          <div className="px-4 py-2 text-sm text-[#e76c6c] hover:bg-gray-100 cursor-pointer">
-            Delete
-          </div>          
-        </div>
+        <OptionsDropdown bookmark={bookmark} setShowDropdown={setShowDropdown} />
       }      
     </div>
   )

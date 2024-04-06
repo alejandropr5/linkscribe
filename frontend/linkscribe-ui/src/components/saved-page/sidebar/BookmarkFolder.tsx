@@ -15,7 +15,7 @@ interface CategoryProps {
 
 
 const CategoryTree: React.FC<CategoryProps> = ({
-    categoryNode
+  categoryNode
 }: CategoryProps) => {
   const searchParams = useSearchParams()
   const params = queryString.parse(searchParams?.toString() ?? "")
@@ -28,7 +28,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
 
   useEffect(() => {
     setValue(categoryNode.id.toString(), isClicked)
-  }, [isClicked])
+  }, [categoryNode.id, isClicked])
 
   const handleCategoryClick = () => {
     setIsClicked(!isClicked)
@@ -87,7 +87,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
 
 export default function BookmarkFolder() {
   const { categories } = useCategoryFormContext()
-
+  // console.log("BookmarkFolder")
   return (
     <div className="relative mr-1 overflow-y-auto">
       {categories ? (

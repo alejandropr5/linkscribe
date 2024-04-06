@@ -21,7 +21,7 @@ function Modal ({ children, closeCB }: {
         className="h-auto overflow-hidden rounded-2xl bg-white shadow-2xl w-full max-w-md"
         onClick={e => e.stopPropagation()}
       >
-      { children }
+        { children }
       </div>
     </div>      
   )
@@ -30,7 +30,7 @@ function Modal ({ children, closeCB }: {
 
 function ModalHeader () {
   return (
-    <div className="h-14 flex items-center px-6">
+    <div className="h-12 flex items-center px-6 pt-6">
       <div className="text-lg md:text-xl tracking-tight font-bold text-[#52525b] font-jakarta">
         Edit Bookmark
       </div>      
@@ -42,6 +42,8 @@ function ModalHeader () {
 function CancelButton ({ onClick }: {onClick: () => void}) {
   return (
     <button
+      id="cancelButton"
+      type="button"
       onClick={ onClick }
       className=" rounded-full font-medium  text-sm font-sans px-auto py-auto h-9 w-20 ml-auto
       border-[#00152a] border-2 text-[#00152a] bg-white hover:bg-slate-200"
@@ -55,6 +57,7 @@ function CancelButton ({ onClick }: {onClick: () => void}) {
 function SaveButton () {
   return (
     <button
+      id="saveButton"
       type="submit"
       className="bg-[#00152a] rounded-full font-medium text-white text-sm font-sans px-auto py-auto h-9 w-20 ml-1"
     >
@@ -121,16 +124,16 @@ export default function BookmarkEditModal ({ backendUrl }: {backendUrl: string |
     }
   }, [bookmark])
 
+  const closeModal = () => {
+    reset()
+    clearBookmark()
+  }  
+
   if (!bookmark) {
     return null
   }
   else {
     const category = searchCategory(categories as any, bookmark.category_id)
-
-    const closeModal = () => {
-      clearBookmark()
-      reset()
-    }
 
     const onSubmit = async (data: any) => {
       updateUserBookmark(
@@ -152,8 +155,8 @@ export default function BookmarkEditModal ({ backendUrl }: {backendUrl: string |
         <ModalHeader />
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="p-6 font-sans space-y-6"
         >
+          <div className="p-6 font-sans space-y-6">
             <div className="space-y-4">
               <EditInput
                 defaultValue={bookmark.name}
@@ -175,7 +178,7 @@ export default function BookmarkEditModal ({ backendUrl }: {backendUrl: string |
               <CancelButton onClick={closeModal} />
               <SaveButton />
             </div>
-            {category?.id}
+          </div>
         </form>
       </Modal>
     )

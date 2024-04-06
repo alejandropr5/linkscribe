@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import texts from "@messages/en.json"
-import CategoryForm from "@/components/saved-page/sidebar/CategoryForm"
 
 export const metadata: Metadata = {
   title: texts.Metadata.saved.title,
@@ -16,7 +15,6 @@ export default function RootLayout({
   sidebar: React.ReactNode,
   search: React.ReactNode
 }) {
-  const BACKEND_URL = process.env.BACKEND_URL
   return (
     <div className="w-full flex flex-row">
       <div

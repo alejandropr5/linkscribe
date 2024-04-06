@@ -45,6 +45,7 @@ export default function CategoryForm({
   const params = queryString.parse(searchParams?.toString() ?? "")  
 
   useEffect(() => {  
+    console.log("enter useWatch")
     const categories = Object.keys({ ...data })
     .reduce((acc: string[], key: string) => {
       if (data[key]) {
@@ -68,7 +69,7 @@ export default function CategoryForm({
         setCategories(result)
       })
     }
-  }, [backendUrl, session])  
+  }, [backendUrl, session, setCategories])  
 
   return (
     <CategoryFormContext.Provider
