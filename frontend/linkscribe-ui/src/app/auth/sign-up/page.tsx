@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function SignUpPage () {
   return (
-    <div className="max-w-2xl px-6 mx-auto my-12 lg:my-16 2xl:my-24">
+    <div className="max-w-2xl px-6 mx-auto my-10 lg:my-14 2xl:my-22">
       <SignUp />
     </div>
   )

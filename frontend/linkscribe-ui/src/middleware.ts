@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { getToken } from "next-auth/jwt"
-import { pathNames } from "@/components/utils/constants"
+import { pathNames } from "@/app/lib/constants"
  
 export async function middleware(req: NextRequest) {
   

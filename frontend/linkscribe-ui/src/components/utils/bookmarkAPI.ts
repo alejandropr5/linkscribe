@@ -1,7 +1,7 @@
 "use client"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import queryString from "query-string"
-import { CREATE_CATEGORY_BOOKMARK, APIConstants } from "@/components/utils/constants"
+import { CREATE_CATEGORY_BOOKMARK, APIConstants } from "@/app/lib/constants"
 import { Bookmark, BookmarkPredicted, BookmarkResponse, BookmarkUpdate, CustomUser } from "@/types/types"
 
 

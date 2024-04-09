@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react"
 import { Session } from "next-auth"
 import { signOut, useSession } from "next-auth/react"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
-import { pathNames } from "@/components/utils/constants"
+import { pathNames } from "@/app/lib/constants"
 import ClientImage from "@/components/utils/ClientImage"
 import userSVG from "@public/user.svg"
 

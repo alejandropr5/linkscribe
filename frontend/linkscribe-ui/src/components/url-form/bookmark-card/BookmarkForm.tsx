@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import { Bookmark, CategoryNode } from "@/types/types"
 import { createUserBookmark } from "@/components/utils/bookmarkAPI"
 import { createUserCategory } from "@/components/utils/categoryAPI"
-import { pathNames } from "@/components/utils/constants"
+import { pathNames } from "@/app/lib/constants"
 
 interface ContextProps {
   bookmark: Bookmark | undefined
