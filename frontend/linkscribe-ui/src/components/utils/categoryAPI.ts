@@ -1,5 +1,5 @@
 "use client"
-import { APIConstants } from "@/app/lib/constants"
+import { APIConstants } from "@/lib/constants"
 import { Bookmark, CategoryNode, CustomUser } from "@/types/types"
 
 

@@ -1,4 +1,4 @@
-import SignUp from "@/components/auth/sign-up/SignUp";
+import SignUp from "@/components/auth/sign-up/SignUp"
 import texts from "@messages/en.json"
 
 export const metadata = {

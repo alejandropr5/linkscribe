@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
-import { pathNames } from "@/app/lib/constants"
+import { pathNames } from "@/lib/constants"
 
 export default function SwitchLink (data: {
   paragraph: string

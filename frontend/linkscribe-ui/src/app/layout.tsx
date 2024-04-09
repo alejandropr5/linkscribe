@@ -25,10 +25,10 @@ export default function RootLayout({
         className="bg-white font-jakarta flex max-w-screen h-fit flex-col items-center justify-between"
       >
         <Provider>
-          {auth}
+          { auth }
           <Header/>
           <div className="flex flex-row min-h-[calc(100vh-56px)] w-full bg-gradient-to-br from-white to-[#f3f8fc]">
-            {children}
+            { children }
           </div>
           <BookmarkEditModal />
         </Provider>

@@ -8,7 +8,7 @@ import CategoryTree from "@/components/url-form/bookmark-card/CategoryTree"
 import { useBookmarkFormContext } from "@/components/url-form/bookmark-card/BookmarkForm"
 import { CategoryNode } from "@/types/types"
 import { getUserCategories } from "@/components/utils/categoryAPI"
-import { pathNames } from "@/app/lib/constants"
+import { pathNames } from "@/lib/constants"
 
 export default function CategorySelect () {
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
