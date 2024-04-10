@@ -133,7 +133,7 @@ export default function LoginForm(loginData: {
           id="loginEmail"
           type="email"
           inputLabel={loginData.emailLabel}
-          autoFocus={false}
+          autoFocus={true}
         />
         <PasswordInput
           register={register}
