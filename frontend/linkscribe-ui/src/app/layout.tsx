@@ -1,11 +1,7 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import Header from "@/components/layout/Header";
-import Provider from "@/components/auth/Provider";
+import type { Metadata } from "next"
+import "./globals.css"
 import texts from "@messages/en.json"
-import { ToastContainer, Flip } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import BookmarkEditModal from "@/components/saved-page/bookmarks/BookmarkEditRSC";
+
 
 export const metadata: Metadata = {
   title: texts.Metadata.title,
@@ -13,35 +9,16 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-  auth
+  children
 }: {
-  children: React.ReactNode,
-  auth: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
       <body
         className="bg-white font-jakarta flex max-w-screen h-fit flex-col items-center justify-between"
       >
-        <Provider>
-          { auth }
-          <Header/>
-          <div className="flex flex-row min-h-[calc(100vh-56px)] w-full bg-gradient-to-br from-white to-[#f3f8fc]">
-            { children }
-          </div>
-          <BookmarkEditModal />
-        </Provider>
-        <ToastContainer
-          position="bottom-center"
-          autoClose={3500}
-          hideProgressBar={true}
-          closeOnClick={true}
-          pauseOnHover={false}
-          draggable={false}
-          theme="colored"
-          transition={Flip}
-        />
+        { children }
       </body>
     </html>
   );

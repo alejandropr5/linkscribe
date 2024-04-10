@@ -8,7 +8,7 @@ export const metadata = {
 export default function LoginPage () {
   return (
     <div className="max-w-2xl px-6 mx-auto my-12 lg:my-16 2xl:my-24">
-      <Login />
+      <Login hardNavigation={true} />
     </div>
   )
 }

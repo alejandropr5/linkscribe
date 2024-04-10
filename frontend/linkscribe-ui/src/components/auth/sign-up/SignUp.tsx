@@ -4,7 +4,11 @@ import ModalText from "@/components/modal/ModalText"
 import texts from "@messages/en.json"
 import SwitchLink from "../../modal/SwitchLink"
 
-export default function SignUp() {
+export default function SignUp({
+  hardNavigation
+} : {
+  hardNavigation?: boolean
+}) {
   const BACKEND_URL = process.env.BACKEND_URL
   const tModal = texts.Modal
 
@@ -29,6 +33,7 @@ export default function SignUp() {
           registered={tModal.email.registered}
         />
         <SwitchLink
+          hardNavigation={hardNavigation}
           linkText={tModal.login.title}
           paragraph={tModal.signUp.paragraph.switch}
         />

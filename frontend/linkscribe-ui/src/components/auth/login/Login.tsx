@@ -4,7 +4,11 @@ import ModalText from "@/components/modal/ModalText"
 import SwitchLink from "@/components/modal/SwitchLink"
 import texts from "@messages/en.json"
 
-export default function Login() {
+export default function Login({
+  hardNavigation
+} : {
+  hardNavigation?: boolean
+}) {
   const BACKEND_URL = process.env.BACKEND_URL
   const tModal = texts.Modal
 
@@ -24,6 +28,7 @@ export default function Login() {
           errorMessage={tModal.login.errorMessage}
         />
         <SwitchLink
+          hardNavigation={hardNavigation}
           linkText={tModal.signUp.title}
           paragraph={tModal.login.paragraph.switch}
         />

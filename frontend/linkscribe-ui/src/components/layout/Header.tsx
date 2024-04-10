@@ -6,7 +6,11 @@ import SignButton from "@/components/layout/SignButton"
 import NavBar from "@/components/layout/NavBar"
 import texts from "@messages/en.json"
 
-export default function Header() {
+export default function Header({
+  withSignButton
+} : {
+  withSignButton?: boolean
+}) {
   const t = texts.Header
 
   return (
@@ -26,12 +30,14 @@ export default function Header() {
           </Link>
           <NavBar/>
         </div>
-        <Suspense>
-          <SignButton
-            loginLabel={t.loginLabel}
-            signUpLabel={t.signUpLabel}
-          />
-        </Suspense>
+        {withSignButton &&
+          <Suspense>
+            <SignButton
+              loginLabel={t.loginLabel}
+              signUpLabel={t.signUpLabel}
+            />
+          </Suspense>
+        }
       </div>
     </header>
   )
