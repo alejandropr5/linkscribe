@@ -139,7 +139,6 @@ export const updateUserBookmark = (
     "url": bookmark.url,
     "category_id": bookmark.category_id
   })
-  console.log(raw)
   
   const result = fetch(
     backendUrl + APIConstants.PATCH_USER_BOOKMARK + bookmarkId.toString(),
@@ -147,6 +146,41 @@ export const updateUserBookmark = (
       method: "PUT",
       headers: myHeaders,
       body: raw,
+      redirect: "follow"
+    }
+  )
+  .then(res => {
+    if (!res.ok) {
+      return res.json().then(error => {
+        throw new Error(error.detail, {
+          cause: res
+        })
+      })
+    }
+
+    return res.json()
+  })
+
+  return result
+}
+
+export const deleteUserBookmark = (
+  backendUrl: string | undefined,
+  user: CustomUser | undefined,
+  bookmarkId: number,
+) : Promise<Bookmark>  => {
+  var myHeaders = new Headers()
+  myHeaders.append("Content-Type", "application/json")
+  myHeaders.append(
+    "Authorization",
+    user?.token_type + " " + user?.access_token
+  )      
+  
+  const result = fetch(
+    backendUrl + APIConstants.DELETE_USER_BOOKMARK + bookmarkId.toString(),
+    {
+      method: "DELETE",
+      headers: myHeaders,
       redirect: "follow"
     }
   )

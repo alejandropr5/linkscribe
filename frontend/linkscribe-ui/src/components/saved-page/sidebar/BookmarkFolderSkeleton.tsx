@@ -1,6 +1,5 @@
 import React from "react"
 
-
 interface CategorySkeletonNode {
   id: number
   children: CategorySkeletonNode[]
@@ -86,7 +85,24 @@ export default function BookmarkFolderSkeleton() {
             children: []
           }
         ]
-      }            
+      },
+      {
+        id: 7,
+        children: [
+          {
+            id: 71,
+            children: []
+          },
+          {
+            id: 72,
+            children: []
+          },
+          {
+            id: 73,
+            children: []
+          }
+        ]
+      }         
     ]
   }
   return (

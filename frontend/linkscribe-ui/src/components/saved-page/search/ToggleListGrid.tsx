@@ -15,26 +15,23 @@ export default function ToggleListGrid() {
   return (
     <div className="absolute flex-row flex right-5 top-1/2 transform -translate-y-1/2 h-9">
       <div className="w-fit h-fit border-r-2">
-        {showList ? (
         <button
+          type="button"
           className="w-9 h-9 p-2 rounded-l-md
           hover:bg-[#c1def193]"
           onClick={handleOnClick}
         >
-          <ClientImage imageComponent={listSVG} description={"list SVG"} />
-        </button>
-        ) : (
-          <button
-            className="w-9 h-9 p-2 rounded-l-md
-            hover:bg-[#c1def193]"
-            onClick={handleOnClick}
-          >
+          {showList ? (            
+            <ClientImage imageComponent={listSVG} description={"list SVG"} />
+          ) : (
             <ClientImage imageComponent={gridSVG} description={"grid SVG"} />
-          </button>
-        )}
+          )}
+        </button>
+
       </div>
       <div className="w-fit h-full">
        <button
+          type="button"
           className="w-fit h-full rounded-r-md px-1
           hover:bg-[#c1def193]"
         >
