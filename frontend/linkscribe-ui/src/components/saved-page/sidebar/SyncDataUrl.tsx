@@ -12,18 +12,16 @@ const SyncDataUrl = () => {
   const pathname = usePathname()
   
   useEffect(() => {  
-    console.log("enter useWatch")
-
-    const categories = Object.keys({ ...data })
-    .reduce((acc: string[], key: string) => {
-      if (data[key] && key !== "search") {
-        acc.push(key)
-      }
-      return acc
-    }, [])
+    // const categories = Object.keys({ ...data })
+    // .reduce((acc: string[], key: string) => {
+    //   if (data[key] && key !== "search") {
+    //     acc.push(key)
+    //   }
+    //   return acc
+    // }, [])
 
     const stringfiedParams = queryString.stringify({
-      "cat": categories,
+      "cat": (data["cat"] ? data["cat"] : null),
       "search": (data["search"]?.length > 0 ? data["search"] : null)
     }, { skipNull: true })
 

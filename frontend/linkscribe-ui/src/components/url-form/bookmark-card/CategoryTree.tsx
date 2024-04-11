@@ -25,24 +25,27 @@ const CategoryTree: React.FC<CategoryProps> = (categoryProps: CategoryProps) => 
 
   return (
     <>
-      <div
-        onClick={handleCategoryClick}
-        className="relative flex flex-row py-2 h-[38px] text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md overflow-hidden"
-      >
-        {categoryProps.categoryNode.children?.length > 0 &&
-          <div
-            className="w-5 h-5 ml-[3px] hover:bg-gray-300 rounded-md"
-            onClick={handleArrowClick}
-          >
-            <ClientImage imageComponent={downArrow} description={"Down Arrow SVG"} />
+      {!categoryProps.isFirst &&
+        <div
+          onClick={handleCategoryClick}
+          className="relative flex flex-row py-2 h-[38px] text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md overflow-hidden"
+        >
+          {categoryProps.categoryNode.children?.length > 0 &&
+            <div
+              className="w-5 h-5 ml-[3px] hover:bg-gray-300 rounded-md"
+              onClick={handleArrowClick}
+            >
+              <ClientImage imageComponent={downArrow} description={"Down Arrow SVG"} />
+            </div>
+          }
+          <div className="absolute left-[27px] overflow-hidden text-ellipsis">
+            {categoryProps.categoryNode.name}
           </div>
-        }
-        <div className="absolute left-[27px] overflow-hidden text-ellipsis">
-          {categoryProps.categoryNode.name}
         </div>
-      </div>
+      }
       <div 
-        className="relative ml-3 border-l-[1px] border-gray-300 pl-2 my-[2px]"
+        className={`relative
+        ${categoryProps.isFirst ? "" : "ml-3 border-l-[1px] border-gray-300 pl-2 my-[2px]" }`}
       >
         {showChildren && (categoryProps.categoryNode.children ?? []).map(
           (node: CategoryNode) =>

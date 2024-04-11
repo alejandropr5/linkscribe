@@ -35,8 +35,8 @@ const nextConfig = {
           destination: "/with-modal/:path*",
         },
       ],
-    };
+    }
   }
-};
+}
 
 export default nextConfig;

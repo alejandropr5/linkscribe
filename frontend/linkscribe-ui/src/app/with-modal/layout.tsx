@@ -10,12 +10,14 @@ export default function WithModalLayout ({
   auth: React.ReactNode;
 }) {
   return (
-    <Provider>
+    <>
       { auth }
-      <Header withSignButton={true} />
-      <div className="flex flex-row min-h-[calc(100vh-56px)] w-full bg-gradient-to-br from-white to-[#f3f8fc]">
-        { children }
-      </div>
-    </Provider>
+      <Provider>
+        <Header withSignButton={true} />
+        <div className="flex flex-row min-h-[calc(100vh-56px)] w-full bg-gradient-to-br from-white to-[#f3f8fc]">
+          { children }
+        </div>
+      </Provider>
+    </>
   )
 }

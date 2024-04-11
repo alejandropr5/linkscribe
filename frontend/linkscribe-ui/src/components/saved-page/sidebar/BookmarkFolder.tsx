@@ -7,35 +7,33 @@ import { CategoryNode } from "@/types/types"
 import BookmarkFolderSkeleton from "@/components/saved-page/sidebar/BookmarkFolderSkeleton"
 import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
+import { searchCategory } from "@/components/utils/functions"
 
 
 interface CategoryProps {
   categoryNode: CategoryNode
+  categorySelected: string
+  setCategorySelected: React.Dispatch<React.SetStateAction<string>>
+  isFirst: boolean
 }
 
 
 const CategoryTree: React.FC<CategoryProps> = ({
-  categoryNode
+  categoryNode,
+  categorySelected,
+  setCategorySelected
 }: CategoryProps) => {
-  const searchParams = useSearchParams()
-  const params = queryString.parse(searchParams?.toString() ?? "")
-
   const [ showChildren, setShowChildren ] = useState<boolean>(true)
-  const [ isClicked, setIsClicked ] = useState<boolean>(
-    params.cat?.includes(categoryNode.id.toString()) ?? false
-  )
-  const { register, setValue } = useCategoryFormContext()
-
-  useEffect(() => {
-    setValue(categoryNode.id.toString(), isClicked)
-  }, [isClicked])
 
   const handleCategoryClick = () => {
-    setIsClicked(!isClicked)
+    setCategorySelected(categoryNode.id.toString())
   }
 
   const handleArrowClick = (e: { stopPropagation: () => void }) => {
     e.stopPropagation()
+    if (searchCategory(categoryNode, Number(categorySelected))) {
+      setCategorySelected(categoryNode.id.toString())
+    }
     setShowChildren(!showChildren)
   }
 
@@ -46,7 +44,8 @@ const CategoryTree: React.FC<CategoryProps> = ({
       <div
         onClick={handleCategoryClick}
         className={`relative flex flex-row items-center py-2 h-[38px] cursor-pointer rounded-l-md rounded-r-full overflow-hidden w-full
-        text-gray-700 active:bg-blue-100 ${ isClicked ? "bg-[#e8f0fe]" : "hover:bg-gray-100" }`}
+        text-gray-700 active:bg-blue-100
+        ${ categorySelected === categoryNode.id.toString() ? "bg-[#e8f0fe]" : "hover:bg-gray-100" }`}
       >
         {hasChildren &&
           <div
@@ -62,12 +61,6 @@ const CategoryTree: React.FC<CategoryProps> = ({
         >
           { categoryNode.name }
         </p>
-        <input
-          id={categoryNode.id.toString()}
-          className="hidden"
-          type="checkbox"
-          {...register(categoryNode.id.toString())}
-        />
       </div>
       <div 
         className="ml-[14px] border-l-[1px] border-gray-300 pl-2 my-[2px]"
@@ -76,6 +69,9 @@ const CategoryTree: React.FC<CategoryProps> = ({
           (node: CategoryNode) =>
             <CategoryTree
               categoryNode={node}
+              categorySelected={categorySelected}
+              setCategorySelected={setCategorySelected}
+              isFirst={false}         
               key={node.id}
             />
         )}
@@ -86,16 +82,45 @@ const CategoryTree: React.FC<CategoryProps> = ({
 
 
 export default function BookmarkFolder() {
+  const searchParams = useSearchParams()
+  const params = queryString.parse(searchParams?.toString() ?? "")
+
   const { categories } = useCategoryFormContext()
+  const [ categorySelected, setCategorySelected ] = useState<string>("")
+
+  const { register, setValue } = useCategoryFormContext()
+
+  useEffect(() => {
+    setValue(
+      "cat",
+      categorySelected !== categories?.id.toString() ? categorySelected : ""
+    )
+  }, [categorySelected])
+
+  useEffect(() => {
+    setCategorySelected(
+      typeof params.cat === "string" ? params.cat : categories?.id.toString() ?? ""
+    )
+  }, [categories])
+
   return (
     <div className="relative mr-1 overflow-y-auto">
       {categories ? (
         <CategoryTree
           categoryNode={categories as any}
+          categorySelected={categorySelected}
+          setCategorySelected={setCategorySelected}
+          isFirst={true}
         />
       ) : (
         <BookmarkFolderSkeleton />
       )}
+      <input
+        id="cat" //{categoryNode.id.toString()}
+        className="hidden"
+        type="input"
+        {...register("cat")}
+      />
     </div>
   )
 }
