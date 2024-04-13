@@ -77,7 +77,7 @@ class CategoryBase(BaseModel):
 
 
 class CategoryCreate(CategoryBase):
-    pass
+    name: str | None
 
 
 class Category(CategoryBase):
