@@ -11,18 +11,15 @@ import CategoryTree from "@/components/url-form/bookmark-card/CategoryTree"
 import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
 
-function Modal ({ children, closeCB }: {
-  children: React.ReactNode,
-  closeCB: () => void
+export function Modal ({ children }: {
+  children: React.ReactNode
 }) {
   return (
     <div
       className="fixed min-h-screen inset-0 z-50 flex items-center justify-center px-6 bg-black/50"
-      // onClick={closeCB}
     >
       <div
         className="h-auto overflow-visible rounded-2xl bg-white shadow-2xl w-full max-w-md"
-        // onClick={e => e.stopPropagation()}
       >
         { children }
       </div>
@@ -31,18 +28,18 @@ function Modal ({ children, closeCB }: {
 }
 
 
-function ModalHeader () {
+export function ModalHeader ({ label }: {label: string}) {
   return (
     <div className="h-12 flex items-center px-6 pt-6">
       <div className="text-lg md:text-xl tracking-tight font-bold text-[#52525b] font-jakarta">
-        Edit Bookmark
+        {label}
       </div>      
     </div> 
   )
 }
 
 
-function CancelButton ({ onClick }: {onClick: () => void}) {
+export function CancelButton ({ onClick }: {onClick: () => void}) {
   return (
     <button
       id="cancelButton"
@@ -57,20 +54,24 @@ function CancelButton ({ onClick }: {onClick: () => void}) {
 }
 
 
-function SaveButton () {
+export function SaveButton ({
+  submitLabel
+} : {
+  submitLabel?: string
+}) {
   return (
     <button
       id="saveButton"
       type="submit"
       className="bg-[#00152a] rounded-full font-medium text-white text-sm font-sans px-auto py-auto h-9 w-20 ml-1"
     >
-      Save
+      {submitLabel ? submitLabel : "Save"}
     </button>
   )
 }
 
 
-function EditInput (
+export function EditInput (
   {
     label,
     name,
@@ -113,14 +114,16 @@ function EditInput (
 }
 
 
-function CategorySelect ({
+export function CategorySelect ({
   categories,
   category,
-  setCategory
+  setCategory,
+  label
 } : {
   categories: CategoryNode,
   category: CategoryNode,
   setCategory: React.Dispatch<React.SetStateAction<CategoryNode>>
+  label?: string
 }) {
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
   const dropdown = useRef<HTMLDivElement>(null)
@@ -143,7 +146,7 @@ function CategorySelect ({
       <label
         className="text-[#27272a] font-jakarta text-sm font-bold"
       >
-        Category
+        {label ? label : "Category"}
       </label>
       <button
         onClick={() => setShowDropdown(true)}
@@ -228,8 +231,8 @@ export default function BookmarkEditModal ({ backendUrl }: {backendUrl: string |
     }
 
     return (
-      <Modal closeCB={closeModal}>
-        <ModalHeader />
+      <Modal>
+        <ModalHeader label="Edit Bookmark" />
         <form
           onSubmit={handleSubmit(onSubmit)}
         >
@@ -254,6 +257,7 @@ export default function BookmarkEditModal ({ backendUrl }: {backendUrl: string |
                 categories={categories as CategoryNode}
                 category={category as CategoryNode}
                 setCategory={setCategory as any}
+                label="Folder"
               />
             </div>
             <div className="flex items-center">

@@ -1,6 +1,6 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import React, { useEffect, useState, useRef, useReducer, createContext, useContext } from "react"
+import React, { useEffect, useState, useRef, createContext, useContext } from "react"
 import { deleteUserBookmark, readBookmarks } from "@/components/utils/bookmarkAPI"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
@@ -121,11 +121,11 @@ function BookmarkComponent ({ bookmark, isFirst, isLast }: {
         </a>
       </div>
       <div
-        className="flex flex-row justify-between mx-4 py-4 font-sans w-full"
+        className="flex flex-row justify-between mx-4 py-4 font-sans w-full space-x-4"
       >
-        <div  className="flex flex-col space-y-2">
+        <div  className="relative flex w-full overflow-hidden">
           <a
-            className="text-base font-normal leading-tight tracking-tight text-[#27272a]
+            className="absolute text-base font-normal leading-tight tracking-tight text-[#27272a]
             line-clamp-2
             hover:underline"
             href={bookmark.url}

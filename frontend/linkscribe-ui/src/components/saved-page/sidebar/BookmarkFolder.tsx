@@ -8,6 +8,7 @@ import BookmarkFolderSkeleton from "@/components/saved-page/sidebar/BookmarkFold
 import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
 import { searchCategory } from "@/components/utils/functions"
+import CommandBar from "@/components/saved-page/sidebar/CommandBar"
 
 
 interface CategoryProps {
@@ -56,7 +57,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
           </div>
         }
         <p
-          className={`pr-2 overflow-hidden text-ellipsis font-jakarta font-medium text-nowrap
+          className={`pr-2 overflow-hidden text-ellipsis font-jakarta font-medium text-nowrap text-sm
           ${hasChildren ? "pl-1" : "pl-[30px]" }`}
         >
           { categoryNode.name }
@@ -104,23 +105,28 @@ export default function BookmarkFolder() {
   }, [categories])
 
   return (
-    <div className="relative mr-1 overflow-y-auto">
-      {categories ? (
-        <CategoryTree
-          categoryNode={categories as any}
-          categorySelected={categorySelected}
-          setCategorySelected={setCategorySelected}
-          isFirst={true}
+    <>
+      <div className="relative mr-1 overflow-y-auto h-grow mb-1 scrollbar-thin">
+        {categories ? (
+          <CategoryTree
+            categoryNode={categories as any}
+            categorySelected={categorySelected}
+            setCategorySelected={setCategorySelected}
+            isFirst={true}
+          />
+        ) : (
+          <BookmarkFolderSkeleton />
+        )}
+        <input
+          id="cat" //{categoryNode.id.toString()}
+          className="hidden"
+          type="input"
+          {...register("cat")}
         />
-      ) : (
-        <BookmarkFolderSkeleton />
-      )}
-      <input
-        id="cat" //{categoryNode.id.toString()}
-        className="hidden"
-        type="input"
-        {...register("cat")}
-      />
-    </div>
+      </div>
+      {categorySelected && categories &&
+        <CommandBar hideButtons={categorySelected === categories?.id.toString()} />
+      }
+    </>
   )
 }
