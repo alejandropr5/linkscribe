@@ -92,8 +92,10 @@ def update_category(
 ):
     db_category = get_user_category(db, user_id, category_id)
 
-    db_category.name = new_category.name
-    db_category.father_id = new_category.father_id
+    if new_category.name is not None:
+        db_category.name = new_category.name
+    if new_category.father_id is not None:
+        db_category.father_id = new_category.father_id
     db.commit()
     db.refresh(db_category)
 
