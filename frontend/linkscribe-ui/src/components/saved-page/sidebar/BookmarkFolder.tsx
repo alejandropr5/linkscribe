@@ -22,9 +22,10 @@ interface CategoryProps {
 const CategoryTree: React.FC<CategoryProps> = ({
   categoryNode,
   categorySelected,
-  setCategorySelected
+  setCategorySelected,
+  isFirst
 }: CategoryProps) => {
-  const [ showChildren, setShowChildren ] = useState<boolean>(true)
+  const [ showChildren, setShowChildren ] = useState<boolean>(isFirst)
 
   const handleCategoryClick = () => {
     setCategorySelected(categoryNode.id.toString())
@@ -100,7 +101,11 @@ export default function BookmarkFolder() {
 
   useEffect(() => {
     setCategorySelected(
-      typeof params.cat === "string" ? params.cat : categories?.id.toString() ?? ""
+      typeof params.cat === "string" ? (
+        params.cat
+      ) : (
+        categories?.id.toString() ?? ""
+      )
     )
   }, [categories])
 
@@ -118,7 +123,7 @@ export default function BookmarkFolder() {
           <BookmarkFolderSkeleton />
         )}
         <input
-          id="cat" //{categoryNode.id.toString()}
+          id="cat"
           className="hidden"
           type="input"
           {...register("cat")}

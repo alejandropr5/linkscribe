@@ -6,6 +6,7 @@ import { Session } from "next-auth"
 import { getUserCategories } from "@/components/utils/categoryAPI"
 import { CategoryNode } from "@/types/types"
 import useCategoriesData from "@/hooks/useCategoriesData"
+import useCategoryUpdate from "@/hooks/useCategoryUpdate"
 
 
 interface ContextProps {
@@ -35,6 +36,7 @@ export default function CategoryForm({
 }) {
   const { categories, setCategories } = useCategoriesData()
   const { register, setValue, control } = useForm({ mode: "all" })
+  const { update } = useCategoryUpdate()
 
   const { data: session } = useSession()
 
@@ -45,7 +47,7 @@ export default function CategoryForm({
         setCategories(result)
       })
     }
-  }, [backendUrl, session, setCategories])  
+  }, [backendUrl, session, setCategories, update])  
 
   return (
     <CategoryFormContext.Provider

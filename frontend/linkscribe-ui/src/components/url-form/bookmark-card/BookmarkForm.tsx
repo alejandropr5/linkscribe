@@ -45,7 +45,7 @@ export default function BookmarkForm({
 
     if (session) {
        if (categoryId === 0){
-        const result = await createUserCategory(backendUrl, session.user as any, bookmark)
+        const result = await createUserCategory(backendUrl, session.user as any, bookmark.category.name)
 
         categoryId = result.id
       }

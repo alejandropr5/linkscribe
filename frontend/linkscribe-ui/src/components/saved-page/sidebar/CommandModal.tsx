@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import { useSearchParams } from "next/navigation"
@@ -9,25 +9,28 @@ import useCategoriesData from "@/hooks/useCategoriesData"
 import useCategoryUpdate from "@/hooks/useCategoryUpdate"
 import { CategoryNode, CustomUser } from "@/types/types"
 import { searchCategory } from "@/components/utils/functions"
+import { createUserCategory, deleteUserCategory, patchUserCategory } from "@/components/utils/categoryAPI"
+import { toast } from "react-toastify"
 
 
 function AddCategory ({
   children,
   category,
-  categories,
   backendUrl,
   user
 } : {
   children: React.ReactNode
   category: CategoryNode
-  categories: CategoryNode
   backendUrl: string | undefined
   user: CustomUser
 }) {
   const { register, handleSubmit } = useForm()
+  const { clearCommand, forceUpdate } = useCategoryUpdate()
 
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const onSubmit = async (data: any) => {
+    await createUserCategory(backendUrl, user, data.nameInput, category.id.toString())
+    await forceUpdate()
+    await clearCommand()
   }
 
   return (
@@ -69,8 +72,17 @@ function RenameCategory ({
   user: CustomUser
 }) {
   const { register, handleSubmit } = useForm()
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const { clearCommand, forceUpdate } = useCategoryUpdate()
+  
+  const onSubmit = async (data: any) => {
+    await patchUserCategory(
+      backendUrl,
+      user,
+      category.id.toString(),
+      data.nameInput      
+    )
+    await forceUpdate()
+    await clearCommand()
   }
 
   return (
@@ -98,12 +110,12 @@ function RenameCategory ({
 }
 
 
-function DeleteCategory ({
+function MoveCategory ({
   children,
   category,
   categories,
   backendUrl,
-  user
+  user,
 } : {
   children: React.ReactNode
   category: CategoryNode
@@ -111,51 +123,22 @@ function DeleteCategory ({
   backendUrl: string | undefined
   user: CustomUser
 }) {
-  const { register, handleSubmit } = useForm()
-  const onSubmit = (data: any) => {
-    console.log(data)
-  }
-
-  return (
-    <>
-      <ModalHeader label="Rename Folder" />
-      <form
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div className="p-6 font-sans space-y-6">
-            <div className="space-y-4">
-            <label
-              className="text-[#27272a] font-jakarta text-sm font-bold"
-            >
-              All bookmarks in this folder will be deleted, are you sure you want to delete &quot;{category.name}&quot;?
-            </label>
-            </div>
-            { children }
-          </div>
-        </form>
-    </>
+  const [ fatherCategory, setFatherCategory ] = useState<CategoryNode>(
+    searchCategory(categories as any, category.father_id) as CategoryNode
   )
-}
-
-
-function MoveCategory ({
-  children,
-  currentCategory,
-  categories,
-  backendUrl,
-  user
-} : {
-  children: React.ReactNode
-  currentCategory: CategoryNode
-  categories: CategoryNode
-  backendUrl: string | undefined
-  user: CustomUser
-}) {
-  const [ category, setCategory ] = useState<CategoryNode>(currentCategory)
-  const { register, handleSubmit } = useForm()
-
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const { handleSubmit } = useForm()
+  const { clearCommand, forceUpdate } = useCategoryUpdate()
+  
+  const onSubmit = async (data: any) => {
+    await patchUserCategory(
+      backendUrl,
+      user,
+      category.id.toString(),
+      undefined,
+      fatherCategory.id.toString()
+    )
+    await forceUpdate()
+    await clearCommand()
   }
 
   return (
@@ -168,10 +151,55 @@ function MoveCategory ({
             <div className="space-y-4">
               <CategorySelect
                 categories={categories as CategoryNode}
-                category={category as CategoryNode}
-                setCategory={setCategory as any}
+                category={fatherCategory}
+                setCategory={setFatherCategory as any}
                 label="Move To"
+                hiddenCategory={category.id}
+                showRoot={true}
               />
+            </div>
+            { children }
+          </div>
+        </form>
+    </>
+  )
+}
+
+
+function DeleteCategory ({
+  children,
+  category,
+  backendUrl,
+  user
+} : {
+  children: React.ReactNode
+  category: CategoryNode
+  backendUrl: string | undefined
+  user: CustomUser
+}) {
+  const { handleSubmit } = useForm()
+  const { clearCommand, forceUpdate } = useCategoryUpdate()
+
+  const onSubmit = async (data: any) => {
+    await deleteUserCategory(backendUrl, user, category.id.toString())
+    toast.info(`\"${category.name}\" deleted`)
+    await forceUpdate()
+    await clearCommand()
+  }
+
+  return (
+    <>
+      <ModalHeader label="Delete Folder" />
+      <form
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="p-6 font-sans space-y-6">
+            <div className="space-y-4">
+            <label
+              className="text-[#27272a] font-jakarta text-sm font-semibold"
+            >
+              All bookmarks in this folder will be deleted, are you sure you want to delete &quot;<b>{category.name}</b>&quot;?
+            </label>
             </div>
             { children }
           </div>
@@ -192,6 +220,7 @@ function ButtonGroup ({
     <div className="flex items-center">
       <CancelButton onClick={closeModal} />
       <SaveButton submitLabel={submitLabel} />
+
     </div>
   )
 }
@@ -203,8 +232,16 @@ export default function CommandModal ({ backendUrl }: {backendUrl: string | unde
   const searchParams = useSearchParams()
   const params = queryString.parse(searchParams?.toString() ?? "")
   const categoryId = typeof params.cat === "string" ? params.cat : categories?.id.toString() ?? ""
-  const { command, clearCommand } = useCategoryUpdate()
+  const { command, clearCommand, forceUpdate } = useCategoryUpdate()
   const category = searchCategory(categories as any, Number(categoryId))
+
+  useEffect(() => {
+    if (command) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+  }, [command])
 
   if (!command) {
     return null
@@ -214,7 +251,6 @@ export default function CommandModal ({ backendUrl }: {backendUrl: string | unde
       <Modal>
         <AddCategory
           backendUrl={backendUrl}
-          categories={categories as CategoryNode}
           category={category as CategoryNode}
           user={session?.user as CustomUser}
         >
@@ -243,7 +279,7 @@ export default function CommandModal ({ backendUrl }: {backendUrl: string | unde
         <MoveCategory
           backendUrl={backendUrl}
           categories={categories as CategoryNode}
-          currentCategory={category as CategoryNode}
+          category={category as CategoryNode}
           user={session?.user as CustomUser}
         >
           <ButtonGroup closeModal={clearCommand} submitLabel="Move" />
@@ -256,7 +292,6 @@ export default function CommandModal ({ backendUrl }: {backendUrl: string | unde
       <Modal>
         <DeleteCategory
           backendUrl={backendUrl}
-          categories={categories as CategoryNode}
           category={category as CategoryNode}
           user={session?.user as CustomUser}
         >

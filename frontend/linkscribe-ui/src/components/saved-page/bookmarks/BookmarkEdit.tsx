@@ -118,12 +118,16 @@ export function CategorySelect ({
   categories,
   category,
   setCategory,
-  label
+  label,
+  hiddenCategory,
+  showRoot
 } : {
   categories: CategoryNode,
   category: CategoryNode,
   setCategory: React.Dispatch<React.SetStateAction<CategoryNode>>
   label?: string
+  showRoot?: boolean
+  hiddenCategory?: number
 }) {
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
   const dropdown = useRef<HTMLDivElement>(null)
@@ -180,6 +184,8 @@ export function CategorySelect ({
                 setCategory={setCategory}
                 setShowDropdown={setShowDropdown}
                 isFirst={true}
+                showRoot={showRoot}
+                hiddenCategory={hiddenCategory}
               />
             </div>
           </div>

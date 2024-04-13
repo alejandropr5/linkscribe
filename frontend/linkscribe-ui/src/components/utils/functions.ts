@@ -5,13 +5,13 @@ export const searchCategory = (
   categoryId: number
 ) : CategoryNode | null => {
   if (category && category.id == categoryId) {
-     return category
+    return category
   } else if (category && category.children != null){
-     var result = null
-     for(var i = 0; (result == null) && (i < category.children.length); i++){
-          result = searchCategory(category.children[i], categoryId)
-     }
-     return result
+    var result = null
+      for(var i = 0; (result == null) && (i < category.children.length); i++){
+        result = searchCategory(category.children[i], categoryId)
+      }
+      return result
   }
   return null
 }

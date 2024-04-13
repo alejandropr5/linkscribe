@@ -8,6 +8,8 @@ interface CategoryProps {
   setCategory: (newCategory: CategoryNode) => void
   setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>
   isFirst: boolean
+  showRoot?: boolean
+  hiddenCategory?: number
 }
 
 const CategoryTree: React.FC<CategoryProps> = (categoryProps: CategoryProps) => {
@@ -23,9 +25,11 @@ const CategoryTree: React.FC<CategoryProps> = (categoryProps: CategoryProps) => 
     setShowChildren(!showChildren)
   }
 
+  const show = (categoryProps.isFirst && categoryProps.showRoot) || !categoryProps.isFirst
+
   return (
     <>
-      {!categoryProps.isFirst &&
+      {show &&
         <div
           onClick={handleCategoryClick}
           className="relative flex flex-row py-2 h-[38px] text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md overflow-hidden"
@@ -45,17 +49,26 @@ const CategoryTree: React.FC<CategoryProps> = (categoryProps: CategoryProps) => 
       }
       <div 
         className={`relative
-        ${categoryProps.isFirst ? "" : "ml-3 border-l-[1px] border-gray-300 pl-2 my-[2px]" }`}
+        ${!show ? "" : "ml-3 border-l-[1px] border-gray-300 pl-2 my-[2px]" }`}
       >
         {showChildren && (categoryProps.categoryNode.children ?? []).map(
-          (node: CategoryNode) =>
-            <CategoryTree
-              categoryNode={node}
-              setCategory={categoryProps.setCategory}
-              setShowDropdown={categoryProps.setShowDropdown}
-              isFirst={false}
-              key={node.id}
-            />
+          (node: CategoryNode) => {
+            if (node.id === categoryProps.hiddenCategory) {
+              return null
+            }
+            else {
+              return (
+                <CategoryTree
+                  categoryNode={node}
+                  setCategory={categoryProps.setCategory}
+                  setShowDropdown={categoryProps.setShowDropdown}
+                  isFirst={false}
+                  hiddenCategory={categoryProps.hiddenCategory}
+                  key={node.id}
+                />
+              )
+            }
+          }
         )}
       </div>
     </>
