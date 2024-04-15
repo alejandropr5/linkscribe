@@ -9,6 +9,7 @@ import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
 import { searchCategory } from "@/components/utils/functions"
 import CommandBar from "@/components/saved-page/sidebar/CommandBar"
+import useCategoriesData from "@/hooks/useCategoriesData"
 
 
 interface CategoryProps {
@@ -87,7 +88,7 @@ export default function BookmarkFolder() {
   const searchParams = useSearchParams()
   const params = queryString.parse(searchParams?.toString() ?? "")
 
-  const { categories } = useCategoryFormContext()
+  const { categories } = useCategoriesData()
   const [ categorySelected, setCategorySelected ] = useState<string>("")
 
   const { register, setValue } = useCategoryFormContext()
