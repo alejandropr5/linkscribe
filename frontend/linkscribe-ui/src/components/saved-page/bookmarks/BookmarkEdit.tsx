@@ -197,7 +197,7 @@ export function CategorySelect ({
 
 
 export default function BookmarkEditModal ({ backendUrl }: {backendUrl: string | undefined}) {
-  const { bookmark, clearBookmark } = useBookmarkData()
+  const { bookmark, clearBookmark, forceUpdate } = useBookmarkData()
   const { categories } = useCategoriesData()
   const [ category, setCategory ] = useState<CategoryNode | null>()
   const { register, reset, handleSubmit } = useForm()
@@ -232,7 +232,7 @@ export default function BookmarkEditModal ({ backendUrl }: {backendUrl: string |
           category_id: category?.id as number
         }
       )
-
+      forceUpdate()
       closeModal()
     }
 

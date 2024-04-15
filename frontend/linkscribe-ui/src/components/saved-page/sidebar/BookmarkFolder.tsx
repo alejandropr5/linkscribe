@@ -25,7 +25,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
   setCategorySelected,
   isFirst
 }: CategoryProps) => {
-  const [ showChildren, setShowChildren ] = useState<boolean>(isFirst)
+  const [ showChildren, setShowChildren ] = useState<boolean>(true)
 
   const handleCategoryClick = () => {
     setCategorySelected(categoryNode.id.toString())
@@ -73,7 +73,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
               categoryNode={node}
               categorySelected={categorySelected}
               setCategorySelected={setCategorySelected}
-              isFirst={false}         
+              isFirst={false}   
               key={node.id}
             />
         )}

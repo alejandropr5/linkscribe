@@ -3,6 +3,7 @@ import { BookmarkResponse as Bookmark } from '@/types/types'
 import { useSyncExternalStore } from 'react'
 
 let bookmarkData: Bookmark | undefined = undefined
+let updateData: number = 0
 
 let setBookmark = (bookmark: Bookmark) => {
   bookmarkData = bookmark
@@ -11,6 +12,11 @@ let setBookmark = (bookmark: Bookmark) => {
 
 let clearBookmark = () => {
   bookmarkData = undefined
+  notifiers.forEach((notify: any) => notify())
+}
+
+let forceUpdate = () => {
+  updateData = updateData + 1
   notifiers.forEach((notify: any) => notify())
 }
 
@@ -23,6 +29,7 @@ function subscribe (notify: any) {
 
 export default function useBookmarkData() {
   let bookmark = useSyncExternalStore(subscribe, () => bookmarkData, () => bookmarkData)
+  let update = useSyncExternalStore(subscribe, () => updateData, () => updateData)
 
-  return { bookmark, setBookmark, clearBookmark }
+  return { bookmark, setBookmark, clearBookmark, update, forceUpdate }
 }

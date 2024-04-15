@@ -1,6 +1,6 @@
 "use client"
 import { useSearchParams, usePathname } from "next/navigation"
-import React, { useEffect, useState, useRef, createContext, useContext } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { deleteUserBookmark, readBookmarks } from "@/components/utils/bookmarkAPI"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
@@ -17,9 +17,6 @@ import queryString from "query-string"
 import { searchCategory } from "@/components/utils/functions"
 import folderSVG from "@public/folder-blue.svg"
 
-interface ContextProps {
-  forceUpdate: () => void
-}
 
 function OptionsDropdown ({ bookmark, setShowDropdown }: {
   bookmark: Bookmark,
@@ -27,7 +24,7 @@ function OptionsDropdown ({ bookmark, setShowDropdown }: {
 }) {
   const { setBookmark } = useBookmarkData()
   const { backendUrl, session } = useCategoryFormContext()
-  const { forceUpdate } = useBookmarksContext()
+  const { forceUpdate } = useBookmarkData()
   const dropdown = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -153,32 +150,6 @@ function BookmarkComponent ({ bookmark, isFirst, isLast }: {
 }
 
 
-const BookmarksContext = createContext<ContextProps>({
-  forceUpdate: null as any
-})
-
-
-function BookmarkProvider ({
-  children,
-  forceUpdate
-} : {
-  children: React.ReactNode
-  forceUpdate: React.DispatchWithoutAction
-}) {
-  return (
-    <BookmarksContext.Provider 
-      value={{
-        forceUpdate
-      }}
-    >
-      { children }
-    </BookmarksContext.Provider>
-  )
-}
-
-const useBookmarksContext = () => useContext(BookmarksContext)
-
-
 function FolderComponent ({ category, pathName, isFirst, isLast }: {
   category: CategoryNode
   pathName: string | null
@@ -235,12 +206,12 @@ export default function Bookmarks({
 }) {
   const [parentCategory, setParentCategory] = useState<CategoryNode | null>(null)
   const [bookmarksList, setBookmarksList] = useState<Bookmark[]>()
-  const [value, setValue] = useState<number>(0)
+  // const [value, setValue] = useState<number>(0)
   const controllerRef = useRef<AbortController>()
 
   const searchParams = useSearchParams()
   const pathname = usePathname()
-  const { bookmark } = useBookmarkData()
+  const { bookmark, update } = useBookmarkData()
   const { categories } = useCategoriesData()
   const { data: session } = useSession()
 
@@ -253,39 +224,31 @@ export default function Bookmarks({
   }, [cat, categories])
 
   useEffect(() => {
-    if (!bookmark) {
-      if ( controllerRef.current ) {
-        controllerRef.current.abort()
-      }
-  
-      controllerRef.current = new AbortController()
-      const signal = controllerRef.current.signal
-      
-      if (session) {
-        readBookmarks(backendUrl, session.user, searchParams, signal)
-        .then((result: Bookmark[]) => setBookmarksList(result))
-      }
+    if ( controllerRef.current ) {
+      controllerRef.current.abort()
     }
-  }, [backendUrl, searchParams, session, bookmark, value])
 
-  const forceUpdate = () => {
-    setValue(value => value + 1)
-  }
+    controllerRef.current = new AbortController()
+    const signal = controllerRef.current.signal
+    
+    if (session) {
+      readBookmarks(backendUrl, session.user, searchParams, signal)
+      .then((result: Bookmark[]) => setBookmarksList(result))
+    }
+  }, [backendUrl, searchParams, session, update])
 
   return (
     <div className="bg-white rounded-2xl w-full">
-      <BookmarkProvider forceUpdate={ forceUpdate } >
-        {(bookmarksList ?? []).map((bookmark: Bookmark, index) =>
-          <BookmarkComponent
-            bookmark={bookmark}
-            isFirst={index == 0}
-            isLast={
-              bookmarksList?.length == index + 1 && (parentCategory?.children ?? []).length == 0 
-            }
-            key={bookmark.id}
-          />
-        )}
-      </BookmarkProvider>
+      {(bookmarksList ?? []).map((bookmark: Bookmark, index) =>
+        <BookmarkComponent
+          bookmark={bookmark}
+          isFirst={index == 0}
+          isLast={
+            bookmarksList?.length == index + 1 && (parentCategory?.children ?? []).length == 0 
+          }
+          key={bookmark.id}
+        />
+      )}
       {!search && (parentCategory?.children ?? []).map(
         (category: CategoryNode, index) => 
         <FolderComponent
