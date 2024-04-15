@@ -1,6 +1,6 @@
 "use client"
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, memo } from "react"
 import { deleteUserBookmark, readBookmarks } from "@/components/utils/bookmarkAPI"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
@@ -16,6 +16,7 @@ import queryString from "query-string"
 import { searchCategory } from "@/components/utils/functions"
 import folderSVG from "@public/folder-blue.svg"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
+import BookmarksSkeleton from "./BookmarksSkeleton"
 
 
 function OptionsDropdown ({ bookmark, setShowDropdown }: {
@@ -200,7 +201,7 @@ function FolderComponent ({ category, pathName, isFirst, isLast, router }: {
 }
 
 
-export default function Bookmarks({
+function Bookmarks({
   backendUrl
 }: {
   backendUrl: string | undefined
@@ -232,35 +233,46 @@ export default function Bookmarks({
     controllerRef.current = new AbortController()
     const signal = controllerRef.current.signal
     
-    if (session) {
+    if (session && cat != "") {
       readBookmarks(backendUrl, session.user, searchParams, signal)
       .then((result: Bookmark[]) => setBookmarksList(result))
     }
-  }, [backendUrl, searchParams, session, update])
+  }, [backendUrl, cat, searchParams, session, update])
 
   return (
-    <div className="bg-white rounded-2xl w-full">
-      {(bookmarksList ?? []).map((bookmark: Bookmark, index) =>
-        <BookmarkComponent
-          bookmark={bookmark}
-          isFirst={index == 0}
-          isLast={
-            bookmarksList?.length == index + 1 && (parentCategory?.children ?? []).length == 0 
-          }
-          key={bookmark.id}
-        />
+    <>
+      {bookmarksList ? (
+        <div className="bg-white rounded-2xl w-full">
+          {(bookmarksList ?? []).map((bookmark: Bookmark, index) =>
+            <BookmarkComponent
+              bookmark={bookmark}
+              isFirst={index == 0}
+              isLast={
+                bookmarksList?.length == index + 1 && (parentCategory?.children ?? []).length == 0 
+              }
+              key={bookmark.id}
+            />
+          )}
+          {!search && (parentCategory?.children ?? []).map(
+            (category: CategoryNode, index) => 
+            <FolderComponent
+              category={category}
+              pathName={pathname}
+              isFirst={index == 0 && (bookmarksList ?? []).length == 0}
+              isLast={parentCategory?.children.length == index + 1}
+              router={router}
+              key={category.id}
+            />
+          )}
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl w-full">
+          <BookmarksSkeleton />
+        </div>
       )}
-      {!search && (parentCategory?.children ?? []).map(
-        (category: CategoryNode, index) => 
-        <FolderComponent
-          category={category}
-          pathName={pathname}
-          isFirst={index == 0 && (bookmarksList ?? []).length == 0}
-          isLast={parentCategory?.children.length == index + 1}
-          router={router}
-          key={category.id}
-        />
-      )}
-    </div>
+    </>
+
   )
 }
+
+export default memo(Bookmarks)
