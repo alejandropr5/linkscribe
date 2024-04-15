@@ -36,7 +36,7 @@ def read_user_bookmarks(
         schemas.User, Depends(user_models.get_current_active_user)
     ],
     search: Annotated[str | None, Query()] = None,
-    cat: Annotated[list[int] | None, Query()] = None,
+    cat: Annotated[int | None, Query()] = None,
     skip: Annotated[int, Query()] = 0,
     limit: Annotated[int, Query()] = 100,
     db: Session = Depends(database.get_db),
@@ -44,7 +44,7 @@ def read_user_bookmarks(
     bookmarks = crud.get_user_bookmarks(
         db,
         user_id=current_user.id,
-        categories_id=cat,
+        category_id=cat,
         search_text=search,
         skip=skip,
         limit=limit,

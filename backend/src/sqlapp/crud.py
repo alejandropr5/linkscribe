@@ -132,7 +132,7 @@ def create_user_category_bookmark(
 def get_user_bookmarks(
     db: Session,
     user_id: int,
-    categories_id: list[int] | None,
+    category_id: int | None,
     search_text: str | None,
     skip: int = 0,
     limit: int = 100,
@@ -148,8 +148,8 @@ def get_user_bookmarks(
         .group_by(b.id)
     )
 
-    if categories_id is not None:
-        query = query.filter(b.category_id.in_(categories_id))
+    if category_id is not None:
+        query = query.filter(b.category_id == category_id)
 
     if search_text is not None:
         search_words = search_text.split()
