@@ -1,10 +1,9 @@
 "use client"
-import { useSearchParams, usePathname } from "next/navigation"
+import { useSearchParams, usePathname, useRouter } from "next/navigation"
 import React, { useEffect, useState, useRef } from "react"
 import { deleteUserBookmark, readBookmarks } from "@/components/utils/bookmarkAPI"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
-import Link from "next/link"
 import { toast } from "react-toastify"
 
 import { BookmarkResponse as Bookmark, CategoryNode } from "@/types/types"
@@ -16,6 +15,7 @@ import useCategoriesData from "@/hooks/useCategoriesData"
 import queryString from "query-string"
 import { searchCategory } from "@/components/utils/functions"
 import folderSVG from "@public/folder-blue.svg"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
 
 function OptionsDropdown ({ bookmark, setShowDropdown }: {
@@ -150,20 +150,21 @@ function BookmarkComponent ({ bookmark, isFirst, isLast }: {
 }
 
 
-function FolderComponent ({ category, pathName, isFirst, isLast }: {
+function FolderComponent ({ category, pathName, isFirst, isLast, router }: {
   category: CategoryNode
   pathName: string | null
   isFirst: boolean
   isLast: boolean
+  router: AppRouterInstance
 }) {
   return (
-    <Link
-      className={`flex flex-row h-14 sm:h-20 w-full
+    <div
+      className={`flex flex-row h-14 sm:h-20 w-full cursor-pointer
       shadow-sm shadow-[#c1def17c] hover:bg-gray-100
       ${isFirst ? "rounded-t-2xl" : ""}
       ${isLast ? "rounded-b-2xl" : ""}
       `}
-      href={`${pathName}?cat=${category.id}`}
+      onClick={() => router.push(`${pathName}?cat=${category.id}`)}
     >
       <div
         className="flex justify-center items-center overflow-hidden my-1 rounded-lg
@@ -194,7 +195,7 @@ function FolderComponent ({ category, pathName, isFirst, isLast }: {
           </span>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
 
@@ -206,14 +207,14 @@ export default function Bookmarks({
 }) {
   const [parentCategory, setParentCategory] = useState<CategoryNode | null>(null)
   const [bookmarksList, setBookmarksList] = useState<Bookmark[]>()
-  // const [value, setValue] = useState<number>(0)
   const controllerRef = useRef<AbortController>()
 
   const searchParams = useSearchParams()
   const pathname = usePathname()
-  const { bookmark, update } = useBookmarkData()
+  const { update } = useBookmarkData()
   const { categories } = useCategoriesData()
   const { data: session } = useSession()
+  const router = useRouter()
 
   const params = queryString.parse(searchParams?.toString() ?? "")
   const cat = typeof params.cat === "string" ? params.cat : ""
@@ -256,6 +257,7 @@ export default function Bookmarks({
           pathName={pathname}
           isFirst={index == 0 && (bookmarksList ?? []).length == 0}
           isLast={parentCategory?.children.length == index + 1}
+          router={router}
           key={category.id}
         />
       )}
