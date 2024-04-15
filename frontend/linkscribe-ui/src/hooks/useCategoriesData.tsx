@@ -16,7 +16,7 @@ function subscribe (notify: any) {
   return () => notifiers.delete(notify)
 }
 
-export default function useBookmarkData() {
+export default function useCategoriesData() {
   let categories = useSyncExternalStore(subscribe, () => categoriesData, () => categoriesData)
 
   return { categories, setCategories }

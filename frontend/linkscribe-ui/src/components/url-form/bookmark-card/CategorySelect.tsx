@@ -106,6 +106,7 @@ export default function CategorySelect () {
                 setCategory={setCategory}
                 setShowDropdown={setShowDropdown}
                 isFirst={true}
+                showRoot={true}
               />
             </div>
           </div>

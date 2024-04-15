@@ -81,7 +81,7 @@ export default function CommandBar({ hideButtons } : {hideButtons: boolean}) {
         <div className="w-6 h-6 p-[1px]">
           <ClientImage imageComponent={addFolderSVG} description={"New folder icon"} />
         </div>
-        <span className="text-white font-sans text-[12px] font-medium">
+        <span className="text-white font-sans text-[12px] font-medium text-nowrap">
           Add Folder
         </span>
       </button>

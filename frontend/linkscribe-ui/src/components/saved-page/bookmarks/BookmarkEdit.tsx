@@ -264,6 +264,7 @@ export default function BookmarkEditModal ({ backendUrl }: {backendUrl: string |
                 category={category as CategoryNode}
                 setCategory={setCategory as any}
                 label="Folder"
+                showRoot={true}
               />
             </div>
             <div className="flex items-center">

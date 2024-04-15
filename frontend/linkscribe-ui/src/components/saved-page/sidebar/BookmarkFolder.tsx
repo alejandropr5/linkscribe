@@ -95,9 +95,9 @@ export default function BookmarkFolder() {
   useEffect(() => {
     setValue(
       "cat",
-      categorySelected !== categories?.id.toString() ? categorySelected : ""
+      categorySelected // !== categories?.id.toString() ? categorySelected : ""
     )
-  }, [categorySelected])
+  }, [categorySelected, setValue])
 
   useEffect(() => {
     setCategorySelected(
@@ -107,7 +107,7 @@ export default function BookmarkFolder() {
         categories?.id.toString() ?? ""
       )
     )
-  }, [categories])
+  }, [categories, params.cat])
 
   return (
     <>
