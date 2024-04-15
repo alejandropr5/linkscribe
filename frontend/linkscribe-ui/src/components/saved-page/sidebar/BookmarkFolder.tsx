@@ -58,7 +58,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
           </div>
         }
         <p
-          className={`pr-2 overflow-hidden text-ellipsis font-jakarta font-medium text-nowrap text-sm
+          className={`pr-2 overflow-hidden text-ellipsis font-jakarta font-medium text-nowrap text-sm 2xl:text-base
           ${hasChildren ? "pl-1" : "pl-[30px]" }`}
         >
           { categoryNode.name }
