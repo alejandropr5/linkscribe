@@ -25,7 +25,7 @@ export default function NavBar () {
           </a>
         )
       })}
-      <a className="text-[#60606b] hidden sm:flex" href="https://github.com/alejandropr5/linkscribe" target="_blank">
+      <a className="text-[#60606b] hidden sm:flex items-center" href="https://github.com/alejandropr5/linkscribe" target="_blank">
         Source Code
         <div className="w-5 h-5 ml-1">
           <ClientImage imageComponent={OuterLink} description={"Outer link svg"} />
