@@ -22,10 +22,7 @@ class Category(Base):
     father_id = Column(Integer, ForeignKey("categories.id"))
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
-    children = relationship(
-        "Category",
-        order_by=id
-    )
+    children = relationship("Category", order_by=id)
 
 
 class Bookmark(Base):
