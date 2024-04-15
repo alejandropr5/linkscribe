@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session, aliased
-from sqlalchemy import or_, func, not_
+from sqlalchemy import or_, func, not_, literal
 # from datetime import datetime
 
 from sqlapp import models, schemas
@@ -149,7 +149,25 @@ def get_user_bookmarks(
     )
 
     if category_id is not None:
-        query = query.filter(b.category_id == category_id)
+        if search_text is None:
+            query = query.filter(b.category_id == category_id)
+        else:
+            tree = (
+                db.query(models.Category, literal(0).label("level"))
+                .filter_by(id=category_id)
+                .cte(name="tree", recursive=True)
+            )
+
+            father = aliased(tree, name="f")
+            children = aliased(models.Category, name="c")
+
+            categories = tree.union(
+                db.query(children, (father.c.level + 1).label("level")).join(
+                    father, father.c.id == children.father_id
+                )
+            )
+
+            query = query.join(categories, categories.c.id == b.category_id)
 
     if search_text is not None:
         search_words = search_text.split()
