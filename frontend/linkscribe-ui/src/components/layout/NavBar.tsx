@@ -12,7 +12,7 @@ export default function NavBar () {
     {name: "Saved", href: "/saved"}
   ]
   return (
-    <div className="flex items-center space-x-5 font-medium font-sans md:text-base">
+    <div className="flex flex-row justify-center items-center space-x-5 font-medium font-sans md:text-base h-full">
       {navLinks.map((link) => {
         const isActive = pathname === link.href
         return (

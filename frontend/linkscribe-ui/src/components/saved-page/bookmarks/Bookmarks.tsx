@@ -105,13 +105,16 @@ function BookmarkComponent ({ bookmark, isFirst, isLast }: {
 }) {
   return (
     <div
-      className={`flex flex-row h-20 w-full
+      className={`flex flex-row h-14 sm:h-20 w-full
       shadow-sm shadow-[#c1def17c]
       ${isFirst ? "rounded-t-2xl" : ""}
       ${isLast ? "rounded-b-2xl" : ""}
       `}
     >
-      <div className="flex justify-center items-center overflow-hidden my-1 rounded-lg min-w-32 max-w-32">
+      <div
+        className="flex justify-center items-center overflow-hidden my-1 rounded-lg
+        sm:min-w-32 sm:max-w-32 min-w-16 max-w-16"
+      >
         <a
           className="mx-1 my-auto"
           href={bookmark.url}
@@ -120,19 +123,20 @@ function BookmarkComponent ({ bookmark, isFirst, isLast }: {
           <Image
             src={bookmark.image}
             alt={bookmark.name}
-            className="w-fit max-h-[72px] rounded-lg"
+            className="w-fit max-h-10 sm:max-h-[72px] rounded-lg"
             height={80}
             width={128}
           />
         </a>
       </div>
       <div
-        className="flex flex-row justify-between mx-4 py-4 font-sans w-full space-x-4"
+        className="flex flex-row justify-between font-sans w-full
+        mx-2 sm:mx-4 py-3 sm:py-4 space-x-2 sm:space-x-4"
       >
         <div  className="relative flex w-full overflow-hidden">
           <a
-            className="absolute text-base font-normal leading-tight tracking-tight text-[#27272a]
-            line-clamp-2
+            className="absolute font-normal leading-tight tracking-tight text-[#27272a]
+            line-clamp-2 sm:text-base text-xs
             hover:underline"
             href={bookmark.url}
             target="_blank"
@@ -183,33 +187,37 @@ function FolderComponent ({ category, pathName, isFirst, isLast }: {
 }) {
   return (
     <Link
-      className={`flex flex-row h-20 w-full
+      className={`flex flex-row h-14 sm:h-20 w-full
       shadow-sm shadow-[#c1def17c] hover:bg-gray-100
       ${isFirst ? "rounded-t-2xl" : ""}
       ${isLast ? "rounded-b-2xl" : ""}
       `}
       href={`${pathName}?cat=${category.id}`}
     >
-      <div className="flex justify-center items-center overflow-hidden my-1 rounded-lg min-w-32 max-w-32">
+      <div
+        className="flex justify-center items-center overflow-hidden my-1 rounded-lg
+        sm:min-w-32 sm:max-w-32 min-w-16 max-w-16"
+      >
         <div
           className="mx-1 my-auto"
         >
           <Image
             src={folderSVG}
             alt="Folder icon"
-            className="w-fit h-[72px] rounded-lg"
+            className="w-fit h-10 sm:h-[72px] rounded-lg"
             height={100}
             width={100}
           />
         </div>
       </div>
       <div
-        className="flex flex-row justify-between mx-4 py-4 font-sans w-full space-x-4"
+        className="flex flex-row justify-between font-sans w-full
+        mx-2 sm:mx-4 py-3 sm:py-4 space-x-2 sm:space-x-4"
       >
         <div  className="relative flex w-full overflow-hidden items-center">
           <span
-            className="absolute text-base font-medium leading-tight tracking-tight text-[#27272a]
-            line-clamp-2"
+            className="absolute font-medium leading-tight tracking-tight text-[#27272a]
+            line-clamp-2 sm:text-base text-xs" 
           >
             {category.name}
           </span>

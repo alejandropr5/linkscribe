@@ -53,7 +53,7 @@ export function ContentContainer ({
     <div
       className="flex flex-col min-h-full h-fit z-0 items-center
       lg:ml-[250px] 2xl:ml-[300px] 3xl:ml-[350px]
-      px-6 xl:px-16 2xl:px-24  3xl:px-32
+      px-1 sm:px-6 xl:px-16 2xl:px-24  3xl:px-32
       flex-grow"
     >
       { children }
