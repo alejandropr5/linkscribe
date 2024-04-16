@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { APIConstants } from "@/lib/constants";
-import { CustomUser } from "@/lib/constants";
+import { CustomUser } from "@/types/types";
 
 export default NextAuth({
   providers: [
