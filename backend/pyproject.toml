@@ -28,6 +28,7 @@ python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 bcrypt = "4.0.1"
 python-multipart = "^0.0.9"
+python-dotenv = "^1.0.1"
 
 [tool.poetry.extras]
 src = ["app", "model", "sqlapp", "utils"]
@@ -35,7 +36,6 @@ src = ["app", "model", "sqlapp", "utils"]
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.2.1"
 mypy = "^1.8.0"
-python-dotenv = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core"]
