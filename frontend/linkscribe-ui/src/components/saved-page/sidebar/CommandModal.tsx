@@ -196,7 +196,7 @@ function DeleteCategory ({
           <div className="p-6 font-sans space-y-6">
             <div className="space-y-4">
             <label
-              className="text-[#27272a] font-jakarta text-sm font-semibold"
+              className="text-[#27272a] font-jakarta text-sm font-medium"
             >
               All bookmarks in this folder will be deleted, are you sure you want to delete &quot;<b>{category.name}</b>&quot;?
             </label>

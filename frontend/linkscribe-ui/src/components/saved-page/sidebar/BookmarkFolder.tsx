@@ -7,6 +7,8 @@ import { CategoryNode } from "@/types/types"
 import BookmarkFolderSkeleton from "@/components/saved-page/sidebar/BookmarkFolderSkeleton"
 import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
+import rightArrow from "@public/right-arrow-svgrepo-com.svg"
+import folderSVG from "@public/folder.svg"
 import { searchCategory } from "@/components/utils/functions"
 import CommandBar from "@/components/saved-page/sidebar/CommandBar"
 import useCategoriesData from "@/hooks/useCategoriesData"
@@ -26,7 +28,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
   setCategorySelected,
   isFirst
 }: CategoryProps) => {
-  const [ showChildren, setShowChildren ] = useState<boolean>(true)
+  const [ showChildren, setShowChildren ] = useState<boolean>(isFirst)
 
   const handleCategoryClick = () => {
     setCategorySelected(categoryNode.id.toString())
@@ -46,27 +48,38 @@ const CategoryTree: React.FC<CategoryProps> = ({
     <>
       <div
         onClick={handleCategoryClick}
-        className={`relative flex flex-row items-center py-2 h-[38px] cursor-pointer rounded-l-md rounded-r-full overflow-hidden w-full
-        text-gray-700 active:bg-blue-100
+        className={`relative flex flex-row items-center py-2 h-[38px] w-full
+        text-gray-700 active:bg-blue-100 rounded-l-full cursor-pointer
         ${ categorySelected === categoryNode.id.toString() ? "bg-[#e8f0fe]" : "hover:bg-gray-100" }`}
       >
         {hasChildren &&
           <div
-            className="w-5 h-5 ml-[5px] hover:bg-gray-300 rounded-md"
+            className={`w-6 h-6 p-[2px] ml-[5px] hover:bg-gray-300 rounded-full`}
             onClick={handleArrowClick}
           >
-            <ClientImage imageComponent={downArrow} description={"Down Arrow SVG"} />
+            <ClientImage
+              imageComponent={ showChildren ? downArrow : rightArrow }
+              description={"Arrow SVG"}
+            />
           </div>
         }
-        <p
-          className={`pr-2 overflow-hidden text-ellipsis font-jakarta font-medium text-nowrap text-sm 2xl:text-base
-          ${hasChildren ? "pl-1" : "pl-[30px]" }`}
+        <div
+          className={`flex flex-row w-full
+          ${hasChildren ? "pl-1" : "pl-[28px]" }`}
         >
-          { categoryNode.name }
-        </p>
+          <div className="min-w-5 max-w-5 h-5 mr-1">
+            <ClientImage
+              imageComponent={folderSVG}
+              description={"Arrow SVG"}
+            />
+          </div>
+          <p className="font-jakarta font-medium text-nowrap text-sm pr-2 overflow-hidden text-ellipsis">
+            { categoryNode.name }
+          </p>
+        </div>
       </div>
       <div 
-        className="ml-[14px] border-l-[1px] border-gray-300 pl-2 my-[2px]"
+        className="ml-[14px] border-l-[1px] border-gray-300 pl-2 my-[1px]"
       >
         {showChildren && (categoryNode.children ?? []).map(
           (node: CategoryNode) =>
@@ -96,7 +109,7 @@ export default function BookmarkFolder() {
   useEffect(() => {
     setValue(
       "cat",
-      categorySelected // !== categories?.id.toString() ? categorySelected : ""
+      categorySelected
     )
   }, [categorySelected, setValue])
 
@@ -112,7 +125,7 @@ export default function BookmarkFolder() {
 
   return (
     <>
-      <div className="relative mr-1 overflow-y-auto h-grow mb-1 scrollbar-thin">
+      <div className="relative ml-1 overflow-y-auto h-grow mb-1 scrollbar-thin">
         {categories ? (
           <CategoryTree
             categoryNode={categories as any}

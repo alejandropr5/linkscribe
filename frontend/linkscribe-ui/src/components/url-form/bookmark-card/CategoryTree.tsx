@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { CategoryNode } from "@/types/types"
 import ClientImage from "@/components/utils/ClientImage"
 import downArrow from "@public/down-arrow.svg"
+import rightArrow from "@public/right-arrow.svg"
 
 interface CategoryProps {
   categoryNode: CategoryNode
@@ -36,10 +37,13 @@ const CategoryTree: React.FC<CategoryProps> = (categoryProps: CategoryProps) => 
         >
           {categoryProps.categoryNode.children?.length > 0 &&
             <div
-              className="w-5 h-5 ml-[3px] hover:bg-gray-300 rounded-md"
+              className={`w-5 h-5 ml-[3px] hover:bg-gray-300 rounded-md ${ showChildren ? "" : "p-1" }`}
               onClick={handleArrowClick}
             >
-              <ClientImage imageComponent={downArrow} description={"Down Arrow SVG"} />
+              <ClientImage
+                imageComponent={ showChildren ? downArrow : rightArrow }
+                description={"Arrow SVG"}
+              />
             </div>
           }
           <div className="absolute left-[27px] overflow-hidden text-ellipsis">

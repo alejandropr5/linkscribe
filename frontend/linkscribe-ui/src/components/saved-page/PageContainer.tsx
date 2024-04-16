@@ -20,8 +20,8 @@ export function SidebarContainer ({
         className={`flex flex-col h-full z-30
         lg:border-r-[1px] border-r-[#eaecf0] max-lg:bg-white        
         transition-all overflow-x-hidden
-        lg:w-[250px] 2xl:w-[300px] 3xl:w-[350px]
-        ${ showSidebar ? "w-[250px]" : "w-0" }`}
+        w-[300px] 3xl:w-[350px]
+        ${ showSidebar ? "w-[300px]" : "w-0" }`}
       >
         { children }
       </div>
@@ -52,7 +52,7 @@ export function ContentContainer ({
   return (
     <div
       className="flex flex-col min-h-full h-fit z-0 items-center
-      lg:ml-[250px] 2xl:ml-[300px] 3xl:ml-[350px]
+      lg:ml-[300px] 3xl:ml-[350px]
       px-1 sm:px-6 xl:px-16 2xl:px-24  3xl:px-32
       flex-grow"
     >

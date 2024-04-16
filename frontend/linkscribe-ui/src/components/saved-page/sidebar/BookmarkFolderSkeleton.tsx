@@ -15,10 +15,10 @@ const CategoryTreeSkeleton: React.FC<CategoryTreeSkeletonProps> = ({
   return (
     <>
       <div
-        className="relative flex flex-row items-center h-[38px] rounded-l-md rounded-r-full bg-[#f1f6ff] animate-pulse"
+        className="relative flex flex-row items-center h-[38px] rounded-l-full bg-[#f1f6ff] animate-pulse"
       />
       <div 
-        className="relative ml-[14px] border-l-[1px] border-gray-100 pl-2 my-[2px]"
+        className="relative ml-[14px] border-l-[1px] border-gray-100 pl-2 my-[1px]"
       >
         {(CategorySkeletonNode.children ?? []).map(
           (node: CategorySkeletonNode) =>
@@ -106,7 +106,7 @@ export default function BookmarkFolderSkeleton() {
     ]
   }
   return (
-    <div className="mr-1 overflow-y-auto">
+    <div className="ml-1 overflow-y-auto">
       <CategoryTreeSkeleton
         CategorySkeletonNode={categories}
       />
