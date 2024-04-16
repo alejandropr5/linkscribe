@@ -1,6 +1,6 @@
 "use client"
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
-import React, { useEffect, useState, useRef, memo } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { deleteUserBookmark, readBookmarks } from "@/components/utils/bookmarkAPI"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
@@ -201,7 +201,7 @@ function FolderComponent ({ category, pathName, isFirst, isLast, router }: {
 }
 
 
-function Bookmarks({
+export default function Bookmarks({
   backendUrl
 }: {
   backendUrl: string | undefined
@@ -274,5 +274,3 @@ function Bookmarks({
 
   )
 }
-
-export default memo(Bookmarks)
