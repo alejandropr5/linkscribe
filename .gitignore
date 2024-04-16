@@ -116,3 +116,4 @@ dmypy.json
 # |=========<< PROJECT >>=========|
 # VSCode
 *.code-workspace
+docker-compose.yml
