@@ -65,7 +65,7 @@ const CategoryTree: React.FC<CategoryProps> = ({
         }
         <div
           className={`flex flex-row w-full
-          ${hasChildren ? "pl-1" : "pl-[28px]" }`}
+          ${hasChildren ? "pl-1" : "pl-[31px]" }`}
         >
           <div className="min-w-5 max-w-5 h-5 mr-1">
             <ClientImage
@@ -73,7 +73,10 @@ const CategoryTree: React.FC<CategoryProps> = ({
               description={"Arrow SVG"}
             />
           </div>
-          <p className="font-jakarta font-medium text-nowrap text-sm pr-2 overflow-hidden text-ellipsis">
+          <p
+            className="font-jakarta font-medium text-nowrap text-sm pr-2 overflow-hidden text-ellipsis"
+            id={categoryNode.id.toString()}
+          >
             { categoryNode.name }
           </p>
         </div>
@@ -114,8 +117,9 @@ export default function BookmarkFolder() {
   }, [categorySelected, setValue])
 
   useEffect(() => {
+    const node = document.getElementById(params.cat?.toString() ?? "")
     setCategorySelected(
-      typeof params.cat === "string" ? (
+      typeof params.cat === "string" && node != null ? (
         params.cat
       ) : (
         categories?.id.toString() ?? ""
