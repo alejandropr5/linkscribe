@@ -6,6 +6,7 @@ import BookmarkEditModal from "@/components/saved-page/bookmarks/BookmarkEditRSC
 import CategoryForm from "@/components/saved-page/sidebar/CategoryForm"
 import CommandModal from "@/components/saved-page/sidebar/CommandModal"
 import { ContentContainer, SidebarContainer } from "@/components/saved-page/PageContainer"
+import { Suspense } from "react"
 
 export const metadata: Metadata = {
   title: texts.Metadata.saved.title,
@@ -24,7 +25,9 @@ export default function RootLayout({
   const BACKEND_URL = process.env.BACKEND_URL
   return (
     <Provider>
-      <CommandModal backendUrl={BACKEND_URL} />
+      <Suspense>
+        <CommandModal backendUrl={BACKEND_URL} />
+      </Suspense>
       <Header withSignButton={true} />
       <div className="flex flex-row min-h-[calc(100vh-56px)] w-full bg-gradient-to-br from-white to-[#f3f8fc]">
         <CategoryForm backendUrl={BACKEND_URL} >
