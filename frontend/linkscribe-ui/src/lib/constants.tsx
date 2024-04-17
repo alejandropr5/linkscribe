@@ -19,8 +19,8 @@ export const APIConstants = Object.freeze({
 })
 
 export const pathNames = Object.freeze({
-  login: "/auth/login/",
-  signUp: "/auth/sign-up/"
+  login: "/auth/login",
+  signUp: "/auth/sign-up"
 })
 
 export const CREATE_CATEGORY_BOOKMARK = (categoryId: number) => {
