@@ -3,10 +3,10 @@
         {
             "source": "/auth/:path*",
             "destination": "/with-modal/auth/:path*",
-            "headers": [
+            "has": [
                 {
-                    "key": "next-url",
-                    "value": "true"
+                    "type": "header",
+                    "key": "next-url"
                 }
             ]
         },
