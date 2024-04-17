@@ -1,23 +1,5 @@
 {
     "rewrites": [
-        {
-            "source": "/auth/:match*",
-            "destination": "/with-modal/auth/:match*",
-            "has": [
-                {
-                    "type": "header",
-                    "key": "next-url"
-                }
-            ]
-        },
-        {
-            "source": "/with-modal/:match*",
-            "destination": "/:match*"
-        },
-        {
-            "source": "/:match*",
-            "destination": "/with-modal/:match*"
-        }
+        {"source": "/(.*)", "destination": "/"}
     ]
 }
-  
