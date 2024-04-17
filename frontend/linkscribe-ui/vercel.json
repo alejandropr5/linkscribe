@@ -2,7 +2,13 @@
     "rewrites": [
         {
             "source": "/auth/:path*",
-            "destination": "/with-modal/auth/:path*"
-        }
+            "destination": "/with-modal/auth/:path*",
+            "has": [
+              {
+                "type": "header",
+                "key": "next-url"
+              }
+            ]
+          }
     ]
 }
