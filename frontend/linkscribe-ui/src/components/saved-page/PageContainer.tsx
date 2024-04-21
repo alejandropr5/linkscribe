@@ -13,14 +13,14 @@ export function SidebarContainer ({
   const [showSidebar, setShowSidebar] = useState<boolean>(false)
   return (
     <div
-      className="fixed flex-row flex top-[56px] z-40 h-[calc(100vh-56px)]
+      className="fixed flex-row flex top-[56px] z-40 max-h-[calc(100vh-56px)] h-full
       max-lg:shadow-xl max-lg:shadow-[#38444d60]"
     >
       <div
         className={`flex flex-col h-full z-30
         lg:border-r-[1px] border-r-[#eaecf0] max-lg:bg-white        
         transition-all overflow-x-hidden
-        w-[300px] 3xl:w-[350px]
+        lg:w-[300px] 3xl:w-[350px]
         ${ showSidebar ? "w-[300px]" : "w-0" }`}
       >
         { children }
