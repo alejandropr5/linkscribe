@@ -177,7 +177,7 @@ export const deleteUserBookmark = (
   )      
   
   const result = fetch(
-    backendUrl + APIConstants.DELETE_USER_BOOKMARK + bookmarkId.toString() + "/",
+    backendUrl + APIConstants.DELETE_USER_BOOKMARK + bookmarkId.toString(),
     {
       method: "DELETE",
       headers: myHeaders,
