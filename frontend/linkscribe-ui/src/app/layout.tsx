@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import texts from "@messages/en.json"
 import { ToastContainer, Flip } from "react-toastify"
@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: texts.Metadata.title,
   description: texts.Metadata.description,
 };
+
+export const viewport: Viewport = {
+  viewportFit: "cover"
+}
 
 export default function RootLayout({
   children
