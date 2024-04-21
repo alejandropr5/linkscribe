@@ -129,7 +129,7 @@ export default function BookmarkFolder() {
 
   return (
     <>
-      <div className="relative ml-1 overflow-y-auto h-grow mb-1 scrollbar-thin">
+      <div className="relative ml-1 overflow-y-auto mb-1 scrollbar-thin">
         {categories ? (
           <CategoryTree
             categoryNode={categories as any}
