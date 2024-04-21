@@ -72,7 +72,7 @@ export default function CommandBar({ hideButtons } : {hideButtons: boolean}) {
 
 
   return (
-    <div className="flex flex-row items-center bg-[#e8f0fe] rounded-t-xl py-1 px-2 mt-auto h-11">
+    <div className="flex flex-row items-center bg-[#e8f0fe] sm:rounded-t-xl rounded-bl-xl py-1 px-2 mt-auto h-11">
       <button
         type="button"
         onClick={() => setCommand("add")}

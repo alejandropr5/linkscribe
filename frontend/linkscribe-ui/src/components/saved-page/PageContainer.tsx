@@ -17,7 +17,7 @@ export function SidebarContainer ({
       max-lg:shadow-xl max-lg:shadow-[#38444d60]"
     >
       <div
-        className={`flex flex-col h-full z-30
+        className={`flex sm:flex-col flex-col-reverse sm:h-full z-30
         lg:border-r-[1px] border-r-[#eaecf0] max-lg:bg-white        
         transition-all overflow-x-hidden
         lg:w-[300px] 3xl:w-[350px]
